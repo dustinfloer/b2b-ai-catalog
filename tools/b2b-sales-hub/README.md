@@ -5,8 +5,8 @@ url: "https://b2b-sales-hub.quick.shopify.io/"
 category: "References"
 built_with: "Quick Site"
 audience: "SE-facing"
-author: ""
-author_slack: ""
+author: "Lizzie Ficken"
+author_slack: "@lizzie.ficken"
 date_added: "2026-03-24"
 ---
 
