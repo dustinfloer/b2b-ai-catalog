@@ -401,7 +401,7 @@
 
         async function loadCatalog() {
             try {
-                const response = await fetch('catalog.json');
+                const response = await fetch('catalog.json?v=' + Date.now());
                 catalog = await response.json();
                 render();
             } catch (e) {
