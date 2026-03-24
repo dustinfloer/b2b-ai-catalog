@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "example-objection-sim",
+    "name": "Objection Handling Simulator",
+    "description": "Practice competitive objection handling with AI-generated merchant scenarios and real-time coaching",
+    "url": "https://objection-sim.quick.shopify.io",
+    "category": "Simulations",
+    "built_with": "Quick Site",
+    "audience": "SE-facing",
+    "author": "Example Author",
+    "author_slack": "@example",
+    "date_added": "2026-03-15",
+    "screenshot": "",
+    "slack_channel": "",
+    "repo_url": ""
+  },
+  {
+    "slug": "example-pmf-scorer",
+    "name": "PMF Scorer",
+    "description": "Score Product-Market Fit for B2B and Plus opportunities across 10 qualification categories",
+    "url": "https://pmf-gauge.quick.shopify.io",
+    "category": "Tools",
+    "built_with": "Quick Site",
+    "audience": "SE-facing",
+    "author": "Example Author",
+    "author_slack": "@example",
+    "date_added": "2026-03-10",
+    "screenshot": "",
+    "slack_channel": "",
+    "repo_url": ""
+  },
+  {
+    "slug": "example-demo-prep",
+    "name": "Demo Prep Tool",
+    "description": "Auto-populates demo preparation data from Salesforce and merchant context for upcoming calls",
+    "url": "https://demo-prep.quick.shopify.io",
+    "category": "Tools",
+    "built_with": "Quick Site",
+    "audience": "SE-facing",
+    "author": "Example Author",
+    "author_slack": "@example",
+    "date_added": "2026-03-01",
+    "screenshot": "",
+    "slack_channel": "",
+    "repo_url": ""
+  }
+]

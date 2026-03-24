@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2B AI Tools Catalog</title>
+    <style>
+        :root {
+            --green-primary: #008060;
+            --green-light: #e6f5f0;
+            --green-hover: #006e52;
+            --surface: #f6f6f7;
+            --border: #e1e3e5;
+            --text-primary: #202223;
+            --text-secondary: #6d7175;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --cat-simulations: #9c6ade;
+            --cat-tools: #008060;
+            --cat-references: #2c6ecb;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--surface);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header h1 span {
+            font-size: 24px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-primary {
+            background: var(--green-primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--green-hover);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface);
+        }
+
+        /* Controls */
+        .controls {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            padding: 0 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 240px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--white);
+            transition: border-color 0.15s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--green-primary);
+            box-shadow: 0 0 0 2px rgba(0, 128, 96, 0.15);
+        }
+
+        .search-box::before {
+            content: "\1F50D";
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            background: var(--white);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--green-primary);
+            color: var(--green-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--green-primary);
+            border-color: var(--green-primary);
+            color: var(--white);
+        }
+
+        /* Stats Bar */
+        .stats {
+            max-width: 1200px;
+            margin: 16px auto 0;
+            padding: 0 24px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Card Grid */
+        .grid {
+            max-width: 1200px;
+            margin: 16px auto 48px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--green-primary);
+            transform: translateY(-2px);
+        }
+
+        .card-category-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .card-category-bar.Simulations { background: var(--cat-simulations); }
+        .card-category-bar.Tools { background: var(--cat-tools); }
+        .card-category-bar.References { background: var(--cat-references); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            font-weight: 650;
+            color: var(--text-primary);
+        }
+
+        .card-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 12px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .card-badge.Simulations {
+            background: #f3f0ff;
+            color: var(--cat-simulations);
+        }
+
+        .card-badge.Tools {
+            background: var(--green-light);
+            color: var(--cat-tools);
+        }
+
+        .card-badge.References {
+            background: #e9f3ff;
+            color: var(--cat-references);
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        .card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .meta-tag {
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: var(--surface);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 14px;
+            border-top: 1px solid var(--surface);
+        }
+
+        .card-author {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .card-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--green-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-link:hover {
+            color: var(--green-hover);
+        }
+
+        .card-link::after {
+            content: "\2192";
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state small {
+            font-size: 13px;
+        }
+
+        /* Loading */
+        .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <h1><span>&#x1F916;</span> B2B AI Tools Catalog</h1>
+            <div class="header-actions">
+                <a href="https://github.com/shopify-playground/b2b-ai-catalog" class="btn btn-secondary">
+                    GitHub Repo
+                </a>
+                <a href="https://github.com/shopify-playground/b2b-ai-catalog/blob/main/CONTRIBUTING.md" class="btn btn-primary">
+                    + Add a Tool
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="search" placeholder="Search tools by name, description, or author..." />
+        </div>
+        <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Tools">Tools</button>
+            <button class="filter-btn" data-filter="Simulations">Simulations</button>
+            <button class="filter-btn" data-filter="References">References</button>
+        </div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="grid" id="grid">
+        <div class="loading">Loading catalog...</div>
+    </div>
+
+    <script>
+        let catalog = [];
+        let activeFilter = 'all';
+
+        async function loadCatalog() {
+            try {
+                const response = await fetch('catalog.json');
+                catalog = await response.json();
+                render();
+            } catch (e) {
+                document.getElementById('grid').innerHTML = `
+                    <div class="empty-state">
+                        <p>Could not load catalog</p>
+                        <small>Check that catalog.json exists. It's built automatically on merge to main.</small>
+                    </div>
+                `;
+            }
+        }
+
+        function render() {
+            const query = document.getElementById('search').value.toLowerCase();
+            const filtered = catalog.filter(tool => {
+                const matchesFilter = activeFilter === 'all' || tool.category === activeFilter;
+                const matchesSearch = !query ||
+                    tool.name.toLowerCase().includes(query) ||
+                    tool.description.toLowerCase().includes(query) ||
+                    tool.author.toLowerCase().includes(query) ||
+                    (tool.built_with || '').toLowerCase().includes(query);
+                return matchesFilter && matchesSearch;
+            });
+
+            // Stats
+            document.getElementById('stats').textContent =
+                `Showing ${filtered.length} of ${catalog.length} tools`;
+
+            // Cards
+            const grid = document.getElementById('grid');
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <p>No tools found</p>
+                        <small>Try adjusting your search or filter</small>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(tool => `
+                <div class="card">
+                    <div class="card-category-bar ${tool.category}"></div>
+                    <div class="card-header">
+                        <h3>${escapeHtml(tool.name)}</h3>
+                        <span class="card-badge ${tool.category}">${escapeHtml(tool.category)}</span>
+                    </div>
+                    <p class="card-description">${escapeHtml(tool.description)}</p>
+                    <div class="card-meta">
+                        ${tool.built_with ? `<span class="meta-tag">${escapeHtml(tool.built_with)}</span>` : ''}
+                        ${tool.audience ? `<span class="meta-tag">${escapeHtml(tool.audience)}</span>` : ''}
+                    </div>
+                    <div class="card-footer">
+                        <span class="card-author">by ${escapeHtml(tool.author)}</span>
+                        <a href="${escapeHtml(tool.url)}" target="_blank" rel="noopener" class="card-link">Open</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Search
+        document.getElementById('search').addEventListener('input', render);
+
+        // Filters
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                render();
+            });
+        });
+
+        loadCatalog();
+    </script>
+</body>
+</html>
