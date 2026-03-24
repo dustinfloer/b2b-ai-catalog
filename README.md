@@ -2,7 +2,7 @@
 
 A shared directory of AI-powered tools, simulations, and references built by the B2B SE team.
 
-**[Browse the Catalog](https://shopify-playground.github.io/b2b-ai-catalog/)**
+**[Browse the Catalog](https://dustinfloer.github.io/b2b-ai-catalog/)**
 
 ---
 
@@ -37,7 +37,7 @@ Built something you're proud of? Add it to the catalog in under 5 minutes — no
 
 - Each tool lives in its own folder under `tools/` with a `README.md` containing metadata
 - A GitHub Action automatically builds the browsable catalog site on every merge to `main`
-- The catalog site at [shopify-playground.github.io/b2b-ai-catalog](https://shopify-playground.github.io/b2b-ai-catalog/) provides search and filtering
+- The catalog site at [shopify-playground.github.io/b2b-ai-catalog](https://dustinfloer.github.io/b2b-ai-catalog/) provides search and filtering
 
 ## Questions?
 
