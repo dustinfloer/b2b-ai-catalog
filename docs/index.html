@@ -6,39 +6,50 @@
     <title>B2B AI Tools Catalog</title>
     <style>
         :root {
-            --green-primary: #008060;
-            --green-light: #e6f5f0;
-            --green-hover: #006e52;
-            --surface: #f6f6f7;
-            --border: #e1e3e5;
-            --text-primary: #202223;
-            --text-secondary: #6d7175;
-            --white: #ffffff;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
-            --cat-simulations: #9c6ade;
-            --cat-tools: #008060;
-            --cat-references: #2c6ecb;
+            --green-primary: #36d986;
+            --green-dim: #2bb870;
+            --green-glow: rgba(54, 217, 134, 0.15);
+            --green-glow-strong: rgba(54, 217, 134, 0.25);
+            --bg-deep: #0a0f1a;
+            --bg-surface: #111827;
+            --bg-card: #1a2332;
+            --bg-card-hover: #1f2b3d;
+            --border: #2a3548;
+            --border-hover: #36d986;
+            --text-primary: #e8ecf1;
+            --text-secondary: #8b95a5;
+            --text-muted: #5a6577;
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(54, 217, 134, 0.08);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --cat-simulations: #a78bfa;
+            --cat-simulations-bg: rgba(167, 139, 250, 0.12);
+            --cat-tools: #36d986;
+            --cat-tools-bg: rgba(54, 217, 134, 0.12);
+            --cat-references: #60a5fa;
+            --cat-references-bg: rgba(96, 165, 250, 0.12);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--surface);
+            background: var(--bg-deep);
             color: var(--text-primary);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         /* Header */
         .header {
-            background: var(--white);
+            background: var(--bg-surface);
             border-bottom: 1px solid var(--border);
-            padding: 24px 0;
+            padding: 20px 0;
             position: sticky;
             top: 0;
             z-index: 100;
+            backdrop-filter: blur(12px);
         }
 
         .header-inner {
@@ -53,21 +64,22 @@
         }
 
         .header h1 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 10px;
+            letter-spacing: -0.3px;
         }
 
-        .header h1 span {
-            font-size: 24px;
+        .header h1 .logo-accent {
+            color: var(--green-primary);
         }
 
         .header-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
 
@@ -76,38 +88,66 @@
             align-items: center;
             gap: 6px;
             padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
             font-weight: 600;
             text-decoration: none;
             border: none;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
         }
 
         .btn-primary {
             background: var(--green-primary);
-            color: var(--white);
+            color: var(--bg-deep);
         }
 
         .btn-primary:hover {
-            background: var(--green-hover);
+            background: var(--green-dim);
+            box-shadow: 0 0 16px rgba(54, 217, 134, 0.3);
         }
 
         .btn-secondary {
-            background: var(--white);
-            color: var(--text-primary);
+            background: transparent;
+            color: var(--text-secondary);
             border: 1px solid var(--border);
         }
 
         .btn-secondary:hover {
-            background: var(--surface);
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        /* Hero */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 48px 24px 0;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--green-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         /* Controls */
         .controls {
             max-width: 1200px;
-            margin: 24px auto 0;
+            margin: 32px auto 0;
             padding: 0 24px;
             display: flex;
             gap: 12px;
@@ -123,27 +163,33 @@
 
         .search-box input {
             width: 100%;
-            padding: 10px 16px 10px 40px;
+            padding: 11px 16px 11px 42px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             font-size: 14px;
-            background: var(--white);
-            transition: border-color 0.15s;
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
         }
 
         .search-box input:focus {
             outline: none;
             border-color: var(--green-primary);
-            box-shadow: 0 0 0 2px rgba(0, 128, 96, 0.15);
+            box-shadow: 0 0 0 3px var(--green-glow);
         }
 
-        .search-box::before {
-            content: "\1F50D";
+        .search-icon {
             position: absolute;
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
+            color: var(--text-muted);
             font-size: 14px;
+            pointer-events: none;
         }
 
         .filter-group {
@@ -153,15 +199,15 @@
         }
 
         .filter-btn {
-            padding: 8px 14px;
+            padding: 8px 16px;
             border-radius: 20px;
             font-size: 13px;
             font-weight: 500;
             border: 1px solid var(--border);
-            background: var(--white);
+            background: transparent;
             color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
         }
 
         .filter-btn:hover {
@@ -170,24 +216,24 @@
         }
 
         .filter-btn.active {
-            background: var(--green-primary);
+            background: var(--green-glow-strong);
             border-color: var(--green-primary);
-            color: var(--white);
+            color: var(--green-primary);
         }
 
         /* Stats Bar */
         .stats {
             max-width: 1200px;
-            margin: 16px auto 0;
+            margin: 20px auto 0;
             padding: 0 24px;
             font-size: 13px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
         }
 
         /* Card Grid */
         .grid {
             max-width: 1200px;
-            margin: 16px auto 48px;
+            margin: 12px auto 60px;
             padding: 0 24px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -195,11 +241,11 @@
         }
 
         .card {
-            background: var(--white);
+            background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 20px;
-            transition: all 0.2s ease;
+            padding: 22px;
+            transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -207,9 +253,10 @@
         }
 
         .card:hover {
-            box-shadow: var(--shadow-md);
-            border-color: var(--green-primary);
-            transform: translateY(-2px);
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-card-hover);
+            transform: translateY(-3px);
         }
 
         .card-category-bar {
@@ -217,47 +264,49 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            height: 2px;
         }
 
-        .card-category-bar.Simulations { background: var(--cat-simulations); }
-        .card-category-bar.Tools { background: var(--cat-tools); }
-        .card-category-bar.References { background: var(--cat-references); }
+        .card-category-bar.Simulations { background: linear-gradient(90deg, var(--cat-simulations), transparent); }
+        .card-category-bar.Tools { background: linear-gradient(90deg, var(--cat-tools), transparent); }
+        .card-category-bar.References { background: linear-gradient(90deg, var(--cat-references), transparent); }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            gap: 12px;
         }
 
         .card h3 {
             font-size: 16px;
             font-weight: 650;
             color: var(--text-primary);
+            letter-spacing: -0.2px;
         }
 
         .card-badge {
             font-size: 11px;
             font-weight: 600;
-            padding: 3px 8px;
+            padding: 3px 10px;
             border-radius: 12px;
             white-space: nowrap;
             flex-shrink: 0;
         }
 
         .card-badge.Simulations {
-            background: #f3f0ff;
+            background: var(--cat-simulations-bg);
             color: var(--cat-simulations);
         }
 
         .card-badge.Tools {
-            background: var(--green-light);
+            background: var(--cat-tools-bg);
             color: var(--cat-tools);
         }
 
         .card-badge.References {
-            background: #e9f3ff;
+            background: var(--cat-references-bg);
             color: var(--cat-references);
         }
 
@@ -266,22 +315,23 @@
             color: var(--text-secondary);
             margin-bottom: 16px;
             flex: 1;
-            line-height: 1.5;
+            line-height: 1.55;
         }
 
         .card-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 14px;
+            gap: 6px;
+            margin-bottom: 16px;
         }
 
         .meta-tag {
-            font-size: 12px;
-            color: var(--text-secondary);
-            background: var(--surface);
-            padding: 3px 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3px 10px;
             border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .card-footer {
@@ -289,12 +339,12 @@
             justify-content: space-between;
             align-items: center;
             padding-top: 14px;
-            border-top: 1px solid var(--surface);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .card-author {
             font-size: 13px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
         }
 
         .card-link {
@@ -305,14 +355,17 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            transition: all 0.15s;
         }
 
         .card-link:hover {
-            color: var(--green-hover);
+            color: var(--green-dim);
+            gap: 8px;
         }
 
         .card-link::after {
             content: "\2192";
+            transition: inherit;
         }
 
         /* Empty State */
@@ -320,12 +373,13 @@
             grid-column: 1 / -1;
             text-align: center;
             padding: 60px 20px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
         }
 
         .empty-state p {
             font-size: 16px;
             margin-bottom: 8px;
+            color: var(--text-secondary);
         }
 
         .empty-state small {
@@ -337,7 +391,7 @@
             grid-column: 1 / -1;
             text-align: center;
             padding: 60px 20px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             font-size: 15px;
         }
 
@@ -359,16 +413,24 @@
             .search-box {
                 min-width: 100%;
             }
+
+            .hero h2 {
+                font-size: 24px;
+            }
+
+            .hero {
+                padding-top: 32px;
+            }
         }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-inner">
-            <h1><span>&#x1F916;</span> B2B AI Tools Catalog</h1>
+            <h1><span class="logo-accent">&#9670;</span> B2B AI Tools</h1>
             <div class="header-actions">
                 <a href="https://github.com/dustinfloer/b2b-ai-catalog" class="btn btn-secondary">
-                    GitHub Repo
+                    GitHub
                 </a>
                 <a href="https://github.com/dustinfloer/b2b-ai-catalog/blob/main/CONTRIBUTING.md" class="btn btn-primary">
                     + Add a Tool
@@ -377,8 +439,14 @@
         </div>
     </header>
 
+    <div class="hero">
+        <h2>AI tools built by the team, for the team</h2>
+        <p>Everything the B2B SE team has built — searchable, filterable, one click away.</p>
+    </div>
+
     <div class="controls">
         <div class="search-box">
+            <span class="search-icon">&#x1F50D;</span>
             <input type="text" id="search" placeholder="Search tools by name, description, or author..." />
         </div>
         <div class="filter-group">
@@ -426,11 +494,9 @@
                 return matchesFilter && matchesSearch;
             });
 
-            // Stats
             document.getElementById('stats').textContent =
                 `Showing ${filtered.length} of ${catalog.length} tools`;
 
-            // Cards
             const grid = document.getElementById('grid');
 
             if (filtered.length === 0) {
@@ -470,10 +536,8 @@
             return div.innerHTML;
         }
 
-        // Search
         document.getElementById('search').addEventListener('input', render);
 
-        // Filters
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
