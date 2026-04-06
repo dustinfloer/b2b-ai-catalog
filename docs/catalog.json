@@ -1,5 +1,20 @@
 [
   {
+    "slug": "launch-inspector",
+    "name": "Launch Inspector",
+    "description": "Monitor Shopify merchant launch progress across DTC and B2B — Salesforce cases, store data, revenue targets, and recommendations in one place",
+    "url": "https://launch-inspector.quick.shopify.io/",
+    "category": "Tools",
+    "built_with": "Quick Site",
+    "audience": "SE-facing",
+    "author": "Jordan Murphy",
+    "author_slack": "@papamurphy",
+    "date_added": "2026-04-06",
+    "screenshot": "",
+    "slack_channel": "",
+    "repo_url": ""
+  },
+  {
     "slug": "agency-intel",
     "name": "Agency Intel",
     "description": "Research and intelligence on Shopify agency partners — capabilities, specializations, and track records",
