@@ -370,6 +370,17 @@
             transition: inherit;
         }
 
+        /* Screenshot */
+        .card-screenshot {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            margin-bottom: 14px;
+            border: 1px solid var(--border);
+            display: block;
+        }
+
         /* Empty State */
         .empty-state {
             grid-column: 1 / -1;
@@ -514,6 +525,7 @@
             grid.innerHTML = filtered.map(tool => `
                 <div class="card">
                     <div class="card-category-bar ${tool.category}"></div>
+                    ${tool.screenshot ? `<img class="card-screenshot" src="${escapeHtml(tool.screenshot)}" alt="${escapeHtml(tool.name)} screenshot" loading="lazy" onerror="this.style.display='none'">` : ''}
                     <div class="card-header">
                         <h3>${escapeHtml(tool.name)}</h3>
                         <span class="card-badge ${tool.category}">${escapeHtml(tool.category)}</span>
