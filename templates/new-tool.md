@@ -9,6 +9,8 @@ author: "Your Name"
 author_slack: "@your-slack-handle"
 date_added: "YYYY-MM-DD"
 screenshot: ""
+# To add a screenshot: drop a screenshot.png into your tool folder, then set the URL above to:
+# https://raw.githubusercontent.com/dustinfloer/b2b-ai-catalog/main/tools/your-tool-name/screenshot.png
 slack_channel: ""
 repo_url: ""
 ---
