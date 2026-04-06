@@ -1,0 +1,68 @@
+name: "Tool Request"
+description: "Suggest a new AI tool, simulation, or reference for the catalog"
+labels: ["tool-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Got an idea for something that would help the B2B SE team? Fill this out and we'll track it.
+
+  - type: input
+    id: tool-name
+    attributes:
+      label: Tool Name
+      description: What would you call it?
+      placeholder: e.g., "Pricing Scenario Calculator"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Tools
+        - Simulations
+        - References
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does it solve?
+      description: Describe the gap or friction you're experiencing
+      placeholder: e.g., "I spend 20 minutes before every call manually building out B2B pricing scenarios..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: What should it do?
+      description: Describe the ideal tool — even roughly
+      placeholder: e.g., "A quick site where I enter the merchant's catalog size and pricing tiers, and it outputs a visual comparison"
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Who would use it?
+      options:
+        - SE-facing
+        - Merchant-facing
+        - Both
+
+  - type: input
+    id: requestor
+    attributes:
+      label: Your Slack handle
+      description: So we can follow up with you
+      placeholder: "@your-handle"
+    validations:
+      required: true
+
+  - type: textarea
+    id: volunteering
+    attributes:
+      label: Can you build it, or do you need a builder?
+      description: Optional — let us know if you're volunteering or looking for someone to pick this up
