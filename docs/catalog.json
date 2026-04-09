@@ -15,6 +15,21 @@
     "repo_url": ""
   },
   {
+    "slug": "b2b-apps",
+    "name": "B2B App Directory",
+    "description": "SE-vetted app reference for B2B solutioning — searchable by use case and category. Covers B2B Operations, ERP & Integrations, Invoicing & Quoting, Shopify Native, and Specialty apps.",
+    "url": "https://dustinfloer.github.io/b2b-ai-catalog/apps/",
+    "category": "References",
+    "built_with": "Vanilla JS + GitHub Pages",
+    "audience": "SE-facing",
+    "author": "B2B SE Team",
+    "author_slack": "@se-team",
+    "date_added": "2026-04-09",
+    "screenshot": "",
+    "slack_channel": "",
+    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog"
+  },
+  {
     "slug": "b2b-field-learnings",
     "name": "B2B Field Learnings",
     "description": "Field-validated B2B edge cases, API patterns, and workarounds from the SE team. Searchable by category (Payments, APIs, Workflows, Tax, Integrations, Platform) with inline code samples.",

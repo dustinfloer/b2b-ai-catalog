@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2B App Directory</title>
+    <link rel="icon" type="image/svg+xml" href="../logo.svg">
+    <style>
+        :root {
+            --green-primary: #36d986;
+            --green-dim: #2bb870;
+            --green-glow: rgba(54, 217, 134, 0.15);
+            --bg-deep: #0a0f1a;
+            --bg-surface: #111827;
+            --bg-card: #1a2332;
+            --bg-card-hover: #1f2b3d;
+            --border: #2a3548;
+            --border-hover: #36d986;
+            --text-primary: #e8ecf1;
+            --text-secondary: #8b95a5;
+            --text-muted: #5a6577;
+            --shadow-card: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-card-hover: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(54,217,134,0.08);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --cat-native: #36d986;
+            --cat-native-bg: rgba(54,217,134,0.12);
+            --cat-b2b: #60a5fa;
+            --cat-b2b-bg: rgba(96,165,250,0.12);
+            --cat-erp: #a78bfa;
+            --cat-erp-bg: rgba(167,139,250,0.12);
+            --cat-invoicing: #f59e0b;
+            --cat-invoicing-bg: rgba(245,158,11,0.12);
+            --cat-specialty: #f472b6;
+            --cat-specialty-bg: rgba(244,114,182,0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-deep);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo {
+            height: 56px;
+            width: auto;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+        .nav-link.active { color: var(--green-primary); background: var(--green-glow); }
+
+        /* Hero */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 28px 24px 0;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--green-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Controls */
+        .controls {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            padding: 0 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 240px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 11px 16px 11px 42px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-box input::placeholder { color: var(--text-muted); }
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--green-primary);
+            box-shadow: 0 0 0 3px var(--green-glow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover { border-color: var(--green-primary); color: var(--green-primary); }
+        .filter-btn.active {
+            background: rgba(54,217,134,0.15);
+            border-color: var(--green-primary);
+            color: var(--green-primary);
+        }
+
+        /* Stats */
+        .stats {
+            max-width: 1200px;
+            margin: 16px auto 0;
+            padding: 0 24px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Grid */
+        .grid {
+            max-width: 1200px;
+            margin: 12px auto 60px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .card-top-bar {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+        }
+
+        .card-top-bar.Shopify\ Native  { background: linear-gradient(90deg, var(--cat-native), transparent); }
+        .card-top-bar.B2B\ Operations  { background: linear-gradient(90deg, var(--cat-b2b), transparent); }
+        .card-top-bar.ERP\ \&\ Integrations { background: linear-gradient(90deg, var(--cat-erp), transparent); }
+        .card-top-bar.Invoicing\ \&\ Quoting { background: linear-gradient(90deg, var(--cat-invoicing), transparent); }
+        .card-top-bar.Specialty        { background: linear-gradient(90deg, var(--cat-specialty), transparent); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+        }
+
+        .card-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .card-badge.Shopify\ Native   { background: var(--cat-native-bg);    color: var(--cat-native); }
+        .card-badge.B2B\ Operations   { background: var(--cat-b2b-bg);       color: var(--cat-b2b); }
+        .card-badge.ERP\ \&\ Integrations { background: var(--cat-erp-bg);   color: var(--cat-erp); }
+        .card-badge.Invoicing\ \&\ Quoting { background: var(--cat-invoicing-bg); color: var(--cat-invoicing); }
+        .card-badge.Specialty         { background: var(--cat-specialty-bg); color: var(--cat-specialty); }
+
+        .card-use-cases {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 12px;
+            flex: 1;
+        }
+
+        .use-case-tag {
+            font-size: 11px;
+            color: var(--text-secondary);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .card-notes {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-style: italic;
+            line-height: 1.45;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .audience-tags {
+            display: flex;
+            gap: 4px;
+        }
+
+        .audience-tag {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .audience-tag.B2B { background: rgba(96,165,250,0.12); color: #60a5fa; }
+        .audience-tag.DTC { background: rgba(54,217,134,0.10); color: #36d986; }
+        .audience-tag.POS { background: rgba(167,139,250,0.10); color: #a78bfa; }
+
+        .card-link {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green-primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(54,217,134,0.3);
+            background: rgba(54,217,134,0.06);
+            transition: all 0.2s;
+        }
+
+        .card-link:hover {
+            background: rgba(54,217,134,0.14);
+            border-color: var(--green-primary);
+        }
+
+        .card-link::after { content: " →"; }
+
+        /* Empty / Loading */
+        .empty-state, .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        footer a { color: var(--text-secondary); text-decoration: none; }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+            .header-inner { flex-wrap: wrap; }
+            .controls { flex-direction: column; }
+            .search-box { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="../"><img src="../logo.svg" alt="B2B Tools" class="header-logo"></a>
+            <nav class="header-nav">
+                <a href="../" class="nav-link">Catalog</a>
+                <a href="../learnings/" class="nav-link">Field Learnings</a>
+                <a href="../apps/" class="nav-link active">App Directory</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h2>B2B App Directory</h2>
+        <p>SE-vetted apps for B2B solutioning — searchable by use case and category.</p>
+    </div>
+
+    <div class="controls">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search" placeholder="Search by app name or use case..." />
+        </div>
+        <div class="filter-group" id="filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Shopify Native">Shopify Native</button>
+            <button class="filter-btn" data-filter="B2B Operations">B2B Operations</button>
+            <button class="filter-btn" data-filter="ERP & Integrations">ERP & Integrations</button>
+            <button class="filter-btn" data-filter="Invoicing & Quoting">Invoicing & Quoting</button>
+            <button class="filter-btn" data-filter="Specialty">Specialty</button>
+        </div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+    <div class="grid" id="grid"><div class="loading">Loading apps...</div></div>
+
+    <footer>
+        Source: <a href="https://docs.google.com/spreadsheets/d/1KEf54Wnnpj93KEkBUiSVwjCdao57ERvPmPB84zJyhrY/" target="_blank" rel="noopener">B2B App List spreadsheet</a> — maintained by the B2B SE team &nbsp;·&nbsp; [INTERNAL-ONLY]
+    </footer>
+
+    <script>
+        let apps = [];
+        let activeFilter = 'all';
+
+        async function loadApps() {
+            try {
+                const res = await fetch('apps.json?v=' + Date.now());
+                apps = await res.json();
+                updateCounts();
+                render();
+            } catch (e) {
+                document.getElementById('grid').innerHTML = `<div class="empty-state">Could not load apps. Check that apps.json is present.</div>`;
+            }
+        }
+
+        function updateCounts() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                const f = btn.dataset.filter;
+                const count = f === 'all' ? apps.length : apps.filter(a => a.category === f).length;
+                btn.textContent = `${f === 'all' ? 'All' : f} (${count})`;
+            });
+        }
+
+        function render() {
+            const query = document.getElementById('search').value.toLowerCase();
+            const filtered = apps.filter(app => {
+                const matchesFilter = activeFilter === 'all' || app.category === activeFilter;
+                const matchesSearch = !query ||
+                    app.name.toLowerCase().includes(query) ||
+                    app.category.toLowerCase().includes(query) ||
+                    app.use_cases.some(u => u.toLowerCase().includes(query)) ||
+                    (app.notes || '').toLowerCase().includes(query);
+                return matchesFilter && matchesSearch;
+            }).sort((a, b) => a.name.localeCompare(b.name));
+
+            document.getElementById('stats').textContent = `Showing ${filtered.length} of ${apps.length} apps`;
+
+            const grid = document.getElementById('grid');
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="empty-state">No apps found — try adjusting your search or filter</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(app => `
+                <div class="card">
+                    <div class="card-top-bar ${escHtml(app.category)}"></div>
+                    <div class="card-header">
+                        <h3>${escHtml(app.name)}</h3>
+                        <span class="card-badge ${escHtml(app.category)}">${escHtml(app.category)}</span>
+                    </div>
+                    <div class="card-use-cases">
+                        ${app.use_cases.map(u => `<span class="use-case-tag">${escHtml(u)}</span>`).join('')}
+                    </div>
+                    ${app.notes ? `<p class="card-notes">${escHtml(app.notes)}</p>` : ''}
+                    <div class="card-footer">
+                        <div class="audience-tags">
+                            ${app.audience.map(a => `<span class="audience-tag ${escHtml(a)}">${escHtml(a)}</span>`).join('')}
+                        </div>
+                        <a href="${escHtml(app.url)}" target="_blank" rel="noopener" class="card-link">App Store</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function escHtml(str) {
+            if (!str) return '';
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        document.getElementById('search').addEventListener('input', render);
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                render();
+            });
+        });
+
+        loadApps();
+    </script>
+</body>
+</html>
