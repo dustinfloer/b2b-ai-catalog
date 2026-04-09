@@ -516,7 +516,7 @@
                     tool.author.toLowerCase().includes(query) ||
                     (tool.built_with || '').toLowerCase().includes(query);
                 return matchesFilter && matchesSearch;
-            });
+            }).sort((a, b) => a.name.localeCompare(b.name));
 
             document.getElementById('stats').textContent =
                 `Showing ${filtered.length} of ${catalog.length} tools`;
