@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2B Field Learnings</title>
+    <link rel="icon" type="image/png" href="../logo.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --green-primary: #36d986;
+            --green-dim: #2bb870;
+            --green-glow: rgba(54, 217, 134, 0.15);
+            --green-glow-strong: rgba(54, 217, 134, 0.25);
+            --bg-deep: #0a0f1a;
+            --bg-surface: #111827;
+            --bg-card: #1a2332;
+            --bg-card-hover: #1f2b3d;
+            --border: #2a3548;
+            --border-hover: #36d986;
+            --text-primary: #e8ecf1;
+            --text-secondary: #8b95a5;
+            --text-muted: #5a6577;
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(54, 217, 134, 0.08);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --cat-payments: #f59e0b;
+            --cat-payments-bg: rgba(245, 158, 11, 0.12);
+            --cat-apis: #36d986;
+            --cat-apis-bg: rgba(54, 217, 134, 0.12);
+            --cat-workflows: #a78bfa;
+            --cat-workflows-bg: rgba(167, 139, 250, 0.12);
+            --cat-tax: #60a5fa;
+            --cat-tax-bg: rgba(96, 165, 250, 0.12);
+            --cat-integrations: #fb923c;
+            --cat-integrations-bg: rgba(251, 146, 60, 0.12);
+            --cat-platform: #34d399;
+            --cat-platform-bg: rgba(52, 211, 153, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo {
+            height: 36px;
+            width: auto;
+        }
+
+        .header-title {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .header-title h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .header-title .breadcrumb {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .header-title .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .header-title .breadcrumb a:hover {
+            color: var(--green-primary);
+        }
+
+        .internal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #f87171;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .internal-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+
+        /* Hero */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 48px 24px 32px;
+        }
+
+        .hero h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .hero-stat strong {
+            color: var(--green-primary);
+            font-weight: 700;
+        }
+
+        .source-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .source-link:hover {
+            border-color: var(--green-primary);
+            color: var(--green-primary);
+        }
+
+        /* Controls */
+        .controls {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .search-wrap {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-input:focus { border-color: var(--green-primary); }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+
+        .filter-btn.active {
+            background: var(--green-primary);
+            border-color: var(--green-primary);
+            color: #0a0f1a;
+        }
+
+        .filter-btn[data-cat="Payments"].active { background: var(--cat-payments); border-color: var(--cat-payments); }
+        .filter-btn[data-cat="APIs & Mutations"].active { background: var(--cat-apis); border-color: var(--cat-apis); }
+        .filter-btn[data-cat="Workflows"].active { background: var(--cat-workflows); border-color: var(--cat-workflows); }
+        .filter-btn[data-cat="Tax & Compliance"].active { background: var(--cat-tax); border-color: var(--cat-tax); }
+        .filter-btn[data-cat="Integrations"].active { background: var(--cat-integrations); border-color: var(--cat-integrations); }
+        .filter-btn[data-cat="Platform"].active { background: var(--cat-platform); border-color: var(--cat-platform); }
+
+        /* Results bar */
+        .results-bar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Grid */
+        .grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 20px;
+        }
+
+        /* Card */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-card-hover);
+        }
+
+        .card.expanded { border-color: var(--green-primary); }
+
+        .card-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+            line-height: 1.4;
+        }
+
+        .expand-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .card.expanded .expand-icon {
+            background: var(--green-glow);
+            border-color: var(--green-primary);
+            color: var(--green-primary);
+            transform: rotate(180deg);
+        }
+
+        .cat-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            width: fit-content;
+        }
+
+        .cat-badge.payments { color: var(--cat-payments); background: var(--cat-payments-bg); }
+        .cat-badge.apis { color: var(--cat-apis); background: var(--cat-apis-bg); }
+        .cat-badge.workflows { color: var(--cat-workflows); background: var(--cat-workflows-bg); }
+        .cat-badge.tax { color: var(--cat-tax); background: var(--cat-tax-bg); }
+        .cat-badge.integrations { color: var(--cat-integrations); background: var(--cat-integrations-bg); }
+        .cat-badge.platform { color: var(--cat-platform); background: var(--cat-platform-bg); }
+
+        .card-summary {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            padding: 2px 8px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'SFMono-Regular', Consolas, monospace;
+        }
+
+        /* Expanded body */
+        .card-body {
+            display: none;
+            border-top: 1px solid var(--border);
+        }
+
+        .card.expanded .card-body { display: block; }
+
+        .key-points {
+            padding: 20px;
+            padding-bottom: 0;
+        }
+
+        .key-points h4 {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        .key-points ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .key-points li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding-left: 16px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .key-points li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--green-primary);
+            font-size: 11px;
+            top: 2px;
+        }
+
+        .code-section {
+            padding: 20px;
+        }
+
+        .code-section h4 {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        .code-block-wrap {
+            margin-bottom: 16px;
+        }
+
+        .code-block-wrap:last-child { margin-bottom: 0; }
+
+        .code-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+
+        .copy-btn:hover { color: var(--green-primary); background: var(--green-glow); }
+        .copy-btn.copied { color: var(--green-primary); }
+
+        .code-block-wrap pre[class*="language-"] {
+            margin: 0;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            line-height: 1.6;
+            max-height: 320px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+        }
+
+        /* Override Prism tomorrow theme background */
+        code[class*="language-"], pre[class*="language-"] {
+            background: #0d1117 !important;
+        }
+
+        pre[class*="language-"] {
+            background: #0d1117 !important;
+        }
+
+        .card-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .doc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .doc-link:hover { color: var(--green-primary); }
+
+        /* Empty state */
+        .empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 24px;
+            color: var(--text-muted);
+        }
+
+        .empty h3 { font-size: 16px; margin-bottom: 8px; color: var(--text-secondary); }
+        .empty p { font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-inner">
+        <div class="header-brand">
+            <img src="../logo.png" alt="Shopify B2B" class="header-logo">
+            <div class="header-title">
+                <h1>B2B Field Learnings</h1>
+                <div class="breadcrumb">
+                    <a href="../index.html">← B2B AI Tools Catalog</a>
+                </div>
+            </div>
+        </div>
+        <span class="internal-badge">Internal Only</span>
+    </div>
+</header>
+
+<section class="hero">
+    <h2>Field-Validated B2B Solutions &amp; Gotchas</h2>
+    <p>Real-world learnings from the SE team — edge cases, API patterns, and workarounds that aren't in the docs. Click any card to expand key points and code samples.</p>
+    <div class="hero-meta">
+        <span class="hero-stat"><strong id="total-count">—</strong> learnings</span>
+        <a href="https://docs.google.com/document/d/1oBVz0kz3OkkZxCQv2k7UpwfiZx9lYXc_yddP_gdwMB0/edit" target="_blank" class="source-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Source Google Doc
+        </a>
+    </div>
+</section>
+
+<div class="controls">
+    <div class="search-wrap">
+        <span class="search-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </span>
+        <input type="text" class="search-input" id="search" placeholder="Search learnings, tags, topics…" autocomplete="off">
+    </div>
+    <div class="filters" id="filters">
+        <button class="filter-btn active" data-cat="all">All</button>
+        <button class="filter-btn" data-cat="Payments">Payments</button>
+        <button class="filter-btn" data-cat="APIs & Mutations">APIs &amp; Mutations</button>
+        <button class="filter-btn" data-cat="Workflows">Workflows</button>
+        <button class="filter-btn" data-cat="Tax & Compliance">Tax &amp; Compliance</button>
+        <button class="filter-btn" data-cat="Integrations">Integrations</button>
+        <button class="filter-btn" data-cat="Platform">Platform</button>
+    </div>
+</div>
+
+<div class="results-bar" id="results-bar">Loading…</div>
+
+<div class="grid" id="grid"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script>
+    // Set Prism autoloader path
+    if (window.Prism) {
+        Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
+    }
+
+    const DOC_URL = 'https://docs.google.com/document/d/1oBVz0kz3OkkZxCQv2k7UpwfiZx9lYXc_yddP_gdwMB0/edit';
+
+    const CAT_CLASS = {
+        'Payments': 'payments',
+        'APIs & Mutations': 'apis',
+        'Workflows': 'workflows',
+        'Tax & Compliance': 'tax',
+        'Integrations': 'integrations',
+        'Platform': 'platform',
+    };
+
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function renderCard(item) {
+        const catClass = CAT_CLASS[item.category] || 'platform';
+        const hasCode = item.code_samples && item.code_samples.length > 0;
+
+        const tagsHtml = (item.tags || [])
+            .map(t => `<span class="tag">${escapeHtml(t)}</span>`)
+            .join('');
+
+        const pointsHtml = (item.key_points || [])
+            .map(p => `<li>${escapeHtml(p)}</li>`)
+            .join('');
+
+        const codeHtml = hasCode ? `
+            <div class="code-section">
+                <h4>Code Samples</h4>
+                ${item.code_samples.map((s, i) => `
+                    <div class="code-block-wrap">
+                        <div class="code-label">
+                            <span>${escapeHtml(s.label)}</span>
+                            <button class="copy-btn" data-id="${escapeHtml(item.id)}-${i}" onclick="copyCode(this, ${JSON.stringify(s.code)})">Copy</button>
+                        </div>
+                        <pre class="language-${escapeHtml(s.language || 'graphql')}"><code class="language-${escapeHtml(s.language || 'graphql')}">${escapeHtml(s.code)}</code></pre>
+                    </div>
+                `).join('')}
+            </div>
+        ` : '';
+
+        return `
+            <div class="card" id="card-${escapeHtml(item.id)}">
+                <div class="card-header" onclick="toggleCard('${escapeHtml(item.id)}')">
+                    <div class="card-top">
+                        <span class="card-title">${escapeHtml(item.title)}</span>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                    <span class="cat-badge ${catClass}">${escapeHtml(item.category)}</span>
+                    <p class="card-summary">${escapeHtml(item.summary)}</p>
+                    ${tagsHtml ? `<div class="card-tags">${tagsHtml}</div>` : ''}
+                </div>
+                <div class="card-body">
+                    <div class="key-points">
+                        <h4>Key Points</h4>
+                        <ul>${pointsHtml}</ul>
+                    </div>
+                    ${codeHtml}
+                    <div class="card-footer">
+                        <a href="${DOC_URL}" target="_blank" class="doc-link">
+                            Read full context in source doc
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function toggleCard(id) {
+        const card = document.getElementById('card-' + id);
+        const wasExpanded = card.classList.contains('expanded');
+        // Collapse all others
+        document.querySelectorAll('.card.expanded').forEach(c => c.classList.remove('expanded'));
+        if (!wasExpanded) {
+            card.classList.add('expanded');
+            // Re-highlight code blocks
+            if (window.Prism) {
+                card.querySelectorAll('code[class*="language-"]').forEach(block => {
+                    Prism.highlightElement(block);
+                });
+            }
+        }
+    }
+
+    function copyCode(btn, code) {
+        navigator.clipboard.writeText(code).then(() => {
+            const original = btn.textContent;
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = original;
+                btn.classList.remove('copied');
+            }, 2000);
+        });
+    }
+
+    let allLearnings = [];
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    function render() {
+        const grid = document.getElementById('grid');
+        const resultsBar = document.getElementById('results-bar');
+
+        const query = searchQuery.toLowerCase();
+        const filtered = allLearnings.filter(item => {
+            const matchCat = activeCategory === 'all' || item.category === activeCategory;
+            const matchSearch = !query || [
+                item.title, item.summary, item.category,
+                ...(item.tags || []), ...(item.key_points || [])
+            ].some(f => f && f.toLowerCase().includes(query));
+            return matchCat && matchSearch;
+        });
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+                <div class="empty">
+                    <h3>No learnings found</h3>
+                    <p>Try a different search term or category.</p>
+                </div>
+            `;
+        } else {
+            grid.innerHTML = filtered.map(renderCard).join('');
+        }
+
+        const total = allLearnings.length;
+        resultsBar.textContent = filtered.length === total
+            ? `Showing all ${total} learnings`
+            : `Showing ${filtered.length} of ${total} learnings`;
+    }
+
+    // Filters
+    document.getElementById('filters').addEventListener('click', e => {
+        if (!e.target.classList.contains('filter-btn')) return;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        activeCategory = e.target.dataset.cat;
+        render();
+    });
+
+    // Search
+    document.getElementById('search').addEventListener('input', e => {
+        searchQuery = e.target.value;
+        render();
+    });
+
+    // Load data
+    fetch('learnings.json')
+        .then(r => r.json())
+        .then(data => {
+            allLearnings = data;
+            document.getElementById('total-count').textContent = data.length;
+            render();
+        })
+        .catch(() => {
+            document.getElementById('grid').innerHTML = `
+                <div class="empty">
+                    <h3>Failed to load learnings</h3>
+                    <p>Check that learnings.json is present in the same directory.</p>
+                </div>
+            `;
+        });
+</script>
+</body>
+</html>

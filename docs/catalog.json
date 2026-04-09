@@ -1,5 +1,20 @@
 [
   {
+    "slug": "b2b-field-learnings",
+    "name": "B2B Field Learnings",
+    "description": "Field-validated B2B edge cases, API patterns, and workarounds from the SE team. Searchable by category (Payments, APIs, Workflows, Tax, Integrations, Platform) with inline code samples.",
+    "url": "https://dustinfloer.github.io/b2b-ai-catalog/learnings/",
+    "category": "References",
+    "built_with": "Vanilla JS + GitHub Pages",
+    "audience": "SE-facing",
+    "author": "SE Team",
+    "author_slack": "@se-team",
+    "date_added": "2026-04-09",
+    "screenshot": "",
+    "slack_channel": "",
+    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog"
+  },
+  {
     "slug": "launch-inspector",
     "name": "Launch Inspector",
     "description": "Monitor Shopify merchant launch progress across DTC and B2B — Salesforce cases, store data, revenue targets, and recommendations in one place",
