@@ -423,5 +423,416 @@
     "code_samples": [],
     "tags": ["plus", "trials", "account-management", "commercial"],
     "doc_section": "Paid Plus Trials"
+  },
+  {
+    "id": "mandate-payment-expired-card",
+    "title": "orderCreateMandatePayment Silent Failure on Expired Cards",
+    "category": "APIs & Mutations",
+    "summary": "The orderCreateMandatePayment mutation returns SUCCESS even when the card is expired — it just silently doesn't charge the card. Always verify actual payment status in the order timeline.",
+    "contributed_by": ["Rick DaSilva", "Brandon Anderson", "Anna Feichtner"],
+    "key_points": [
+      "Known behavior: the mutation returns success (no error) even on an expired card",
+      "The card simply isn't charged — a note appears in the order timeline, but the API response looks clean",
+      "Always check the order timeline to confirm actual payment status after calling this mutation",
+      "This was discovered accidentally via an expired card on a company location"
+    ],
+    "code_samples": [],
+    "tags": ["api", "graphql", "payments", "mandate", "gotcha", "expired-card"],
+    "doc_section": "orderCreateMandatePayment Doesn't Fail on Expired Cards"
+  },
+  {
+    "id": "reauth-extended-fulfillment",
+    "title": "Re-Authorization for Extended Fulfillment Windows",
+    "category": "Payments",
+    "summary": "When fulfillment takes longer than the 7–30 day authorization window, use orderCreateMandatePayment with autoCapture: false to create a fresh pre-auth. The payment mandate outlives individual authorizations, enabling re-auth without customer involvement.",
+    "contributed_by": ["Callum Mayer", "Bill Thomas", "Terry Kealey", "Jacqueline Yang", "Brandon Anderson"],
+    "key_points": [
+      "Problem: standard auth windows (7–30 days) expire before fulfillment, especially for long lead-time B2B orders",
+      "Solution: use orderCreateMandatePayment with autoCapture: false to create a new pre-auth — the mandate persists beyond any single auth",
+      "The card is vaulted against the order (separate from B2B location saved payment methods) — works even without Shopify Payments",
+      "B2B Card Vaulting (Shopify Payments only): customers can save cards on file for re-auth without intervention; IMPORTANT: only customers can vault cards — admin staff cannot do it on their behalf",
+      "Alternative: use Pre-Order apps to mark long lead-time products — automatically vaults the customer's card at purchase"
+    ],
+    "code_samples": [],
+    "tags": ["payments", "authorization", "fulfillment", "mandate", "vaulting", "pre-order"],
+    "doc_section": "Re-Authorization for Extended Fulfillment Windows"
+  },
+  {
+    "id": "flow-convert-draft-orders-terms",
+    "title": "Flow: Convert Draft Orders on Terms to Orders",
+    "category": "Workflows",
+    "summary": "A Shopify Flow workflow that detects draft orders with payment terms meeting certain conditions, converts them to orders automatically, and closes the original draft. Useful for demos and as a workaround when Payment Customization functions aren't an option.",
+    "contributed_by": ["Rick DaSilva", "Bill Thomas", "Anna Feichtner"],
+    "key_points": [
+      "Flow detects draft orders on terms matching specified conditions",
+      "Automatically converts qualifying draft orders to completed orders",
+      "Closes the original draft order after conversion",
+      "Use case: merchants who need conditional order conversion but can't build a Payment Customization function",
+      "Also useful for demo environments to simulate B2B order workflows"
+    ],
+    "code_samples": [],
+    "tags": ["flow", "automation", "draft-orders", "terms", "workaround"],
+    "doc_section": "Flow to Convert Draft Orders on Terms to Orders"
+  },
+  {
+    "id": "apple-pay-paypal-b2b",
+    "title": "Enabling Apple Pay & PayPal for B2B",
+    "category": "Payments",
+    "summary": "Both Apple Pay and PayPal are hidden for locations with payment terms — No Terms is required for these options to show. Browser/device combination is also critical: Safari on iPhone, not Chrome on Mac.",
+    "key_points": [
+      "Apple Pay: enabled once for both DTC and B2B in Shopify Payments settings",
+      "Apple Pay only shows for Company Locations with No Terms — locations with any terms hide it",
+      "Apple Pay requires Safari on a compatible device — Chrome on Mac reliably fails to show it",
+      "PayPal: same — enabled once for both DTC and B2B; requires No Terms and test mode OFF",
+      "PayPal quirk: even when PayPal Wallet is the enabled version for DTC, B2B may show PayPal Express instead",
+      "For demo environments: use iPhone with Safari for the most reliable Apple Pay demonstration"
+    ],
+    "contributed_by": ["Alex Cestaro", "Jonathan Chu", "Brandon Anderson", "Gita Ravindran"],
+    "code_samples": [],
+    "tags": ["payments", "apple-pay", "paypal", "terms", "demo", "browser"],
+    "doc_section": "Enabling Apple Pay and PayPal for B2B"
+  },
+  {
+    "id": "order-metafield-reporting",
+    "title": "Reporting on Order Custom Metafields",
+    "category": "Workflows",
+    "summary": "Shopify Analytics doesn't support order.metafields, and Matrixify can't bridge the gap. Better Reports app is the recommended solution for reports combining order headers with custom metafield values.",
+    "contributed_by": ["Bill Thomas", "Brandon Anderson", "Anna Feichtner"],
+    "key_points": [
+      "Problem: need a report with order ID, customer name, date PLUS custom order metafields",
+      "Shopify Analytics: does not support order.metafields — no native option",
+      "Matrixify: also cannot accomplish this",
+      "Solution: Better Reports app — supports order metafields in custom report configurations",
+      "GraphQL queries can retrieve this data but provide no native export mechanism"
+    ],
+    "code_samples": [],
+    "tags": ["reporting", "metafields", "analytics", "better-reports", "orders"],
+    "doc_section": "Reporting on Order Custom Metafields"
+  },
+  {
+    "id": "interac-payments-canada",
+    "title": "Interac Payments — Canada",
+    "category": "Payments",
+    "summary": "Interac Debit works at POS via Shopify Payments in Canada (tap limit: $250/transaction). For online Interac e-Transfer, two providers exist: Windcave and PSI Payment Source. Tobacco merchants have specific compliance requirements.",
+    "contributed_by": ["Brandon Anderson"],
+    "key_points": [
+      "Interac Debit at POS: supported within Shopify Payments in Canada",
+      "Tap limit: $250/transaction with daily tap limits — over the limit requires insert card + PIN",
+      "Interac e-Transfer for Online: two providers — Windcave (TBD status) and PSI (Payment Source)",
+      "PSI: e-Transfer only, $3,000/transaction limit; has special compliance requirements for tobacco merchants",
+      "Tobacco workaround: use 'Choose Payment Method Later' → customer contacts merchant offline → mark as paid after transfer is received"
+    ],
+    "code_samples": [],
+    "tags": ["payments", "canada", "interac", "pos", "tobacco", "compliance"],
+    "doc_section": "Interac Payment Research (Canada)"
+  },
+  {
+    "id": "fraud-control-vs-shopify-protect",
+    "title": "Fraud Control vs Shopify Protect — Status",
+    "category": "Platform",
+    "summary": "Merchants cannot use Fraud Control rules AND Shopify Protect simultaneously. Shopify Protect's status is uncertain: deprecated Feb 2025, rollback announced Jun 2025. Current guidance: don't proactively sell it, but discuss if merchants ask.",
+    "contributed_by": ["Jordan Murphy", "Terry Kealey", "Brandon Anderson", "Anna Feichtner"],
+    "key_points": [
+      "Fraud Control rules and Shopify Protect are mutually exclusive — cannot use both",
+      "Shopify Protect announced as deprecated in Feb 2025 (communicated to ENT/LA)",
+      "Termination was rolled back in June 2025 — current status is unclear",
+      "Official guidance: do not use as a selling point; you can discuss it if a merchant brings it up",
+      "Note: Shopify Protect is only for Shop Pay — not applicable to all B2B payment scenarios"
+    ],
+    "code_samples": [],
+    "tags": ["fraud", "shopify-protect", "shop-pay", "platform", "status"],
+    "doc_section": "Fraud Control vs Shopify Protect Status"
+  },
+  {
+    "id": "im-digital-b2b-accelerator",
+    "title": "IM Digital B2B Accelerator (Tapestry)",
+    "category": "Integrations",
+    "summary": "IM Digital's Tapestry accelerator offers modular B2B components (LTL quotes, inventory visibility, user management, managed quotes) starting at ~$100K. Bundled with IM Digital implementation services — not available standalone.",
+    "contributed_by": ["Matt Ward", "Bill Thomas", "Jeff St. Pierre", "Callum Mayer", "Brandon Anderson", "Anna Feichtner"],
+    "key_points": [
+      "Modular components: LTL shipping quotes, incoming inventory dates/amounts, user-managed storefront users, managed quotes",
+      "Pick-and-choose: components can be selected individually",
+      "Pricing: starts at ~$100K, scales with implementation scope",
+      "Limitation: not offered separately — bundled exclusively with IM Digital implementation services",
+      "IM Digital team can provide deeper demos and launch support discussions"
+    ],
+    "code_samples": [],
+    "tags": ["partner", "accelerator", "ltl", "quotes", "user-management", "implementation"],
+    "doc_section": "IM Digital B2B Accelerator (Tapestry)"
+  },
+  {
+    "id": "tap-to-pay-trade-shows",
+    "title": "Mobile App Tap to Pay for B2B Trade Shows",
+    "category": "Workflows",
+    "summary": "For trade show B2B sales, Tap to Pay via the Shopify Admin mobile app works on iPhone/Android but supports only Draft Orders and Quick Orders. Using a laptop at the trade show gives a fuller UI than a tablet.",
+    "contributed_by": ["Matt Ward", "Callum Mayer", "Brandon Anderson", "Anna Feichtner"],
+    "key_points": [
+      "Shopify Admin app Tap to Pay: iPhone and Android only (not iPad); Draft Orders and Quick Orders only — not 'normal' orders",
+      "Shopify Payments must NOT be in test mode",
+      "B2B Extend + POS: place the order first → find in Online Orders → Collect Payment → select Tap to Pay",
+      "Alternative: payment QR codes or invoice links sent to customer email for in-person engagement",
+      "Trade show tip: a laptop gives a fuller admin UI than a tablet — consider it over a POS tablet setup"
+    ],
+    "code_samples": [],
+    "tags": ["pos", "tap-to-pay", "trade-show", "mobile", "b2b-extend", "workflows"],
+    "doc_section": "Mobile App Tap to Pay for B2B Trade Shows"
+  },
+  {
+    "id": "china-cdn-performance",
+    "title": "China CDN & Shopify Performance",
+    "category": "Platform",
+    "summary": "China's Great Firewall does cause real Shopify performance issues. Shopify has a China CDN (cdn.shopifycdn.net), but domestic China selling faces major blockers (ICP license, infrastructure). Cross-border is the recommended strategy.",
+    "contributed_by": ["Bill Thomas", "Terry Kealey", "Sam Pettinati", "Stewart Knapman", "Lukas Perez", "Jason Bowman", "Chee Hong Saw", "Brandon Anderson"],
+    "key_points": [
+      "Confirmed: China's Great Firewall causes slow loading of Shopify script files",
+      "Shopify China CDN: cdn.shopifycdn.net provides faster delivery for China",
+      "Major blockers for China domestic selling: no ICP license (regulatory requirement) + lagging China/HK CDN infrastructure",
+      "Proxy workaround: China-facing site retrieves product details via Storefront API; order data (not customer data) sent back to Shopify via Admin API",
+      "Strategy: cross-border selling is the recommended approach — not domestic China sellers"
+    ],
+    "code_samples": [],
+    "tags": ["performance", "china", "cdn", "international", "proxy", "storefront-api"],
+    "doc_section": "China CDN & Shopify Performance"
+  },
+  {
+    "id": "litextension-migration",
+    "title": "LitExtension — Platform Migration Tool",
+    "category": "Integrations",
+    "summary": "LitExtension is an API-based platform migration tool that transfers data between platforms automatically, avoiding Excel/CSV intermediaries. It's a one-time migration tool — not middleware for ongoing ERP sync.",
+    "contributed_by": ["Daniel Ramirez", "Dustin Floer", "Brandon Anderson", "Jordan Murphy", "Callum Mayer"],
+    "key_points": [
+      "API-based: transfers data between platforms via APIs — no manual spreadsheet steps",
+      "Handles data mapping automatically",
+      "Scope: one-time migration tool only — not suitable as middleware for ongoing ERP integration",
+      "Recommended by experienced SEs as a solid alternative to Matrixify for platform-to-platform migrations"
+    ],
+    "code_samples": [],
+    "tags": ["migration", "platform", "integrations", "matrixify", "erp", "data-transfer"],
+    "doc_section": "LitExtension - Platform Migration Tool"
+  },
+  {
+    "id": "shop-app-marketplace-tax",
+    "title": "Shop App Orders — Unexpected Tax Collection",
+    "category": "Tax & Compliance",
+    "summary": "Since January 1, 2025, the Shop channel automatically collects, remits, and files taxes for ALL US orders — regardless of the merchant's nexus settings. Tax appears under 'SC Commerce Services Inc.' in reporting.",
+    "contributed_by": ["Bill Thomas", "Rick DaSilva", "Brandon Anderson"],
+    "key_points": [
+      "Root cause of unexpected tax: the order was placed through the Shop App/channel",
+      "Since Jan 1, 2025: Shop channel auto-collects, remits, and files taxes for all US orders",
+      "This applies regardless of the merchant's tax nexus configuration",
+      "Tax appears in reporting under 'SC Commerce Services Inc.' — not the merchant's name",
+      "Diagnostic tip: if you see unexpected tax, check the audit trail in Shop internal for tax registration changes"
+    ],
+    "code_samples": [],
+    "tags": ["tax", "shop-app", "marketplace", "us", "nexus", "compliance"],
+    "doc_section": "Shop App Orders & Marketplace Tax (Ohio Example)"
+  },
+  {
+    "id": "partner-dev-store-b2b",
+    "title": "B2B Features in Partner Development Stores",
+    "category": "Platform",
+    "summary": "Partner dev stores support all B2B API operations and end-to-end flows, but cannot test real payment collection, live third-party integrations, or Shopify Payments. Flip to a CW store when Shopify Payments testing is needed.",
+    "contributed_by": ["Matt Ward", "Jeff St. Pierre", "Terry Kealey", "Brandon Anderson", "Anna Feichtner"],
+    "key_points": [
+      "CAN test: complete B2B GraphQL API, end-to-end flows (company → checkout), catalog and pricing logic, customer account experience, payment terms setup, integration points",
+      "CANNOT test: real payment collection (test transactions only), production payment terms enforcement, live third-party integrations, real-world performance/load",
+      "Limitation: cannot connect Shopify Payments in test mode on a partner dev store",
+      "When you need Shopify Payments: flip to a CW (Converted to Paid) store"
+    ],
+    "code_samples": [],
+    "tags": ["development", "partner-store", "testing", "shopify-payments", "b2b", "api"],
+    "doc_section": "B2B Features in Partner Development Stores"
+  },
+  {
+    "id": "reserving-inventory-b2b-dtc",
+    "title": "Reserving Inventory for B2B vs DTC (Separate Contexts)",
+    "category": "Workflows",
+    "summary": "Separating inventory reservations between B2B and DTC contexts is a known merchant need. See the source doc for full implementation details from the team.",
+    "contributed_by": ["Callum Mayer", "Amy Tacon", "Carla Wright", "Terry Kealey", "Maxime Moys"],
+    "key_points": [
+      "Merchants often need to ring-fence inventory for B2B buyers separately from DTC stock",
+      "See the source Google Doc for full implementation patterns from this team discussion"
+    ],
+    "code_samples": [],
+    "tags": ["inventory", "b2b", "dtc", "workflows", "stock-management"],
+    "doc_section": "Reserving Inventory for B2B vs DTC (Separate Contexts)"
+  },
+  {
+    "id": "pos-customer-view-app",
+    "title": "POS Customer View App (Android)",
+    "category": "Platform",
+    "summary": "An official Shopify app turns an Android device into a customer-facing display at POS — showing the cart and order total to the buyer while the cashier uses the main POS device.",
+    "key_points": [
+      "Turns an Android device into a customer-facing POS display",
+      "Available on Google Play Store",
+      "Official Shopify app — see Help Center for setup documentation",
+      "Useful for B2B merchants with a physical counter or showroom environment"
+    ],
+    "code_samples": [],
+    "tags": ["pos", "android", "customer-display", "retail", "hardware"],
+    "doc_section": "POS Customer View App"
+  },
+  {
+    "id": "restrict-products-b2b-only",
+    "title": "Restricting Products to B2B (or DTC) Only",
+    "category": "Workflows",
+    "summary": "Native B2B functionality (catalogs, companies, Markets) can gate products to specific buyer segments — showing certain products only to B2B customers or only to DTC customers, including handling unassigned account holders.",
+    "key_points": [
+      "Use Markets + native B2B (catalogs, companies) to limit product visibility by buyer type",
+      "Can restrict certain products to B2B customers only, or conversely show products only to DTC customers",
+      "Also handles customers who sign up for an account but aren't assigned to a company — they fall into the DTC/unassigned context",
+      "Video resources available in the source doc for both use cases"
+    ],
+    "code_samples": [],
+    "tags": ["catalogs", "b2b", "dtc", "markets", "product-visibility", "companies"],
+    "doc_section": "Restricting Products to B2B Only"
+  },
+  {
+    "id": "creating-demo-store",
+    "title": "Creating a New Demo Store (Staff Store)",
+    "category": "Platform",
+    "summary": "Staff demo stores are created via Forge, upgraded to Plus through Services Internal, and exempted from app charges via an Experiments flag. No credit card required for apps once the flag is set.",
+    "key_points": [
+      "Step 1: Create a Staff store via Forge",
+      "Step 2: Upgrade to Plus via Services Internal",
+      "Step 3: In Services Internal, find your store and click the 'Avoid app charges' button",
+      "Step 4: Copy your Shop ID from Services Internal, go to the Experiments page, add an assignment with your Shop ID",
+      "Step 5: Install apps — they should show a message confirming no charges; no CC required",
+      "If apps ask for a CC, uninstall and reinstall after the Experiments flag is set"
+    ],
+    "code_samples": [],
+    "tags": ["demo", "forge", "staff-store", "plus", "internal", "setup"],
+    "doc_section": "Creating a New Demo Store"
+  },
+  {
+    "id": "flow-fraud-address-mismatch",
+    "title": "Flow: Flag Fraudulent Orders on Address Mismatch",
+    "category": "Workflows",
+    "summary": "A Shopify Flow workflow that flags potentially fraudulent orders when the shipping and billing addresses don't match — augmenting Shopify's built-in fraud score with a custom rule.",
+    "contributed_by": ["Brandon Anderson"],
+    "key_points": [
+      "Shopify provides an automated fraud score by default based on millions of transactions",
+      "This Flow adds a custom rule: flags orders where shipping ≠ billing address",
+      "Useful for merchants who want to augment native fraud detection with their own logic",
+      "Flow can be extended with additional merchant-specific rules"
+    ],
+    "code_samples": [],
+    "tags": ["flow", "automation", "fraud", "orders", "risk"],
+    "doc_section": "Fraud Detection Flow for Address Mismatch"
+  },
+  {
+    "id": "flow-tag-staff-email-attribution",
+    "title": "Flow: Tag Orders with Staff Email for Sales Attribution",
+    "category": "Workflows",
+    "summary": "A Flow workflow that tags orders with the assigned staff member's email address, enabling sales attribution reporting — since Shopify has no native way to attribute orders to specific reps.",
+    "key_points": [
+      "Problem: no native way to report on sales attribution in Shopify",
+      "Solution: use Flow to tag orders with the staff member's email address at order creation",
+      "Can be modified to tag with name or any other staff property instead of email",
+      "Tagged orders can then be filtered in Shopify Analytics or exported for reporting"
+    ],
+    "code_samples": [],
+    "tags": ["flow", "automation", "sales-attribution", "reporting", "orders", "tags"],
+    "doc_section": "Tag Order With Assigned Staff Emails"
+  },
+  {
+    "id": "pos-international-markets-limitation",
+    "title": "POS International Markets Limitation & Hybrid Architecture",
+    "category": "Platform",
+    "summary": "POS does not support international markets — each country with POS needs a separate Shopify admin. The recommended pattern: consolidate B2B into one admin using Markets, keep separate POS stores per country until platform support arrives.",
+    "contributed_by": ["Matt Ward", "Jeff St. Pierre"],
+    "key_points": [
+      "POS does not support international markets functionality — confirmed by Jeff St. Pierre (POS Expert)",
+      "Each country requiring POS must maintain a separate Shopify admin",
+      "Retail Markets allows location-based pricing (online vs. in-store) but not international currency/tax handling for POS",
+      "Recommended hybrid architecture: consolidate all B2B into one admin (using Markets), maintain separate POS stores per country",
+      "B2B and POS can operate independently — no requirement to mix them in one admin",
+      "Monitor Shopify roadmap for international POS markets support"
+    ],
+    "code_samples": [],
+    "tags": ["pos", "markets", "international", "multi-store", "architecture", "limitation"],
+    "doc_section": "POS International Markets Limitation"
+  },
+  {
+    "id": "delivery-date-picker-b2b",
+    "title": "Delivery Date Picker for Company Locations",
+    "category": "Workflows",
+    "summary": "No off-the-shelf app supports Company Location-aware delivery date scheduling. Checkout Blocks can't access Company data directly. A custom dev workaround exists: pass company metafields to checkout as checkout metafields before checkout begins.",
+    "contributed_by": ["Jacqueline Yang", "Bill Thomas"],
+    "key_points": [
+      "Use case: B2B alcohol merchant where each company location has specific agreed-upon delivery days (e.g., Company A = Tuesdays only)",
+      "Checkout Blocks limitation: cannot directly access Company or Company Location data — only customer data is available",
+      "Workaround: pass company metafield data to a checkout metafield via cart page customization before checkout; use checkout.metafields in Checkout Blocks to read it",
+      "Use customer.b2b variable for B2B detection to conditionally show/hide the date picker",
+      "No Flow triggers exist for cart/checkout creation — can't automate the metafield passing natively",
+      "No off-the-shelf app supports this — requires custom development with Checkout Extensibility experience"
+    ],
+    "code_samples": [],
+    "tags": ["checkout", "checkout-extensibility", "company-location", "metafields", "custom-development", "delivery"],
+    "doc_section": "Delivery Date Picker for Company Locations"
+  },
+  {
+    "id": "web-application-approaches",
+    "title": "Web Application Approaches — SPA vs SSR vs SSG vs MPA",
+    "category": "Platform",
+    "summary": "A reference for SEs to understand the four main web rendering approaches when evaluating merchant tech stacks or headless implementations: SPA, SSR, SSG, and MPA — each with different trade-offs for commerce.",
+    "key_points": [
+      "SPA (Single Page App): one HTML page, JS handles all routing; best for web apps/dashboards/admin panels — examples: React + Vite",
+      "SSR (Server-Side Rendering): HTML built on server per request, good for SEO, dynamic data; best for e-commerce — examples: Next.js, Remix",
+      "SSG (Static Site Generation): pages pre-built at build time, extremely fast, requires rebuild for updates; best for blogs/docs/marketing — examples: Gatsby, Astro",
+      "MPA (Multi-Page Application): traditional, each route is a separate HTML page, full page refresh; best for content-heavy sites — examples: WordPress, Rails",
+      "For headless commerce evaluation: most Shopify headless implementations use SSR (Next.js/Remix) for SEO + dynamic pricing; SPA for admin/dashboard tools"
+    ],
+    "code_samples": [],
+    "tags": ["headless", "architecture", "spa", "ssr", "ssg", "mpa", "frontend", "reference"],
+    "doc_section": "Web Application Approaches"
+  },
+  {
+    "id": "high-variant-image-limits",
+    "title": "High Variant Count & Image Limits",
+    "category": "Platform",
+    "summary": "Even with the 2048 variant limit, products still cap at 250 images — so you can't have one image per variant at scale. Storing images in variant metafields bypasses this limit entirely.",
+    "contributed_by": ["Jacqueline Yang"],
+    "key_points": [
+      "Variant limit: 2048 per product (new limit); Combined Listings limit: 2000 variants",
+      "Image limit: 250 images per product — does NOT scale with the variant limit",
+      "At scale, you cannot have one image per variant with the 250 image cap",
+      "Workaround: store variant images in metafields on the variant — these do NOT count toward the 250 image limit",
+      "Traditional fallbacks still apply: split into multiple products, or use a configurator app"
+    ],
+    "code_samples": [],
+    "tags": ["variants", "images", "metafields", "product", "limits", "combined-listings"],
+    "doc_section": "High Variant Count & Image Limits"
+  },
+  {
+    "id": "flow-sidekick",
+    "title": "Using Flow + Sidekick (AI-Assisted Flow Building)",
+    "category": "Workflows",
+    "summary": "Sidekick can create Shopify Flows for merchants (or help them build flows). This is a useful capability to demonstrate and recommend for merchants who want automation but lack technical resources.",
+    "key_points": [
+      "Sidekick can generate Shopify Flow workflows from natural language descriptions",
+      "Useful for merchants who want automation but don't have developers",
+      "Refer merchants to the Sidekick Flow FAQ doc for supported capabilities and examples",
+      "Good demo moment: show how a merchant can describe a workflow in plain English and get a Flow built"
+    ],
+    "code_samples": [],
+    "tags": ["flow", "sidekick", "ai", "automation", "no-code"],
+    "doc_section": "Using Flow + Sidekick"
+  },
+  {
+    "id": "pipe17-erp",
+    "title": "Pipe17 — ERP Integration Option",
+    "category": "Integrations",
+    "summary": "Pipe17 is a strong third-party ERP connector option when full bidirectional sync and support for all object types (including draft orders and catalogs) is required. Recommended when long-term B2B growth is the goal.",
+    "key_points": [
+      "Supports all sync flows — including draft orders and B2B catalogs/price lists (unlike native NetSuite connector)",
+      "Bidirectional sync across all major object types",
+      "Pricing: ~$24,000/year for up to 4,000 orders/month",
+      "Best fit: merchants investing heavily in B2B who need all objects (customers, catalogs, orders, draft orders) synced automatically",
+      "Experienced team with strong support reputation among SEs"
+    ],
+    "code_samples": [],
+    "tags": ["erp", "integrations", "pipe17", "sync", "b2b", "netsuite"],
+    "doc_section": "ERP Integrations"
   }
 ]

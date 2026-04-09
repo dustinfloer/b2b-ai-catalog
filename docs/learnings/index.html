@@ -375,6 +375,19 @@
             gap: 6px;
         }
 
+        .card-attribution {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-attribution svg {
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
         .tag {
             padding: 2px 8px;
             background: var(--bg-surface);
@@ -610,6 +623,13 @@
             .map(t => `<span class="tag">${escapeHtml(t)}</span>`)
             .join('');
 
+        const attributionHtml = item.contributed_by && item.contributed_by.length > 0
+            ? `<div class="card-attribution">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                ${escapeHtml(item.contributed_by.join(', '))}
+               </div>`
+            : '';
+
         const pointsHtml = (item.key_points || [])
             .map(p => `<li>${escapeHtml(p)}</li>`)
             .join('');
@@ -639,6 +659,7 @@
                     <span class="cat-badge ${catClass}">${escapeHtml(item.category)}</span>
                     <p class="card-summary">${escapeHtml(item.summary)}</p>
                     ${tagsHtml ? `<div class="card-tags">${tagsHtml}</div>` : ''}
+                    ${attributionHtml}
                 </div>
                 <div class="card-body">
                     <div class="key-points">
