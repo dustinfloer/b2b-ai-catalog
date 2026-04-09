@@ -1,5 +1,20 @@
 [
   {
+    "slug": "ai-html-decks",
+    "name": "AI HTML Decks",
+    "description": "Build browser-native presentation decks with Cursor + Claude instead of Google Slides. Ship as a standalone .html file or host on a Quick Site — no Google account required.",
+    "url": "https://slide-deck-exploration.quick.shopify.io/",
+    "category": "Workflows",
+    "built_with": "HTML + CSS + JS (AI-generated via Cursor + Claude)",
+    "audience": "SE-facing",
+    "author": "Terry Kealey, Matt Ward, Brandon Anderson",
+    "author_slack": "@matt.ward",
+    "date_added": "2026-04-09",
+    "screenshot": "",
+    "slack_channel": "global-b2b-sales-team",
+    "repo_url": ""
+  },
+  {
     "slug": "b2b-field-learnings",
     "name": "B2B Field Learnings",
     "description": "Field-validated B2B edge cases, API patterns, and workarounds from the SE team. Searchable by category (Payments, APIs, Workflows, Tax, Integrations, Platform) with inline code samples.",

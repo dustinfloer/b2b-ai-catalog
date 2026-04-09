@@ -30,6 +30,8 @@
             --cat-tools-bg: rgba(54, 217, 134, 0.12);
             --cat-references: #60a5fa;
             --cat-references-bg: rgba(96, 165, 250, 0.12);
+            --cat-workflows: #f59e0b;
+            --cat-workflows-bg: rgba(245, 158, 11, 0.12);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -272,6 +274,7 @@
         .card-category-bar.Simulations { background: linear-gradient(90deg, var(--cat-simulations), transparent); }
         .card-category-bar.Tools { background: linear-gradient(90deg, var(--cat-tools), transparent); }
         .card-category-bar.References { background: linear-gradient(90deg, var(--cat-references), transparent); }
+        .card-category-bar.Workflows { background: linear-gradient(90deg, var(--cat-workflows), transparent); }
 
         .card-header {
             display: flex;
@@ -310,6 +313,10 @@
         .card-badge.References {
             background: var(--cat-references-bg);
             color: var(--cat-references);
+        }
+        .card-badge.Workflows {
+            background: var(--cat-workflows-bg);
+            color: var(--cat-workflows);
         }
 
         .card-description {
@@ -470,6 +477,7 @@
             <button class="filter-btn" data-filter="Tools">Tools</button>
             <button class="filter-btn" data-filter="Simulations">Simulations</button>
             <button class="filter-btn" data-filter="References">References</button>
+            <button class="filter-btn" data-filter="Workflows">Workflows</button>
         </div>
     </div>
 
@@ -508,7 +516,7 @@
                     tool.author.toLowerCase().includes(query) ||
                     (tool.built_with || '').toLowerCase().includes(query);
                 return matchesFilter && matchesSearch;
-            });
+            }).sort((a, b) => a.name.localeCompare(b.name));
 
             document.getElementById('stats').textContent =
                 `Showing ${filtered.length} of ${catalog.length} tools`;
