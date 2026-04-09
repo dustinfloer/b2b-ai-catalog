@@ -5,7 +5,7 @@ url: "https://slide-deck-exploration.quick.shopify.io/"
 category: "Workflows"
 built_with: "HTML + CSS + JS (AI-generated via Cursor + Claude)"
 audience: "SE-facing"
-author: "Matt Ward, Brandon Anderson"
+author: "Terry Kealey, Matt Ward, Brandon Anderson"
 author_slack: "@matt.ward"
 date_added: "2026-04-09"
 screenshot: ""
@@ -16,6 +16,10 @@ repo_url: ""
 # AI HTML Decks
 
 Build polished, self-contained presentation decks using Cursor + Claude instead of Google Slides. The AI generates all HTML/CSS/JS from your outline — you get a file that runs in any browser, hosts on a Quick Site, or ships directly to clients.
+
+## Origin
+
+Terry Kealey built the Hatley deck — the first real-world AI-generated HTML deck on the B2B SE team and the proof of concept that kicked off this workflow. Matt Ward expanded on it to educate the broader team. Brandon Anderson later added presenter features on top of Matt's team meeting deck.
 
 ## Why HTML over Slides
 
