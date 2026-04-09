@@ -8,31 +8,40 @@
     <style>
         :root {
             --green-primary: #36d986;
-            --green-dim: #2bb870;
             --green-glow: rgba(54, 217, 134, 0.15);
             --bg-deep: #0a0f1a;
             --bg-surface: #111827;
             --bg-card: #1a2332;
             --bg-card-hover: #1f2b3d;
             --border: #2a3548;
-            --border-hover: #36d986;
             --text-primary: #e8ecf1;
             --text-secondary: #8b95a5;
             --text-muted: #5a6577;
-            --shadow-card: 0 2px 8px rgba(0,0,0,0.3);
-            --shadow-card-hover: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(54,217,134,0.08);
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(54,217,134,0.08);
             --radius: 14px;
             --radius-sm: 8px;
-            --cat-native: #36d986;
-            --cat-native-bg: rgba(54,217,134,0.12);
-            --cat-b2b: #60a5fa;
-            --cat-b2b-bg: rgba(96,165,250,0.12);
-            --cat-erp: #a78bfa;
-            --cat-erp-bg: rgba(167,139,250,0.12);
-            --cat-invoicing: #f59e0b;
-            --cat-invoicing-bg: rgba(245,158,11,0.12);
-            --cat-specialty: #f472b6;
-            --cat-specialty-bg: rgba(244,114,182,0.12);
+
+            /* Category colors — referenced via data-category attribute */
+            --c-shopify:    #36d986;
+            --c-shopify-bg: rgba(54,217,134,0.12);
+            --c-b2b:        #60a5fa;
+            --c-b2b-bg:     rgba(96,165,250,0.12);
+            --c-erp:        #a78bfa;
+            --c-erp-bg:     rgba(167,139,250,0.12);
+            --c-invoicing:  #f59e0b;
+            --c-invoicing-bg: rgba(245,158,11,0.12);
+            --c-checkout:   #f472b6;
+            --c-checkout-bg: rgba(244,114,182,0.12);
+            --c-discounts:  #f97316;
+            --c-discounts-bg: rgba(249,115,22,0.12);
+            --c-catalog:    #84cc16;
+            --c-catalog-bg: rgba(132,204,22,0.12);
+            --c-analytics:  #14b8a6;
+            --c-analytics-bg: rgba(20,184,166,0.12);
+            --c-shipping:   #06b6d4;
+            --c-shipping-bg: rgba(6,182,212,0.12);
+            --c-other:      #6b7280;
+            --c-other-bg:   rgba(107,114,128,0.12);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,7 +56,6 @@
             min-height: 100vh;
         }
 
-        /* Header */
         .header {
             background: var(--bg-surface);
             border-bottom: 1px solid var(--border);
@@ -68,16 +76,9 @@
             gap: 16px;
         }
 
-        .header-logo {
-            height: 56px;
-            width: auto;
-        }
+        .header-logo { height: 56px; width: auto; }
 
-        .header-nav {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+        .header-nav { display: flex; gap: 6px; align-items: center; }
 
         .nav-link {
             font-size: 13px;
@@ -92,7 +93,6 @@
         .nav-link:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
         .nav-link.active { color: var(--green-primary); background: var(--green-glow); }
 
-        /* Hero */
         .hero {
             max-width: 1200px;
             margin: 0 auto;
@@ -111,14 +111,8 @@
             background-clip: text;
         }
 
-        .hero p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
+        .hero p { color: var(--text-secondary); font-size: 14px; }
 
-        /* Controls */
         .controls {
             max-width: 1200px;
             margin: 24px auto 0;
@@ -129,11 +123,7 @@
             align-items: center;
         }
 
-        .search-box {
-            flex: 1;
-            min-width: 240px;
-            position: relative;
-        }
+        .search-box { flex: 1; min-width: 240px; position: relative; }
 
         .search-box input {
             width: 100%;
@@ -162,16 +152,12 @@
             pointer-events: none;
         }
 
-        .filter-group {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
+        .filter-group { display: flex; gap: 6px; flex-wrap: wrap; }
 
         .filter-btn {
-            padding: 8px 14px;
+            padding: 7px 13px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             border: 1px solid var(--border);
             background: transparent;
@@ -181,13 +167,8 @@
         }
 
         .filter-btn:hover { border-color: var(--green-primary); color: var(--green-primary); }
-        .filter-btn.active {
-            background: rgba(54,217,134,0.15);
-            border-color: var(--green-primary);
-            color: var(--green-primary);
-        }
+        .filter-btn.active { background: var(--green-glow); border-color: var(--green-primary); color: var(--green-primary); }
 
-        /* Stats */
         .stats {
             max-width: 1200px;
             margin: 16px auto 0;
@@ -196,13 +177,12 @@
             color: var(--text-muted);
         }
 
-        /* Grid */
         .grid {
             max-width: 1200px;
             margin: 12px auto 60px;
             padding: 0 24px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 14px;
         }
 
@@ -220,22 +200,28 @@
 
         .card:hover {
             background: var(--bg-card-hover);
-            border-color: var(--border-hover);
-            box-shadow: var(--shadow-card-hover);
+            border-color: var(--green-primary);
+            box-shadow: var(--shadow-hover);
             transform: translateY(-2px);
         }
 
-        .card-top-bar {
+        /* Top color bar — uses data-category to avoid class name escaping issues */
+        .card-bar {
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 2px;
         }
 
-        .card-top-bar.Shopify\ Native  { background: linear-gradient(90deg, var(--cat-native), transparent); }
-        .card-top-bar.B2B\ Operations  { background: linear-gradient(90deg, var(--cat-b2b), transparent); }
-        .card-top-bar.ERP\ \&\ Integrations { background: linear-gradient(90deg, var(--cat-erp), transparent); }
-        .card-top-bar.Invoicing\ \&\ Quoting { background: linear-gradient(90deg, var(--cat-invoicing), transparent); }
-        .card-top-bar.Specialty        { background: linear-gradient(90deg, var(--cat-specialty), transparent); }
+        [data-category="Shopify Native"]      .card-bar { background: linear-gradient(90deg, var(--c-shopify), transparent); }
+        [data-category="B2B Operations"]      .card-bar { background: linear-gradient(90deg, var(--c-b2b), transparent); }
+        [data-category="ERP & Integrations"]  .card-bar { background: linear-gradient(90deg, var(--c-erp), transparent); }
+        [data-category="Invoicing & Quoting"] .card-bar { background: linear-gradient(90deg, var(--c-invoicing), transparent); }
+        [data-category="Checkout & Cart"]     .card-bar { background: linear-gradient(90deg, var(--c-checkout), transparent); }
+        [data-category="Discounts & Pricing"] .card-bar { background: linear-gradient(90deg, var(--c-discounts), transparent); }
+        [data-category="Catalog & Linesheets"].card-bar { background: linear-gradient(90deg, var(--c-catalog), transparent); }
+        [data-category="Analytics & Reporting"].card-bar { background: linear-gradient(90deg, var(--c-analytics), transparent); }
+        [data-category="Shipping"]            .card-bar { background: linear-gradient(90deg, var(--c-shipping), transparent); }
+        [data-category="Other"]               .card-bar { background: linear-gradient(90deg, var(--c-other), transparent); }
 
         .card-header {
             display: flex;
@@ -245,12 +231,7 @@
             margin-bottom: 10px;
         }
 
-        .card h3 {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.2px;
-        }
+        .card h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; }
 
         .card-badge {
             font-size: 11px;
@@ -261,17 +242,22 @@
             flex-shrink: 0;
         }
 
-        .card-badge.Shopify\ Native   { background: var(--cat-native-bg);    color: var(--cat-native); }
-        .card-badge.B2B\ Operations   { background: var(--cat-b2b-bg);       color: var(--cat-b2b); }
-        .card-badge.ERP\ \&\ Integrations { background: var(--cat-erp-bg);   color: var(--cat-erp); }
-        .card-badge.Invoicing\ \&\ Quoting { background: var(--cat-invoicing-bg); color: var(--cat-invoicing); }
-        .card-badge.Specialty         { background: var(--cat-specialty-bg); color: var(--cat-specialty); }
+        [data-category="Shopify Native"]      .card-badge { background: var(--c-shopify-bg);   color: var(--c-shopify); }
+        [data-category="B2B Operations"]      .card-badge { background: var(--c-b2b-bg);       color: var(--c-b2b); }
+        [data-category="ERP & Integrations"]  .card-badge { background: var(--c-erp-bg);       color: var(--c-erp); }
+        [data-category="Invoicing & Quoting"] .card-badge { background: var(--c-invoicing-bg); color: var(--c-invoicing); }
+        [data-category="Checkout & Cart"]     .card-badge { background: var(--c-checkout-bg);  color: var(--c-checkout); }
+        [data-category="Discounts & Pricing"] .card-badge { background: var(--c-discounts-bg); color: var(--c-discounts); }
+        [data-category="Catalog & Linesheets"].card-badge { background: var(--c-catalog-bg);   color: var(--c-catalog); }
+        [data-category="Analytics & Reporting"].card-badge { background: var(--c-analytics-bg);color: var(--c-analytics); }
+        [data-category="Shipping"]            .card-badge { background: var(--c-shipping-bg);  color: var(--c-shipping); }
+        [data-category="Other"]               .card-badge { background: var(--c-other-bg);     color: var(--c-other); }
 
         .card-use-cases {
             display: flex;
             flex-wrap: wrap;
             gap: 5px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             flex: 1;
         }
 
@@ -287,7 +273,7 @@
         .card-notes {
             font-size: 12px;
             color: var(--text-muted);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             font-style: italic;
             line-height: 1.45;
         }
@@ -300,10 +286,7 @@
             border-top: 1px solid rgba(255,255,255,0.06);
         }
 
-        .audience-tags {
-            display: flex;
-            gap: 4px;
-        }
+        .audience-tags { display: flex; gap: 4px; }
 
         .audience-tag {
             font-size: 10px;
@@ -324,7 +307,6 @@
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
             padding: 5px 12px;
             border-radius: 20px;
             border: 1px solid rgba(54,217,134,0.3);
@@ -332,14 +314,9 @@
             transition: all 0.2s;
         }
 
-        .card-link:hover {
-            background: rgba(54,217,134,0.14);
-            border-color: var(--green-primary);
-        }
-
+        .card-link:hover { background: rgba(54,217,134,0.14); border-color: var(--green-primary); }
         .card-link::after { content: " →"; }
 
-        /* Empty / Loading */
         .empty-state, .loading {
             grid-column: 1 / -1;
             text-align: center;
@@ -348,7 +325,6 @@
             font-size: 15px;
         }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 32px 24px;
@@ -361,7 +337,6 @@
 
         @media (max-width: 600px) {
             .grid { grid-template-columns: 1fr; }
-            .header-inner { flex-wrap: wrap; }
             .controls { flex-direction: column; }
             .search-box { min-width: 100%; }
         }
@@ -389,24 +364,30 @@
             <span class="search-icon">🔍</span>
             <input type="text" id="search" placeholder="Search by app name or use case..." />
         </div>
-        <div class="filter-group" id="filter-group">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="Shopify Native">Shopify Native</button>
-            <button class="filter-btn" data-filter="B2B Operations">B2B Operations</button>
-            <button class="filter-btn" data-filter="ERP & Integrations">ERP & Integrations</button>
-            <button class="filter-btn" data-filter="Invoicing & Quoting">Invoicing & Quoting</button>
-            <button class="filter-btn" data-filter="Specialty">Specialty</button>
-        </div>
+        <div class="filter-group" id="filter-group"></div>
     </div>
 
     <div class="stats" id="stats"></div>
     <div class="grid" id="grid"><div class="loading">Loading apps...</div></div>
 
     <footer>
-        Source: <a href="https://docs.google.com/spreadsheets/d/1KEf54Wnnpj93KEkBUiSVwjCdao57ERvPmPB84zJyhrY/" target="_blank" rel="noopener">B2B App List spreadsheet</a> — maintained by the B2B SE team &nbsp;·&nbsp; [INTERNAL-ONLY]
+        Source: <a href="https://docs.google.com/spreadsheets/d/1KEf54Wnnpj93KEkBUiSVwjCdao57ERvPmPB84zJyhrY/" target="_blank" rel="noopener">B2B App List spreadsheet</a> · [INTERNAL-ONLY]
     </footer>
 
     <script>
+        const CATEGORIES = [
+            'Shopify Native',
+            'B2B Operations',
+            'ERP & Integrations',
+            'Invoicing & Quoting',
+            'Checkout & Cart',
+            'Discounts & Pricing',
+            'Catalog & Linesheets',
+            'Analytics & Reporting',
+            'Shipping',
+            'Other'
+        ];
+
         let apps = [];
         let activeFilter = 'all';
 
@@ -414,18 +395,31 @@
             try {
                 const res = await fetch('apps.json?v=' + Date.now());
                 apps = await res.json();
-                updateCounts();
+                buildFilters();
                 render();
             } catch (e) {
                 document.getElementById('grid').innerHTML = `<div class="empty-state">Could not load apps. Check that apps.json is present.</div>`;
             }
         }
 
-        function updateCounts() {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                const f = btn.dataset.filter;
-                const count = f === 'all' ? apps.length : apps.filter(a => a.category === f).length;
-                btn.textContent = `${f === 'all' ? 'All' : f} (${count})`;
+        function buildFilters() {
+            const group = document.getElementById('filter-group');
+            const allCount = apps.length;
+            group.innerHTML = `<button class="filter-btn active" data-filter="all">All (${allCount})</button>` +
+                CATEGORIES.map(cat => {
+                    const count = apps.filter(a => a.category === cat).length;
+                    return count > 0
+                        ? `<button class="filter-btn" data-filter="${escHtml(cat)}">${escHtml(cat)} (${count})</button>`
+                        : '';
+                }).join('');
+
+            group.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeFilter = btn.dataset.filter;
+                    render();
+                });
             });
         }
 
@@ -450,11 +444,11 @@
             }
 
             grid.innerHTML = filtered.map(app => `
-                <div class="card">
-                    <div class="card-top-bar ${escHtml(app.category)}"></div>
+                <div class="card" data-category="${escHtml(app.category)}">
+                    <div class="card-bar"></div>
                     <div class="card-header">
                         <h3>${escHtml(app.name)}</h3>
-                        <span class="card-badge ${escHtml(app.category)}">${escHtml(app.category)}</span>
+                        <span class="card-badge">${escHtml(app.category)}</span>
                     </div>
                     <div class="card-use-cases">
                         ${app.use_cases.map(u => `<span class="use-case-tag">${escHtml(u)}</span>`).join('')}
@@ -478,16 +472,6 @@
         }
 
         document.getElementById('search').addEventListener('input', render);
-
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activeFilter = btn.dataset.filter;
-                render();
-            });
-        });
-
         loadApps();
     </script>
 </body>
