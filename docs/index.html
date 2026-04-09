@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B2B AI Tools Catalog</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
     <style>
         :root {
             --green-primary: #36d986;
@@ -39,6 +39,8 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-deep);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
@@ -77,7 +79,7 @@
         }
 
         .header-logo {
-            height: 98px;
+            height: 56px;
             width: auto;
         }
 
@@ -126,15 +128,15 @@
         .hero {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 48px 24px 0;
+            padding: 28px 24px 0;
             text-align: center;
         }
 
         .hero h2 {
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
+            letter-spacing: -0.4px;
+            margin-bottom: 4px;
             background: linear-gradient(135deg, var(--text-primary) 0%, var(--green-primary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -143,7 +145,7 @@
 
         .hero p {
             color: var(--text-secondary);
-            font-size: 15px;
+            font-size: 14px;
             max-width: 500px;
             margin: 0 auto;
         }
@@ -284,6 +286,19 @@
             gap: 12px;
         }
 
+        .card-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .card-icon {
+            font-size: 18px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
         .card h3 {
             font-size: 16px;
             font-weight: 650;
@@ -347,28 +362,52 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 16px;
+            margin-top: 4px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
         }
 
         .card-author {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-author::before {
+            content: '';
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238b95a5'%3E%3Cpath d='M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z'/%3E%3C/svg%3E");
+            background-size: 12px;
+            background-repeat: no-repeat;
+            background-position: center;
+            flex-shrink: 0;
         }
 
         .card-link {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--green-primary);
             text-decoration: none;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 4px;
-            transition: all 0.15s;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(54, 217, 134, 0.3);
+            background: rgba(54, 217, 134, 0.06);
+            transition: all 0.2s;
         }
 
         .card-link:hover {
-            color: var(--green-dim);
+            background: rgba(54, 217, 134, 0.14);
+            border-color: var(--green-primary);
             gap: 8px;
         }
 
@@ -447,7 +486,7 @@
 <body>
     <header class="header">
         <div class="header-inner">
-            <h1><img src="logo.png" alt="B2B AI Tools" class="header-logo"> B2B AI Tools</h1>
+            <h1><img src="logo.svg" alt="B2B Tools" class="header-logo"></h1>
             <div class="header-actions">
                 <a href="https://github.com/dustinfloer/b2b-ai-catalog" class="btn btn-secondary" target="_blank" rel="noopener">
                     GitHub
@@ -491,10 +530,29 @@
         let catalog = [];
         let activeFilter = 'all';
 
+        const categoryIcons = {
+            'Tools':       '⚙️',
+            'Simulations': '🎭',
+            'References':  '📚',
+            'Workflows':   '⚡'
+        };
+
+        function updateFilterCounts() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                const filter = btn.dataset.filter;
+                const label = filter === 'all' ? 'All' : filter;
+                const count = filter === 'all'
+                    ? catalog.length
+                    : catalog.filter(t => t.category === filter).length;
+                btn.textContent = `${label} (${count})`;
+            });
+        }
+
         async function loadCatalog() {
             try {
                 const response = await fetch('catalog.json?v=' + Date.now());
                 catalog = await response.json();
+                updateFilterCounts();
                 render();
             } catch (e) {
                 document.getElementById('grid').innerHTML = `
@@ -538,7 +596,10 @@
                     <div class="card-category-bar ${tool.category}"></div>
                     ${tool.screenshot ? `<img class="card-screenshot" src="${escapeHtml(tool.screenshot)}" alt="${escapeHtml(tool.name)} screenshot" loading="lazy" onerror="this.style.display='none'">` : ''}
                     <div class="card-header">
-                        <h3>${escapeHtml(tool.name)}</h3>
+                        <div class="card-title-row">
+                            <span class="card-icon">${categoryIcons[tool.category] || '🔧'}</span>
+                            <h3>${escapeHtml(tool.name)}</h3>
+                        </div>
                         <span class="card-badge ${tool.category}">${escapeHtml(tool.category)}</span>
                     </div>
                     <p class="card-description">${escapeHtml(tool.description)}</p>
@@ -547,7 +608,7 @@
                         ${tool.audience ? `<span class="meta-tag">${escapeHtml(tool.audience)}</span>` : ''}
                     </div>
                     <div class="card-footer">
-                        <span class="card-author">by ${escapeHtml(tool.author)}</span>
+                        <span class="card-author">${escapeHtml(tool.author)}</span>
                         <a href="${escapeHtml(tool.url)}" target="_blank" rel="noopener" class="card-link">Open</a>
                     </div>
                 </div>
