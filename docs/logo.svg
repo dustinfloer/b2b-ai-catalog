@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 64" role="img" aria-label="B2B Tools">
+  <defs>
+    <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#22c55e"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!--
+    Pointy-top hexagons, circumradius R=12 (spacing), display r=10 (polygon)
+    Adjacent center distance = R*√3 = 20.78
+    Diagonal offsets: (R*√3/2, R*1.5) = (10.39, 18)
+    Cluster center: (38, 32)
+    Hex polygon points (r=10): 0,-10 8.66,-5 8.66,5 0,10 -8.66,5 -8.66,-5
+  -->
+  <g transform="translate(38,32)" filter="url(#glow)">
+    <!-- Center — full brightness -->
+    <polygon points="0,-10 8.66,-5 8.66,5 0,10 -8.66,5 -8.66,-5" fill="url(#hexGrad)"/>
+    <!-- Upper-right -->
+    <polygon points="0,-10 8.66,-5 8.66,5 0,10 -8.66,5 -8.66,-5" transform="translate(10.39,-18)" fill="#36d986" opacity="0.88"/>
+    <!-- Right -->
+    <polygon points="0,-10 8.66,-5 8.66,5 0,10 -8.66,5 -8.66,-5" transform="translate(20.78,0)" fill="#36d986" opacity="0.78"/>
+    <!-- Lower-right -->
+    <polygon points="0,-10 8.66,-5 8.66,5 0,10 -8.66,5 -8.66,-5" transform="translate(10.39,18)" fill="#36d986" opacity="0.72"/>
+    <!-- Lower-left -->
+    <polygon points="0,-10 8.66,-5 8.66,5 0,10 -8.66,5 -8.66,-5" transform="translate(-10.39,18)" fill="#36d986" opacity="0.62"/>
+    <!-- Left -->
+    <polygon points="0,-10 8.66,-5 8.66,5 0,10 -8.66,5 -8.66,-5" transform="translate(-20.78,0)" fill="#36d986" opacity="0.52"/>
+    <!-- Upper-left -->
+    <polygon points="0,-10 8.66,-5 8.66,5 0,10 -8.66,5 -8.66,-5" transform="translate(-10.39,-18)" fill="#36d986" opacity="0.68"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="80" y="29"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+        font-size="23" font-weight="800" fill="#e8ecf1" letter-spacing="-0.5">B2B</text>
+  <text x="81" y="50"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+        font-size="12" font-weight="600" fill="#36d986" letter-spacing="4">TOOLS</text>
+</svg>
