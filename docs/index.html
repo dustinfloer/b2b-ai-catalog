@@ -603,10 +603,6 @@
                         <span class="card-badge ${tool.category}">${escapeHtml(tool.category)}</span>
                     </div>
                     <p class="card-description">${escapeHtml(tool.description)}</p>
-                    <div class="card-meta">
-                        ${tool.built_with ? `<span class="meta-tag">${escapeHtml(tool.built_with)}</span>` : ''}
-                        ${tool.audience ? `<span class="meta-tag">${escapeHtml(tool.audience)}</span>` : ''}
-                    </div>
                     <div class="card-footer">
                         <span class="card-author">${escapeHtml(tool.author)}</span>
                         <a href="${escapeHtml(tool.url)}" target="_blank" rel="noopener" class="card-link">Open</a>
