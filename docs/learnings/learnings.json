@@ -820,31 +820,6 @@
     "doc_section": "Using Flow + Sidekick"
   },
   {
-    "id": "ai-html-decks",
-    "title": "AI-Generated HTML Decks (vs. Google Slides)",
-    "category": "Platform",
-    "summary": "Build polished, browser-native presentation decks using Cursor + Claude instead of Google Slides. AI writes all HTML/CSS/JS from your outline. Host on Quick Sites internally or deliver as a standalone .html file to clients — no Google account required.",
-    "contributed_by": ["Matt Ward", "Brandon Anderson"],
-    "key_points": [
-      "Use Cursor + Claude: prompt with your deck outline (topic, sections, tone), Claude generates a full self-contained HTML presentation",
-      "Presenter features (added by Brandon Anderson): speaker notes with timer, slide selector grid, laser pointer, '?' key to show all keyboard shortcuts",
-      "Internal hosting: deploy the file to a Quick Site for shareable internal access (https://slide-deck-exploration.quick.shopify.io/)",
-      "Client delivery: share as a standalone .html file attachment — opens in any browser, no Google account or Slides access needed",
-      "Version-controlled: treat the HTML file like code — commit to a repo or Quick Site for history and iteration",
-      "Faster iteration than Slides: re-prompt Claude to change design, layout, or content in seconds; no drag-and-drop formatting",
-      "Terry Kealey and others on the B2B SE team have adopted this workflow for customer-facing decks"
-    ],
-    "code_samples": [
-      {
-        "label": "Presenter keyboard shortcuts",
-        "language": "markdown",
-        "code": "← / →   Previous / next slide\nF       Fullscreen\nL       Toggle laser pointer\nG       Open slide selector grid\nS       Toggle speaker notes\n?       Show all keyboard shortcuts"
-      }
-    ],
-    "tags": ["ai", "html", "decks", "presentations", "cursor", "claude", "quick-sites", "workflow", "internal"],
-    "doc_section": "AI-Powered SE Workflows"
-  },
-  {
     "id": "pipe17-erp",
     "title": "Pipe17 — ERP Integration Option",
     "category": "Integrations",
