@@ -1,5 +1,20 @@
 [
   {
+    "slug": "demo-recipes",
+    "name": "B2B Demo Recipes",
+    "description": "Pre-built demo store configs for 8 B2B verticals. Copy a prompt, paste into Claude Code, get a demo-ready store with products, companies, orders, and B2B pricing in minutes.",
+    "url": "https://dustinfloer.github.io/b2b-ai-catalog/demos/",
+    "category": "Workflows",
+    "built_with": "Vanilla JS + GitHub Pages",
+    "audience": "SE-facing",
+    "author": "Dustin Floer",
+    "author_slack": "@dustin.floer",
+    "date_added": "2026-04-16",
+    "screenshot": "",
+    "slack_channel": "",
+    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog"
+  },
+  {
     "slug": "ai-html-decks",
     "name": "AI HTML Decks",
     "description": "Build browser-native presentation decks with Cursor + Claude instead of Google Slides. Ship as a standalone .html file or host on a Quick Site — no Google account required.",
