@@ -485,6 +485,9 @@
 
                 var verticals = r.verticals.map(function(v) { return v; }).join(', ');
                 var points = r.demo_talking_points.map(function(p) { return '<li>' + esc(p) + '</li>'; }).join('');
+                var catalogs = (r.catalogs || []).map(function(cat) {
+                    return '<span class="stat-pill"><strong>' + esc(cat.name) + '</strong> ' + cat.adjustment + ' / ' + cat.terms.replace(/_/g, ' ').toLowerCase() + '</span>';
+                }).join('');
                 var mode = storeMode[r.id] || 'new';
 
                 return '<div class="card" data-model="' + esc(r.model) + '">' +
@@ -498,6 +501,7 @@
                     '</div>' +
                     '<p class="card-desc">' + esc(r.description) + '</p>' +
                     '<div class="recipe-stats">' + stats + '</div>' +
+                    (catalogs ? '<div class="recipe-stats">' + catalogs + '</div>' : '') +
                     '<div class="card-meta">' +
                         '<span>' + esc(verticals) + '</span>' +
                         '<span>~' + r.estimated_minutes + ' min</span>' +
@@ -530,28 +534,56 @@
             var mode = storeMode[recipe.id] || 'new';
             var today = new Date().toISOString().split('T')[0];
             var start = new Date(Date.now() - (c.order_days_back || 90) * 86400000).toISOString().split('T')[0];
-            var verticals = recipe.verticals.join(', ');
+            var verticals = recipe.verticals.map(function(v) { return '"' + v + '"'; }).join(' and ');
             var steps = [];
+            var stepNum = 1;
 
+            // Phase 1: Store
             if (mode === 'new') {
-                steps.push('Create a new Shopify demo store named "' + recipe.store_name_suggestion + '" in ' + recipe.country + ' with sandbox=true using Forge MCP (create_store). Then connect to it with Spark MCP (connect_to_store).');
+                steps.push(stepNum++ + '. Create a new Shopify demo store named "' + recipe.store_name_suggestion + '" in ' + recipe.country + ' with sandbox=true using Forge MCP (create_store).');
+            }
+
+            // Phase 2: B2B Setup via GraphQL Admin API
+            steps.push(stepNum++ + '. Set up B2B on the store using the GraphQL Admin API:');
+
+            // Market
+            steps.push('   a. Create a B2B market named "' + recipe.model + '" scoped to all company locations (marketCreate mutation with companyLocationsCondition).');
+
+            // Catalogs + price lists
+            var catalogNames = [];
+            (recipe.catalogs || []).forEach(function(cat, i) {
+                var letter = String.fromCharCode(98 + i); // b, c, d...
+                catalogNames.push(cat.name);
+                var priceDesc = cat.adjustment === '0%' ? 'no price adjustment (base pricing)' : cat.adjustment + ' price adjustment';
+                steps.push('   ' + letter + '. Create catalog "' + cat.name + '" with a price list at ' + priceDesc + '. Set payment terms to ' + cat.terms.replace(/_/g, ' ') + ' (catalogCreate + priceListCreate + paymentTermsCreate).');
+            });
+
+            // Phase 3: Spark connect (after B2B setup so it sees markets/catalogs)
+            if (mode === 'new') {
+                steps.push(stepNum++ + '. Connect to the new store using Spark MCP (connect_to_store). Verify the B2B market and catalogs (' + catalogNames.join(', ') + ') appear in the response.');
             } else {
-                steps.push('Connect to [YOUR-STORE.myshopify.com] using Spark MCP (connect_to_store).');
+                steps.push(stepNum++ + '. Connect to [YOUR-STORE.myshopify.com] using Spark MCP (connect_to_store). Verify B2B market and catalogs appear.');
             }
 
-            steps.push('Generate products using the "' + verticals + '" vertical(s) with source_data="static".');
+            // Phase 4: Products
+            steps.push(stepNum++ + '. Generate products using the ' + verticals + ' vertical(s) with source_data="static".');
 
+            // Phase 5: DTC (optional)
             if (c.dtc_included) {
-                steps.push('Generate ' + c.dtc_customers + ' DTC customers across all DTC markets.');
-                steps.push('Generate ' + c.dtc_orders + ' DTC orders from ' + start + ' to ' + today + ', fulfillment type "' + c.fulfillment_type + '" at ' + c.fulfillment_value + '%, ' + c.dtc_new_customer_pct + '% new customers, across all DTC markets.');
+                steps.push(stepNum++ + '. Generate ' + c.dtc_customers + ' DTC customers across all DTC/consumer markets.');
+                steps.push(stepNum++ + '. Generate ' + c.dtc_orders + ' DTC orders from ' + start + ' to ' + today + ' with ' + c.fulfillment_value + '% fulfillment and ' + c.dtc_new_customer_pct + '% new customers.');
             }
 
-            steps.push('Generate ' + c.b2b_companies + ' B2B companies across all B2B markets and catalogs.');
-            steps.push('Generate ' + c.b2b_orders + ' B2B orders in ' + c.b2b_mode + ' mode from ' + start + ' to ' + today + ', fulfillment type "' + c.fulfillment_type + '" at ' + c.fulfillment_value + '%, ' + c.b2b_draft_orders_pct + '% draft orders, ' + c.b2b_new_companies_pct + '% new companies, across all B2B markets.');
+            // Phase 6: B2B companies + orders
+            steps.push(stepNum++ + '. Generate ' + c.b2b_companies + ' B2B companies across all B2B markets and catalogs.');
+            steps.push(stepNum++ + '. Generate ' + c.b2b_orders + ' B2B orders in ' + c.b2b_mode + ' mode from ' + start + ' to ' + today + ' with ' + c.fulfillment_value + '% fulfillment, ' + c.b2b_draft_orders_pct + '% draft orders, and ' + c.b2b_new_companies_pct + '% new companies.');
 
-            var prompt = 'Set up a B2B demo store: ' + recipe.name + ' (' + recipe.industry + ')\n\n';
-            prompt += steps.map(function(s, i) { return (i + 1) + '. ' + s; }).join('\n');
-            prompt += '\n\nAfter connecting, use the market_ids and catalog_ids returned by connect_to_store for all generate calls.';
+            // Phase 7: Demo buyer info
+            steps.push(stepNum++ + '. After all data is generated, provide me with a company contact email I can use to log in as a B2B buyer on the storefront (email + one-time PIN authentication). Include the store URL and admin URL.');
+
+            var prompt = 'Set up a complete B2B demo store: "' + recipe.name + '" (' + recipe.industry + ' / ' + recipe.model + ')\n\n';
+            prompt += steps.join('\n');
+            prompt += '\n\nUse the market_ids and catalog_ids returned by connect_to_store for all Spark generate calls. For GraphQL mutations, use the store\'s Admin API.';
 
             return prompt;
         }
