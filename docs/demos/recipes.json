@@ -9,7 +9,11 @@
     "verticals": ["apparel"],
     "store_name_suggestion": "luxe-threads-wholesale",
     "country": "united-states",
-    "estimated_minutes": 4,
+    "estimated_minutes": 6,
+    "catalogs": [
+      { "name": "Standard Wholesale", "adjustment": "0%", "terms": "NET_30" },
+      { "name": "VIP Buyers", "adjustment": "-15%", "terms": "NET_60" }
+    ],
     "config": {
       "products": true,
       "dtc_included": true,
@@ -28,7 +32,7 @@
     "tags": ["wholesale", "fashion", "seasonal", "tiered-pricing", "hybrid"],
     "demo_talking_points": [
       "Seasonal catalog management with company-specific pricing",
-      "Net-30 terms with card-on-file for wholesale buyers",
+      "Net-30 and Net-60 terms by buyer tier",
       "Draft orders for large custom requests",
       "Mixed B2B + DTC operation on one storefront"
     ]
@@ -43,7 +47,11 @@
     "verticals": ["automotive"],
     "store_name_suggestion": "precision-auto-parts",
     "country": "united-states",
-    "estimated_minutes": 3,
+    "estimated_minutes": 5,
+    "catalogs": [
+      { "name": "Dealer Pricing", "adjustment": "-20%", "terms": "NET_30" },
+      { "name": "Repair Shop Pricing", "adjustment": "-10%", "terms": "DUE_ON_FULFILLMENT" }
+    ],
     "config": {
       "products": true,
       "dtc_included": false,
@@ -61,8 +69,8 @@
     },
     "tags": ["automotive", "distribution", "high-velocity", "b2b-only", "reorders"],
     "demo_talking_points": [
+      "Dealer vs repair shop tiered pricing",
       "High-frequency reorder workflows",
-      "Large company base with repeat purchasing",
       "90% fulfillment rate — fast turnaround expectation",
       "B2B-only operation, no consumer storefront"
     ]
@@ -77,7 +85,11 @@
     "verticals": ["food-and-beverage"],
     "store_name_suggestion": "harvest-table-foods",
     "country": "united-states",
-    "estimated_minutes": 4,
+    "estimated_minutes": 6,
+    "catalogs": [
+      { "name": "Restaurant Pricing", "adjustment": "-10%", "terms": "NET_30" },
+      { "name": "Retail Pricing", "adjustment": "0%", "terms": "DUE_ON_RECEIPT" }
+    ],
     "config": {
       "products": true,
       "dtc_included": true,
@@ -95,8 +107,8 @@
     },
     "tags": ["food", "perishable", "wholesale", "restaurants", "grocery", "hybrid"],
     "demo_talking_points": [
+      "Restaurant vs retail buyer segments with different pricing",
       "Perishable fulfillment urgency — 85% fulfilled quickly",
-      "Restaurant vs retail buyer segments in catalogs",
       "DTC-to-B2B expansion story",
       "Minimum order quantity enforcement"
     ]
@@ -111,7 +123,11 @@
     "verticals": ["beauty"],
     "store_name_suggestion": "glow-collective-beauty",
     "country": "united-states",
-    "estimated_minutes": 4,
+    "estimated_minutes": 6,
+    "catalogs": [
+      { "name": "Salon Partners", "adjustment": "-25%", "terms": "NET_30" },
+      { "name": "Retail Partners", "adjustment": "-10%", "terms": "DUE_ON_RECEIPT" }
+    ],
     "config": {
       "products": true,
       "dtc_included": true,
@@ -130,9 +146,9 @@
     "tags": ["beauty", "cosmetics", "dtc-first", "salons", "wholesale", "hybrid"],
     "demo_talking_points": [
       "DTC-first brand expanding into wholesale",
+      "Salon partners get 25% off via dedicated catalog",
       "Draft orders for custom salon bundles (20%)",
-      "High DTC volume alongside smaller B2B operation",
-      "New company onboarding flow (30% new)"
+      "High DTC volume alongside smaller B2B operation"
     ]
   },
   {
@@ -145,7 +161,12 @@
     "verticals": ["electronics"],
     "store_name_suggestion": "circuit-supply-co",
     "country": "united-states",
-    "estimated_minutes": 3,
+    "estimated_minutes": 5,
+    "catalogs": [
+      { "name": "OEM Pricing", "adjustment": "-30%", "terms": "NET_60" },
+      { "name": "Standard Distribution", "adjustment": "-15%", "terms": "NET_30" },
+      { "name": "Small Buyer", "adjustment": "0%", "terms": "DUE_ON_FULFILLMENT" }
+    ],
     "config": {
       "products": true,
       "dtc_included": false,
@@ -163,10 +184,10 @@
     },
     "tags": ["electronics", "components", "distribution", "b2b-only", "technical"],
     "demo_talking_points": [
-      "B2B-only technical distribution",
+      "Three pricing tiers: OEM, Standard, Small Buyer",
       "95% fulfillment rate — strict SLA requirements",
-      "Large buyer base (30 companies)",
-      "Low draft order rate — standard reorder workflows"
+      "Net-60 terms for OEM partners",
+      "B2B-only technical distribution"
     ]
   },
   {
@@ -179,7 +200,11 @@
     "verticals": ["furniture"],
     "store_name_suggestion": "ironwood-furniture-co",
     "country": "united-states",
-    "estimated_minutes": 4,
+    "estimated_minutes": 6,
+    "catalogs": [
+      { "name": "Trade / Designer", "adjustment": "-20%", "terms": "NET_30" },
+      { "name": "Hospitality", "adjustment": "-15%", "terms": "NET_60" }
+    ],
     "config": {
       "products": true,
       "dtc_included": true,
@@ -213,7 +238,11 @@
     "verticals": ["home-decor", "kitchen-and-dining"],
     "store_name_suggestion": "hearth-and-home-goods",
     "country": "united-states",
-    "estimated_minutes": 5,
+    "estimated_minutes": 7,
+    "catalogs": [
+      { "name": "Retail Partners", "adjustment": "-10%", "terms": "NET_30" },
+      { "name": "Design Studios", "adjustment": "-20%", "terms": "NET_30" }
+    ],
     "config": {
       "products": true,
       "dtc_included": true,
@@ -247,7 +276,11 @@
     "verticals": ["pet-supply"],
     "store_name_suggestion": "pawprint-supply-co",
     "country": "united-states",
-    "estimated_minutes": 4,
+    "estimated_minutes": 6,
+    "catalogs": [
+      { "name": "Vet Clinics", "adjustment": "-20%", "terms": "NET_30" },
+      { "name": "Retail / Grooming", "adjustment": "-10%", "terms": "DUE_ON_FULFILLMENT" }
+    ],
     "config": {
       "products": true,
       "dtc_included": true,
@@ -265,8 +298,8 @@
     },
     "tags": ["pet", "distribution", "reorders", "vet-clinics", "grooming", "hybrid"],
     "demo_talking_points": [
+      "Vet clinic vs retail/grooming pricing tiers",
       "Subscription-like reorder patterns from repeat buyers",
-      "Diverse buyer types: pet stores, vet clinics, grooming salons",
       "88% fulfillment — reliable distribution expected",
       "DTC consumer channel alongside B2B distribution"
     ]
