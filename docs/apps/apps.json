@@ -1,562 +1,957 @@
 [
   {
-    "name": "Shopify Flow",
-    "category": "Shopify Native",
-    "use_cases": ["Workflow Automation", "Order Approval Workflows"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/flow"
-  },
-  {
-    "name": "Shopify Forms",
-    "category": "Shopify Native",
-    "use_cases": ["Company Registration"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/shopify-forms"
-  },
-  {
-    "name": "Shopify Search & Discovery",
-    "category": "Shopify Native",
-    "use_cases": ["Search"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/search-and-discovery"
-  },
-  {
-    "name": "Shopify Translate & Adapt",
-    "category": "Shopify Native",
-    "use_cases": ["Translations"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/translate-and-adapt"
-  },
-  {
-    "name": "Shopify Combined Listings",
-    "category": "Shopify Native",
-    "use_cases": ["Product Variants"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/combined-listings"
-  },
-  {
-    "name": "Shopify Bundles",
-    "category": "Shopify Native",
-    "use_cases": ["Bundles"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/bundles"
-  },
-  {
-    "name": "Shopify Inbox",
-    "category": "Shopify Native",
-    "use_cases": ["Customer Messaging"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/inbox"
-  },
-  {
-    "name": "Shopify Checkout Blocks",
-    "category": "Shopify Native",
-    "use_cases": ["Checkout Customization"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/checkout-blocks"
-  },
-  {
-    "name": "B2B Order Agent",
-    "category": "B2B Operations",
-    "use_cases": ["Sales Rep Impersonation"],
-    "audience": ["B2B"],
-    "notes": "Allows sales reps to place orders on behalf of B2B customers",
-    "url": "https://apps.shopify.com/b2b-customer-impersonation"
-  },
-  {
-    "name": "B2B Bulk Order / CSV Upload",
-    "category": "B2B Operations",
-    "use_cases": ["CSV/Bulk Upload", "Quick Order List", "Company Registration", "Order Download CSV"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/search?q=B2B+Bulk+Order+CSV+Upload"
-  },
-  {
-    "name": "B2B Company Controls",
-    "category": "B2B Operations",
-    "use_cases": ["Customer Account Management"],
-    "audience": ["B2B"],
-    "notes": "",
-    "url": "https://apps.shopify.com/search?q=B2B+Company+Controls"
-  },
-  {
-    "name": "C:Hub Customer Accounts",
-    "category": "B2B Operations",
-    "use_cases": ["Customer Account Customization"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Works with both Classic and New Customer Accounts",
-    "url": "https://apps.shopify.com/customerhub"
-  },
-  {
-    "name": "CSS Sales Team",
-    "category": "B2B Operations",
-    "use_cases": ["Order Approval Workflows", "Invoicing", "Commissions", "Sales Reps", "Draft Orders"],
-    "audience": ["B2B"],
-    "notes": "",
-    "url": "https://apps.shopify.com/search?q=CSS+Sales+Team"
-  },
-  {
-    "name": "Duos B2B",
-    "category": "B2B Operations",
-    "use_cases": ["Quoting", "Credit Limits", "Order Approval Workflows", "CSV/Bulk Upload"],
-    "audience": ["B2B"],
-    "notes": "",
-    "url": "https://apps.shopify.com/qikify-b2b-solution"
-  },
-  {
-    "name": "Easy: Wholesale Bulk Order Form",
-    "category": "B2B Operations",
-    "use_cases": ["Quick Order List"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/easywholesale-wholesale-bulk-orders"
-  },
-  {
-    "name": "Extend B2B Buying",
-    "category": "B2B Operations",
-    "use_cases": ["CSV/Bulk Upload", "Shared Cart", "Quick Order List"],
-    "audience": ["B2B"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/quick-order-b2b-and-wholesale"
-  },
-  {
-    "name": "Upro",
-    "category": "B2B Operations",
-    "use_cases": ["CSV/Bulk Upload", "Quick Order List", "Credit Limits", "Customer Account Customization"],
-    "audience": ["B2B"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/upro-b2b-and-wholesale-upload-csv-order"
-  },
-  {
-    "name": "WSH Order Form & Reorder",
-    "category": "B2B Operations",
-    "use_cases": ["Quick Order List"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/search?q=WSH+Order+Form+Reorder"
-  },
-  {
     "name": "A2X Sync for Quickbooks & Xero",
     "category": "ERP & Integrations",
-    "use_cases": ["Accounting Sync"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
+    "use_cases": [
+      "Accounting System Sync"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
     "url": "https://apps.shopify.com/search?q=A2X+Sync"
   },
   {
     "name": "Acumatica Cloud ERP",
     "category": "ERP & Integrations",
-    "use_cases": ["ERP Connector"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
+    "use_cases": [
+      "ERP Connector"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
     "url": "https://apps.shopify.com/search?q=Acumatica+Cloud+ERP"
+  },
+  {
+    "name": "AG Order Printer PDF Invoice (Avada)",
+    "category": "Invoicing & Quoting",
+    "use_cases": [
+      "Invoicing"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=AG+Order+Printer+PDF+Invoice+(Avada)"
   },
   {
     "name": "Akeneo PIM App",
     "category": "ERP & Integrations",
-    "use_cases": ["PIM Connector"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
+    "use_cases": [
+      "PIM Connector"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
     "url": "https://apps.shopify.com/search?q=Akeneo+PIM"
   },
   {
-    "name": "BookKeep",
-    "category": "ERP & Integrations",
-    "use_cases": ["Accounting Sync"],
-    "audience": ["DTC"],
-    "notes": "Accounting automation and sales tax compliance",
-    "url": "https://apps.shopify.com/bookkeep-com-daily-summary-e-commerce"
-  },
-  {
-    "name": "Dynamics 365 Business Central",
-    "category": "ERP & Integrations",
-    "use_cases": ["ERP Connector"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=Dynamics+365+Business+Central"
-  },
-  {
-    "name": "Matrixify",
-    "category": "ERP & Integrations",
-    "use_cases": ["Data Import"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Does not support Catalogs as of Nov 2025",
-    "url": "https://apps.shopify.com/matrixify"
-  },
-  {
-    "name": "Netsuite ERP Connector",
-    "category": "ERP & Integrations",
-    "use_cases": ["ERP Connector"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=Netsuite+ERP+Connector"
-  },
-  {
-    "name": "Pipe17",
-    "category": "ERP & Integrations",
-    "use_cases": ["ERP Connector", "Accounting Sync", "Marketplace Connector"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives. Strong option for full bidirectional sync including draft orders and catalogs.",
-    "url": "https://apps.shopify.com/pipe17"
-  },
-  {
-    "name": "Quickbooks Desktop Connector",
-    "category": "ERP & Integrations",
-    "use_cases": ["Accounting Sync"],
-    "audience": ["B2B", "DTC", "POS"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=Quickbooks+Desktop+Connector"
-  },
-  {
-    "name": "Syndigo PIM Connector",
-    "category": "ERP & Integrations",
-    "use_cases": ["PIM Connector"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=Syndigo+PIM"
-  },
-  {
-    "name": "Webgility — Quickbooks & Xero Sync",
-    "category": "ERP & Integrations",
-    "use_cases": ["Accounting Sync", "Marketplace Connector"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=Webgility"
-  },
-  {
-    "name": "F: PDF Invoice Generator",
-    "category": "Invoicing & Quoting",
-    "use_cases": ["Invoicing", "Draft Order PDF Export"],
-    "audience": ["B2B", "DTC"],
+    "name": "Autoship Cloud",
+    "category": "Other",
+    "use_cases": [
+      "Subscriptions"
+    ],
+    "audience": [
+      "B2B"
+    ],
     "notes": "",
-    "url": "https://apps.shopify.com/search?q=F+PDF+Invoice+Generator"
+    "url": "https://apps.shopify.com/autoship-cloud"
   },
   {
-    "name": "Order Printer Pro",
-    "category": "Invoicing & Quoting",
-    "use_cases": ["Invoicing"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=Order+Printer+Pro"
-  },
-  {
-    "name": "SA Request a Quote, Hide Price",
-    "category": "Invoicing & Quoting",
-    "use_cases": ["Quoting", "Hide Pricing"],
-    "audience": ["B2B", "DTC"],
+    "name": "B2B Bulk Order / CSV Upload",
+    "category": "B2B Operations",
+    "use_cases": [
+      "CSV/Bulk Upload",
+      "Quick Order List",
+      "CSV/Bulk Upload Admin Pages",
+      "Order Download CSV",
+      "Catalog - CSV",
+      "Company Registration"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
     "notes": "",
-    "url": "https://apps.shopify.com/request-for-quote"
-  },
-  {
-    "name": "Sufio",
-    "category": "Invoicing & Quoting",
-    "use_cases": ["Invoicing"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/sufio"
-  },
-  {
-    "name": "Casper Cart Sync",
-    "category": "Checkout & Cart",
-    "use_cases": ["Cart Sync Across Devices"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/cross-device-cart"
-  },
-  {
-    "name": "Cart Whisper",
-    "category": "Checkout & Cart",
-    "use_cases": ["Shared Cart"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=Cart+Whisper"
-  },
-  {
-    "name": "Checkout Buddy",
-    "category": "Checkout & Cart",
-    "use_cases": ["Checkout Customization"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/checkout-buddy"
-  },
-  {
-    "name": "Plural Cart",
-    "category": "Checkout & Cart",
-    "use_cases": ["Shared Cart"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/search?q=Plural+Cart"
-  },
-  {
-    "name": "SplitOrder",
-    "category": "Checkout & Cart",
-    "use_cases": ["Split an Order"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/splitorder"
-  },
-  {
-    "name": "SupaEasy",
-    "category": "Checkout & Cart",
-    "use_cases": ["Functions", "Discounts", "Payments", "Delivery", "Validation"],
-    "audience": ["B2B", "DTC"],
-    "notes": "No-code Shopify Functions builder",
-    "url": "https://apps.shopify.com/supaeasy"
-  },
-  {
-    "name": "The List",
-    "category": "Checkout & Cart",
-    "use_cases": ["Shared Cart"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=The+List+shared+cart"
-  },
-  {
-    "name": "Discountly",
-    "category": "Discounts & Pricing",
-    "use_cases": ["Discounts"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Discounts appear on Product & Collection pages. Works with Catalog prices.",
-    "url": "https://apps.shopify.com/discounty-bulk-discount-sales"
-  },
-  {
-    "name": "Locksmith",
-    "category": "Discounts & Pricing",
-    "use_cases": ["Hide Pricing on Public Site", "Restrict Content"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/locksmith"
-  },
-  {
-    "name": "Magical Fees & Tariffs",
-    "category": "Discounts & Pricing",
-    "use_cases": ["Fees", "Surcharges", "Tariffs", "Deposits"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Can create fees for card payments",
-    "url": "https://apps.shopify.com/search?q=Magical+Fees+Tariffs"
-  },
-  {
-    "name": "Minmaxify Order Limits",
-    "category": "Discounts & Pricing",
-    "use_cases": ["Order Limits (Min and Max)"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=Minmaxify+Order+Limits"
+    "url": "https://apps.shopify.com/search?q=B2B+Bulk+Order+CSV+Upload"
   },
   {
     "name": "B2B Catalog & Linesheet Maker",
     "category": "Catalog & Linesheets",
-    "use_cases": ["Catalog — PDF", "Catalog — Digital"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
+    "use_cases": [
+      "Catalog - PDF",
+      "Catalog - Digital"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
     "url": "https://apps.shopify.com/search?q=B2B+Catalog+Linesheet+Maker"
+  },
+  {
+    "name": "B2B Company Controls",
+    "category": "B2B Operations",
+    "use_cases": [
+      "Customer Account Management"
+    ],
+    "audience": [
+      "B2B"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/search?q=B2B+Company+Controls"
+  },
+  {
+    "name": "B2B Order Agent",
+    "category": "B2B Operations",
+    "use_cases": [
+      "Sales Rep Impersonation"
+    ],
+    "audience": [
+      "B2B"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/b2b-customer-impersonation"
+  },
+  {
+    "name": "BookKeep",
+    "category": "ERP & Integrations",
+    "use_cases": [
+      "Accounting System Sync"
+    ],
+    "audience": [
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/bookkeep-com-daily-summary-e-commerce"
+  },
+  {
+    "name": "C:Hub Customer Accounts",
+    "category": "B2B Operations",
+    "use_cases": [
+      "Customer Account Customization"
+    ],
+    "audience": [
+      "DTC",
+      "B2B"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/customerhub"
+  },
+  {
+    "name": "Cart Whisper | Live view pro",
+    "category": "Checkout & Cart",
+    "use_cases": [
+      "Shared Cart"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Cart+Whisper"
+  },
+  {
+    "name": "Casper Cart Sync",
+    "category": "Checkout & Cart",
+    "use_cases": [
+      "Cart Sync Across Devices"
+    ],
+    "audience": [
+      "DTC",
+      "B2B"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/cross-device-cart"
   },
   {
     "name": "Catalog Maker by EasyCatalog",
     "category": "Catalog & Linesheets",
-    "use_cases": ["Catalog — PDF", "Catalog — Excel", "Catalog — Digital"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives. Excel version coming soon (Nov 2025).",
+    "use_cases": [
+      "Catalog - PDF",
+      "Catalog - Excel/Sheets",
+      "Catalog - Digital"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives; Excel version coming shortly (11/2025)",
     "url": "https://apps.shopify.com/search?q=EasyCatalog"
   },
   {
     "name": "Catalogs & Linesheets Pro",
     "category": "Catalog & Linesheets",
-    "use_cases": ["Catalog — CSV", "Catalog — PDF", "Catalog — Excel", "Catalog — Digital"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives on Enterprise plan",
+    "use_cases": [
+      "Catalog - CSV",
+      "Catalog - PDF",
+      "Catalog - Excel/Sheets",
+      "Catalog - Digital"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives on Enterprise plan",
     "url": "https://apps.shopify.com/search?q=Catalogs+Linesheets+Pro"
   },
   {
-    "name": "Lookfy Lookbook",
-    "category": "Catalog & Linesheets",
-    "use_cases": ["Catalog — Digital"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=Lookfy+Lookbook"
-  },
-  {
-    "name": "Daasity",
-    "category": "Analytics & Reporting",
-    "use_cases": ["Reporting & Analytics"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
-    "url": "https://apps.shopify.com/search?q=Daasity"
-  },
-  {
-    "name": "Prediko",
-    "category": "Analytics & Reporting",
-    "use_cases": ["Inventory Management", "Reporting & Analytics"],
-    "audience": ["B2B", "DTC", "POS"],
+    "name": "Checkout Buddy",
+    "category": "Checkout & Cart",
+    "use_cases": [
+      "Checkout Customization"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
     "notes": "",
-    "url": "https://apps.shopify.com/prediko"
-  },
-  {
-    "name": "Multiship",
-    "category": "Shipping",
-    "use_cases": ["Ship to Multiple Addresses"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/search?q=Multiship"
-  },
-  {
-    "name": "Qe Multiship",
-    "category": "Shipping",
-    "use_cases": ["Ship to Multiple Addresses"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/multi-shipping"
-  },
-  {
-    "name": "Send To Many",
-    "category": "Shipping",
-    "use_cases": ["Ship to Multiple Addresses"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/search?q=Send+To+Many"
-  },
-  {
-    "name": "ShipEZ",
-    "category": "Shipping",
-    "use_cases": ["Shipping as % of Cart Total"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/smart-shipping-rates"
-  },
-  {
-    "name": "Shippo",
-    "category": "Shipping",
-    "use_cases": ["Shipping"],
-    "audience": ["B2B", "DTC", "POS"],
-    "notes": "",
-    "url": "https://apps.shopify.com/shippo"
-  },
-  {
-    "name": "ShipStation",
-    "category": "Shipping",
-    "use_cases": ["Shipping"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
-    "url": "https://apps.shopify.com/shipstation"
-  },
-  {
-    "name": "Autoship Cloud",
-    "category": "Other",
-    "use_cases": ["B2B Subscriptions"],
-    "audience": ["B2B"],
-    "notes": "Uses draft-order style approach with catalog pricing. Contact: Chonie Bradley",
-    "url": "https://apps.shopify.com/autoship-cloud"
+    "url": "https://apps.shopify.com/checkout-buddy"
   },
   {
     "name": "Convermax: Year Make Model",
     "category": "Other",
-    "use_cases": ["Fitment"],
-    "audience": ["B2B", "DTC"],
+    "use_cases": [
+      "Fitment"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
     "notes": "Automotive",
     "url": "https://apps.shopify.com/search?q=Convermax+Year+Make+Model"
   },
   {
+    "name": "CSS Sales Team",
+    "category": "B2B Operations",
+    "use_cases": [
+      "Order Approval Workflows",
+      "Invoicing",
+      "Commissions",
+      "CS Reps",
+      "Draft Orders"
+    ],
+    "audience": [
+      "B2B"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/search?q=CSS+Sales+Team"
+  },
+  {
+    "name": "Daasity Reporting and Analytics",
+    "category": "Analytics & Reporting",
+    "use_cases": [
+      "Reporting & Analytics"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Daasity"
+  },
+  {
+    "name": "Discountly",
+    "category": "Discounts & Pricing",
+    "use_cases": [
+      "Discounts"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Creates discounts that appear on Product & Collection Pages\nWorks with Catalog prices!",
+    "url": "https://apps.shopify.com/discounty-bulk-discount-sales"
+  },
+  {
+    "name": "Duos B2B",
+    "category": "B2B Operations",
+    "use_cases": [
+      "Quoting",
+      "Credit Limits",
+      "Order Approval Workflows",
+      "CSV/Bulk Upload"
+    ],
+    "audience": [
+      "B2B"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/qikify-b2b-solution"
+  },
+  {
+    "name": "Dynamics 365 Business Central",
+    "category": "ERP & Integrations",
+    "use_cases": [
+      "ERP Connector"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Dynamics+365+Business+Central"
+  },
+  {
     "name": "Early Bird: Preorder & Restock",
     "category": "Other",
-    "use_cases": ["Preorders"],
-    "audience": ["B2B", "DTC"],
+    "use_cases": [
+      "Preorders"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
     "notes": "",
     "url": "https://apps.shopify.com/search?q=Early+Bird+Preorder"
   },
   {
     "name": "Easify Product Attachments",
     "category": "Other",
-    "use_cases": ["Product File Downloads"],
-    "audience": ["B2B", "DTC"],
+    "use_cases": [
+      "Product file downloads"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
     "notes": "",
     "url": "https://apps.shopify.com/search?q=Easify+Product+Attachments"
   },
   {
+    "name": "Easy: Wholesale Bulk Order Form",
+    "category": "B2B Operations",
+    "use_cases": [
+      "Quick Order List"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/easywholesale-wholesale-bulk-orders"
+  },
+  {
+    "name": "Extend B2B Buying",
+    "category": "B2B Operations",
+    "use_cases": [
+      "CSV/Bulk Upload",
+      "Shared Cart",
+      "Quick Order List",
+      "Catalog - CSV"
+    ],
+    "audience": [
+      "B2B"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/quick-order-b2b-and-wholesale"
+  },
+  {
     "name": "Extend POS for B2B & Wholesale",
     "category": "Other",
-    "use_cases": ["POS Integration"],
-    "audience": ["B2B", "POS"],
+    "use_cases": [
+      "POS Integration"
+    ],
+    "audience": [
+      "B2B",
+      "POS"
+    ],
     "notes": "",
     "url": "https://apps.shopify.com/search?q=Extend+POS+B2B+Wholesale"
   },
   {
+    "name": "F: PDF Invoice Generator",
+    "category": "Invoicing & Quoting",
+    "use_cases": [
+      "Invoicing",
+      "Draft Order PDF Export"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/search?q=F+PDF+Invoice+Generator"
+  },
+  {
     "name": "Faire",
     "category": "Other",
-    "use_cases": ["Faire Marketplace"],
-    "audience": ["B2B"],
-    "notes": "B2B Primitives compatibility TBD. Global availability TBD.",
+    "use_cases": [
+      "Faire marketplace"
+    ],
+    "audience": [
+      "B2B"
+    ],
+    "notes": "Works with B2B primatives?! Available Globally?!",
     "url": "https://apps.shopify.com/search?q=Faire"
   },
   {
     "name": "Flowmail",
     "category": "Other",
-    "use_cases": ["Emails from Flow"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Send emails to contacts stored in metafields (e.g. sales rep)",
+    "use_cases": [
+      "Emails from Flow"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Use to send emails to contacts stored in metafields (e.g. sales rep)",
     "url": "https://apps.shopify.com/search?q=Flowmail"
   },
   {
-    "name": "Globo Product Options",
+    "name": "Globo Product Options, Variant",
     "category": "Other",
-    "use_cases": ["Product Customization", "Product Variants"],
-    "audience": ["B2B", "DTC"],
-    "notes": "",
+    "use_cases": [
+      "Product Customization",
+      "Product Variants"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Product Variants and Product Customization",
     "url": "https://apps.shopify.com/search?q=Globo+Product+Options"
-  },
-  {
-    "name": "Growave — B2B Loyalty",
-    "category": "Other",
-    "use_cases": ["Loyalty & Rewards"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Shared loyalty account — points accumulate per company, not per buyer",
-    "url": "https://apps.shopify.com/growave"
   },
   {
     "name": "Joy Loyalty Program & Rewards",
     "category": "Other",
-    "use_cases": ["Loyalty & Rewards"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
+    "use_cases": [
+      "Loyalty & Rewards"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
     "url": "https://apps.shopify.com/search?q=Joy+Loyalty"
   },
   {
-    "name": "Logik — Product Configuration",
+    "name": "Locksmith",
+    "category": "Discounts & Pricing",
+    "use_cases": [
+      "Hide Pricing on Public Site",
+      "Restrict Content"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/locksmith"
+  },
+  {
+    "name": "Logik - Product Configuration",
     "category": "Other",
-    "use_cases": ["Product Configuration"],
-    "audience": ["B2B", "DTC"],
-    "notes": "Uses B2B Primitives",
+    "use_cases": [
+      "Product configuration"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
     "url": "https://apps.shopify.com/search?q=Logik+Product+Configuration"
+  },
+  {
+    "name": "Lookfy Lookbook: Image Gallery",
+    "category": "Catalog & Linesheets",
+    "use_cases": [
+      "Catalog - Digital"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Lookfy+Lookbook"
+  },
+  {
+    "name": "Magical Fees & Tariffs",
+    "category": "Discounts & Pricing",
+    "use_cases": [
+      "\"Fees",
+      "Surcharges",
+      "Tariffs",
+      "Deposits\""
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Create fee for card payments",
+    "url": "https://apps.shopify.com/search?q=Magical+Fees+Tariffs"
+  },
+  {
+    "name": "Matrixify",
+    "category": "ERP & Integrations",
+    "use_cases": [
+      "Data Import"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Currently doesn't support Catalogs (11/2025)",
+    "url": "https://apps.shopify.com/matrixify"
   },
   {
     "name": "Metafields Guru",
     "category": "Other",
-    "use_cases": ["Metafield Management"],
-    "audience": ["B2B", "DTC"],
+    "use_cases": [
+      "Metafield Management"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
     "notes": "",
     "url": "https://apps.shopify.com/metafields-editor-2"
   },
   {
-    "name": "Notify! Back in Stock & Preorder",
+    "name": "Minmaxify Order Limits",
+    "category": "Discounts & Pricing",
+    "use_cases": [
+      "Order Limits (Min and Max)"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Minmaxify+Order+Limits"
+  },
+  {
+    "name": "Multiship",
+    "category": "Shipping",
+    "use_cases": [
+      "Shipping: Multiple Addresses"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/search?q=Multiship"
+  },
+  {
+    "name": "Netsuite ERP Connector",
+    "category": "ERP & Integrations",
+    "use_cases": [
+      "ERP Connector"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Netsuite+ERP+Connector"
+  },
+  {
+    "name": "Notify! Back in stock | preorder",
     "category": "Other",
-    "use_cases": ["Preorders", "Back in Stock"],
-    "audience": ["B2B", "DTC", "POS"],
-    "notes": "Uses B2B Primitives",
+    "use_cases": [
+      "Preorders"
+    ],
+    "audience": [
+      "B2B",
+      "DTC",
+      "POS"
+    ],
+    "notes": "Uses B2B Primatives",
     "url": "https://apps.shopify.com/search?q=Notify+Back+in+Stock+preorder"
+  },
+  {
+    "name": "Order Printer Pro",
+    "category": "Invoicing & Quoting",
+    "use_cases": [
+      "Invoicing"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Order+Printer+Pro"
+  },
+  {
+    "name": "Pipe17",
+    "category": "ERP & Integrations",
+    "use_cases": [
+      "Accounting System Sync",
+      "ERP Connector",
+      "Faire marketplace",
+      "Marketplace Connector"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/pipe17"
+  },
+  {
+    "name": "Plural Cart",
+    "category": "Checkout & Cart",
+    "use_cases": [
+      "Shared Cart"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/search?q=Plural+Cart"
+  },
+  {
+    "name": "Prediko",
+    "category": "Analytics & Reporting",
+    "use_cases": [
+      "Inventory Management",
+      "Reporting & Analytics"
+    ],
+    "audience": [
+      "B2B",
+      "DTC",
+      "POS"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/prediko"
   },
   {
     "name": "Punchout Cloud",
     "category": "Other",
-    "use_cases": ["Punchout / eProcurement"],
-    "audience": ["B2B"],
-    "notes": "Integrates with Ariba, Coupa, and other procurement systems",
+    "use_cases": [
+      "Punchout"
+    ],
+    "audience": [
+      "B2B"
+    ],
+    "notes": "",
     "url": "https://apps.shopify.com/punchout-cloud"
+  },
+  {
+    "name": "Qe Multiship",
+    "category": "Shipping",
+    "use_cases": [
+      "Shipping: Multiple Addresses"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/multi-shipping"
+  },
+  {
+    "name": "Quickbooks Desktop Connector",
+    "category": "ERP & Integrations",
+    "use_cases": [
+      "Accounting System Sync"
+    ],
+    "audience": [
+      "B2B",
+      "DTC",
+      "POS"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Quickbooks+Desktop+Connector"
+  },
+  {
+    "name": "SA Request a Quote, Hide Price",
+    "category": "Invoicing & Quoting",
+    "use_cases": [
+      "Quoting"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/request-for-quote"
+  },
+  {
+    "name": "Send To Many",
+    "category": "Shipping",
+    "use_cases": [
+      "Shipping: Multiple Addresses"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/search?q=Send+To+Many"
+  },
+  {
+    "name": "ShipEZ",
+    "category": "Shipping",
+    "use_cases": [
+      "Shipping: % Cart total"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/smart-shipping-rates"
+  },
+  {
+    "name": "Shippo",
+    "category": "Shipping",
+    "use_cases": [
+      "Shipping"
+    ],
+    "audience": [
+      "B2B",
+      "DTC",
+      "POS"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/shippo"
+  },
+  {
+    "name": "Shipstation",
+    "category": "Shipping",
+    "use_cases": [
+      "Shipping"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/shipstation"
+  },
+  {
+    "name": "Shopify Bundles",
+    "category": "Shopify Native",
+    "use_cases": [
+      "Bundles"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/bundles"
+  },
+  {
+    "name": "Shopify Checkout Blocks",
+    "category": "Shopify Native",
+    "use_cases": [
+      "Checkout Customization"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/checkout-blocks"
+  },
+  {
+    "name": "Shopify Combined Listings",
+    "category": "Shopify Native",
+    "use_cases": [
+      "Product Variants"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/combined-listings"
+  },
+  {
+    "name": "Shopify Flow",
+    "category": "Shopify Native",
+    "use_cases": [
+      "Workflow Automation",
+      "Order Approval Workflows"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/flow"
+  },
+  {
+    "name": "Shopify Forms",
+    "category": "Shopify Native",
+    "use_cases": [
+      "Company Registration"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/shopify-forms"
+  },
+  {
+    "name": "Shopify Inbox",
+    "category": "Shopify Native",
+    "use_cases": [
+      "Emails"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/inbox"
+  },
+  {
+    "name": "Shopify Search & Discovery",
+    "category": "Shopify Native",
+    "use_cases": [
+      "Search"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/search-and-discovery"
+  },
+  {
+    "name": "Shopify Translate & Adapt",
+    "category": "Shopify Native",
+    "use_cases": [
+      "Translations"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/translate-and-adapt"
+  },
+  {
+    "name": "SplitOrder",
+    "category": "Checkout & Cart",
+    "use_cases": [
+      "Split an Order"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/splitorder"
+  },
+  {
+    "name": "Sufio",
+    "category": "Invoicing & Quoting",
+    "use_cases": [
+      "Invoicing"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/sufio"
+  },
+  {
+    "name": "SupaEasy",
+    "category": "Checkout & Cart",
+    "use_cases": [
+      "Functions"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/supaeasy"
+  },
+  {
+    "name": "Syndigo PIM Connector",
+    "category": "ERP & Integrations",
+    "use_cases": [
+      "PIM Connector"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Syndigo+PIM"
+  },
+  {
+    "name": "The List",
+    "category": "Checkout & Cart",
+    "use_cases": [
+      "Shared Cart"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=The+List+shared+cart"
+  },
+  {
+    "name": "Upro",
+    "category": "B2B Operations",
+    "use_cases": [
+      "CSV/Bulk Upload",
+      "Quick Order List",
+      "Credit Limits",
+      "Catalog - CSV",
+      "Catalog - Excel/Sheets",
+      "Customer Account Customization"
+    ],
+    "audience": [
+      "B2B"
+    ],
+    "notes": "Uses B2B Primatives; Excel version coming shortly (11/2025)",
+    "url": "https://apps.shopify.com/upro-b2b-and-wholesale-upload-csv-order"
+  },
+  {
+    "name": "Webgility - Quickbooks online & Xero Sync",
+    "category": "ERP & Integrations",
+    "use_cases": [
+      "Accounting System Sync",
+      "Marketplace Connector"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Webgility"
+  },
+  {
+    "name": "Webgility x QuickBooks Desktop",
+    "category": "ERP & Integrations",
+    "use_cases": [
+      "Accounting System Sync"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "Uses B2B Primatives",
+    "url": "https://apps.shopify.com/search?q=Webgility"
+  },
+  {
+    "name": "WSH Order Form & Reorder",
+    "category": "B2B Operations",
+    "use_cases": [
+      "Quick Order List"
+    ],
+    "audience": [
+      "B2B",
+      "DTC"
+    ],
+    "notes": "",
+    "url": "https://apps.shopify.com/search?q=WSH+Order+Form+Reorder"
   }
 ]
