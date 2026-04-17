@@ -1,5 +1,20 @@
 [
   {
+    "slug": "demo-deck-builder",
+    "name": "Demo Deck Builder",
+    "description": "Turnkey Claude Code skill + HTML scaffold for building Shopify × Merchant demo decks in the transferflow style. Dark UI, teal accents, animated Gemini/Sidekick chat mockups, quick-site ready. Pre-built slide patterns for every section of a modern B2B/DTC pitch.",
+    "url": "https://github.com/dustinfloer/b2b-ai-catalog/tree/main/tools/demo-deck-builder",
+    "category": "Tools",
+    "built_with": "Claude Code Skill + HTML/CSS/JS Scaffold",
+    "audience": "Both",
+    "author": "Dustin Floer",
+    "author_slack": "@dustin.floer",
+    "date_added": "2026-04-17",
+    "screenshot": "",
+    "slack_channel": "global-b2b-sales-team",
+    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog/tree/main/tools/demo-deck-builder"
+  },
+  {
     "slug": "demo-recipes",
     "name": "B2B Demo Recipes",
     "description": "Pre-built demo store configs for 8 B2B verticals. Copy a prompt, paste into Claude Code, get a demo-ready store with products, companies, orders, and B2B pricing in minutes.",
