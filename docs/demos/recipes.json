@@ -303,5 +303,45 @@
       "88% fulfillment — reliable distribution expected",
       "DTC consumer channel alongside B2B distribution"
     ]
+  },
+  {
+    "id": "healthcare-supply-distributor",
+    "name": "Healthcare Supply Distributor",
+    "emoji": "\ud83c\udfe5",
+    "description": "Medical and infection prevention supply company selling to healthcare facilities, dental offices, and veterinary practices via B2B, while expanding DTC to reach healthcare workers directly. Consumable products, high reorder velocity, contract pricing.",
+    "industry": "Healthcare & Medical",
+    "model": "Distribution",
+    "verticals": ["healthcare"],
+    "store_name_suggestion": "safeguard-medical-supply",
+    "country": "united-states",
+    "estimated_minutes": 6,
+    "catalogs": [
+      { "name": "Healthcare Facilities", "adjustment": "-25%", "terms": "NET_30" },
+      { "name": "Small Practice / Dental", "adjustment": "-10%", "terms": "DUE_ON_FULFILLMENT" }
+    ],
+    "config": {
+      "products": true,
+      "dtc_included": true,
+      "dtc_customers": 35,
+      "dtc_orders": 45,
+      "dtc_new_customer_pct": 50,
+      "b2b_companies": 20,
+      "b2b_orders": 60,
+      "b2b_mode": "random",
+      "b2b_draft_orders_pct": 15,
+      "b2b_new_companies_pct": 15,
+      "order_days_back": 90,
+      "fulfillment_type": "fulfillment-type-percentage",
+      "fulfillment_value": 85
+    },
+    "tags": ["healthcare", "medical", "distribution", "infection-prevention", "consumables", "hybrid", "reorders"],
+    "demo_talking_points": [
+      "Healthcare facility vs small practice pricing tiers with contract pricing",
+      "Same product, different pack sizes: cases for B2B, individual boxes for DTC",
+      "High reorder velocity — consumable infection prevention products",
+      "DTC expansion from Amazon to owned channel (own data, eliminate marketplace fees)",
+      "Sales rep draft orders for field sales team managing facility accounts",
+      "ACH payment advantage for large B2B orders (1% capped at $7.50)"
+    ]
   }
 ]
