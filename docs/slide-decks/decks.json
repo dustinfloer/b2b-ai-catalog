@@ -1,0 +1,38 @@
+[
+  {
+    "id": "hatley",
+    "name": "Hatley",
+    "description": "The original HTML deck that kicked off the team's AI HTML Decks workflow. Built by Terry Kealey as proof of concept.",
+    "url": "https://b2b-acceleration-se.quick.shopify.io/shopify-ai-hatley.html",
+    "industry": "Apparel",
+    "author": "Terry Kealey",
+    "tags": ["apparel", "foundational"]
+  },
+  {
+    "id": "arlington",
+    "name": "Arlington Demo",
+    "description": "AI-generated HTML deck for the Arlington merchant demo.",
+    "url": "https://arlington-demo.quick.shopify.io/",
+    "industry": "",
+    "author": "",
+    "tags": []
+  },
+  {
+    "id": "transferflow",
+    "name": "TransferFlow",
+    "description": "AI-generated HTML deck for TransferFlow.",
+    "url": "https://transferflow.quick.shopify.io/",
+    "industry": "",
+    "author": "",
+    "tags": []
+  },
+  {
+    "id": "feniex",
+    "name": "Feniex",
+    "description": "AI-generated HTML deck for Feniex.",
+    "url": "https://feniex.quick.shopify.io/",
+    "industry": "Automotive / Emergency Lighting",
+    "author": "",
+    "tags": ["automotive"]
+  }
+]

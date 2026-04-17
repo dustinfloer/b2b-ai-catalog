@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Deck Examples</title>
+    <link rel="icon" type="image/svg+xml" href="../logo.svg">
+    <style>
+        :root {
+            --green-primary: #36d986;
+            --green-glow: rgba(54, 217, 134, 0.15);
+            --bg-deep: #0a0f1a;
+            --bg-surface: #111827;
+            --bg-card: #1a2332;
+            --bg-card-hover: #1f2b3d;
+            --border: #2a3548;
+            --text-primary: #e8ecf1;
+            --text-secondary: #8b95a5;
+            --text-muted: #5a6577;
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(54,217,134,0.08);
+            --radius: 14px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-deep);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo { height: 56px; width: auto; }
+        .header-nav { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+        .nav-link {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+        .nav-link.active { color: var(--green-primary); background: var(--green-glow); }
+
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 28px 24px 0;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--green-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p { color: var(--text-secondary); font-size: 14px; }
+
+        .grid {
+            max-width: 1200px;
+            margin: 24px auto 60px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--green-primary);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .card-bar {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--green-primary), transparent);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+            margin-bottom: 16px;
+            flex: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .card-author {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .card-link {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green-primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(54,217,134,0.3);
+            background: rgba(54,217,134,0.06);
+            transition: all 0.2s;
+        }
+
+        .card-link:hover { background: rgba(54,217,134,0.14); border-color: var(--green-primary); }
+        .card-link::after { content: " \2192"; }
+
+        .callout {
+            max-width: 1200px;
+            margin: 0 auto 0;
+            padding: 16px 24px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .callout a { color: var(--green-primary); text-decoration: none; }
+        .callout a:hover { text-decoration: underline; }
+
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="../"><img src="../logo.svg" alt="B2B Tools" class="header-logo"></a>
+            <nav class="header-nav">
+                <a href="../" class="nav-link">Catalog</a>
+                <a href="../learnings/" class="nav-link">Field Learnings</a>
+                <a href="../apps/" class="nav-link">App Directory</a>
+                <a href="../demos/" class="nav-link">Demo Recipes</a>
+                <a href="../slide-decks/" class="nav-link active">Slide Decks</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h2>HTML Deck Examples</h2>
+        <p>Browser-native presentation decks built by the B2B SE team with Cursor + Claude.</p>
+    </div>
+
+    <div class="callout">
+        Learn how to build your own: <a href="../#tools">AI HTML Decks workflow</a>
+    </div>
+
+    <div class="grid" id="grid"><div class="loading">Loading decks...</div></div>
+
+    <footer>
+        [INTERNAL-ONLY]
+    </footer>
+
+    <script>
+        async function loadDecks() {
+            try {
+                const res = await fetch('decks.json?v=' + Date.now());
+                const decks = await res.json();
+                render(decks);
+            } catch (e) {
+                document.getElementById('grid').innerHTML = '<p style="text-align:center;padding:40px;">Could not load decks.</p>';
+            }
+        }
+
+        function esc(str) {
+            if (!str) return '';
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        function render(decks) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = decks.map(function(d) {
+                var meta = [];
+                if (d.industry) meta.push('<span>' + esc(d.industry) + '</span>');
+                (d.tags || []).forEach(function(t) { meta.push('<span>#' + esc(t) + '</span>'); });
+
+                return '<div class="card">' +
+                    '<div class="card-bar"></div>' +
+                    '<h3>' + esc(d.name) + '</h3>' +
+                    (meta.length ? '<div class="card-meta">' + meta.join('') + '</div>' : '') +
+                    '<p class="card-desc">' + esc(d.description) + '</p>' +
+                    '<div class="card-footer">' +
+                        '<span class="card-author">' + (d.author ? 'Built by ' + esc(d.author) : '') + '</span>' +
+                        '<a href="' + esc(d.url) + '" target="_blank" rel="noopener" class="card-link">View deck</a>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        loadDecks();
+    </script>
+</body>
+</html>
