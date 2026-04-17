@@ -33,6 +33,7 @@ Read these before starting:
 - `references/slide-patterns.md` — every slide type with HTML snippets
 - `references/visual-effects.md` — mesh bg, particles, pulse rings, gradient accents, nav dots
 - `references/chat-animation.md` — timed message reveal pattern for Gemini/Sidekick/etc
+- `references/agentic-commerce-sim.html` — full UCP agentic-commerce sim variant (multi-product mosaic, Google Pay checkout overlay, discount/loyalty/subscription, order confirmation back into chat). Use **instead of** `chat-animation.md` when you want the complete discovery → checkout → confirmation story
 - `references/customization-guide.md` — how to adapt palette, logo, speakers per merchant
 - `examples/pdi-demo-deck.html` — full reference implementation
 
