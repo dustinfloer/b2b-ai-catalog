@@ -3,7 +3,7 @@
     "slug": "demo-deck-builder",
     "name": "Demo Deck Builder",
     "description": "Turnkey Claude Code skill + HTML scaffold for building Shopify × Merchant demo decks in the transferflow style. Dark UI, teal accents, animated Gemini/Sidekick chat mockups, quick-site ready. Pre-built slide patterns for every section of a modern B2B/DTC pitch.",
-    "url": "https://github.com/dustinfloer/b2b-ai-catalog/tree/main/tools/demo-deck-builder",
+    "url": "https://demo-deck-builder.quick.shopify.io/",
     "category": "Tools",
     "built_with": "Claude Code Skill + HTML/CSS/JS Scaffold",
     "audience": "Both",

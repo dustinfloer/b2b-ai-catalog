@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Deck Builder — Shopify SE Tooling</title>
+<style>
+  :root {
+    --bg: #0a1420;
+    --bg-elevated: #0f1a28;
+    --surface: #14202e;
+    --surface-hover: #1a2938;
+    --border: #233345;
+    --text: #e6edf3;
+    --text-dim: rgba(230, 237, 243, 0.65);
+    --text-faint: rgba(230, 237, 243, 0.4);
+    --accent: #14a098;
+    --accent-bright: #1cc7bd;
+    --accent-dim: rgba(20, 160, 152, 0.12);
+    --accent-glow: rgba(20, 160, 152, 0.4);
+    --accent-border: rgba(20, 160, 152, 0.35);
+    --navy: #1e3a5f;
+    --success: #10b981;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* === MESH GRADIENT BACKGROUND === */
+  .mesh-bg {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(at 20% 30%, rgba(20, 160, 152, 0.12) 0%, transparent 50%),
+      radial-gradient(at 80% 20%, rgba(30, 58, 95, 0.2) 0%, transparent 50%),
+      radial-gradient(at 40% 80%, rgba(28, 199, 189, 0.08) 0%, transparent 50%),
+      radial-gradient(at 70% 60%, rgba(20, 160, 152, 0.06) 0%, transparent 50%);
+    z-index: 0;
+    pointer-events: none;
+    animation: mesh-drift 20s ease-in-out infinite;
+  }
+
+  @keyframes mesh-drift {
+    0%, 100% { background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%; }
+    50% { background-position: 20% 10%, 80% 10%, 10% 90%, 90% 80%; }
+  }
+
+  /* === FLOATING PARTICLES === */
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .particles span {
+    position: absolute;
+    display: block;
+    width: 3px;
+    height: 3px;
+    background: var(--accent-bright);
+    border-radius: 50%;
+    opacity: 0;
+    box-shadow: 0 0 10px var(--accent-bright);
+    animation: float 15s linear infinite;
+  }
+  .particles span:nth-child(1)  { left: 8%;  animation-delay: 0s;    animation-duration: 18s; }
+  .particles span:nth-child(2)  { left: 18%; animation-delay: 2s;    animation-duration: 22s; }
+  .particles span:nth-child(3)  { left: 28%; animation-delay: 5s;    animation-duration: 16s; }
+  .particles span:nth-child(4)  { left: 38%; animation-delay: 7s;    animation-duration: 20s; }
+  .particles span:nth-child(5)  { left: 48%; animation-delay: 3s;    animation-duration: 24s; }
+  .particles span:nth-child(6)  { left: 58%; animation-delay: 9s;    animation-duration: 17s; }
+  .particles span:nth-child(7)  { left: 68%; animation-delay: 4s;    animation-duration: 21s; }
+  .particles span:nth-child(8)  { left: 78%; animation-delay: 6s;    animation-duration: 19s; }
+  .particles span:nth-child(9)  { left: 88%; animation-delay: 8s;    animation-duration: 23s; }
+  .particles span:nth-child(10) { left: 92%; animation-delay: 1s;    animation-duration: 18s; }
+
+  @keyframes float {
+    0%   { transform: translateY(105vh) scale(0); opacity: 0; }
+    10%  { opacity: 0.6; transform: translateY(90vh) scale(1); }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-5vh) scale(0.5); opacity: 0; }
+  }
+
+  /* === LAYOUT === */
+  main {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* === NAV === */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(10, 20, 32, 0.7);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .nav-brand-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--bg);
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent-bright); }
+
+  /* === HERO === */
+  .hero {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3.5rem 0 2.5rem;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    width: fit-content;
+    margin-bottom: 1.25rem;
+    animation: fade-up 0.8s ease-out;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-bright);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+    animation: fade-up 0.9s ease-out 0.1s both;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero-lede {
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    color: var(--text-dim);
+    max-width: 680px;
+    margin-bottom: 1.75rem;
+    animation: fade-up 1s ease-out 0.2s both;
+  }
+  .hero-lede strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    animation: fade-up 1s ease-out 0.3s both;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.95rem 1.75rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    color: var(--bg);
+    box-shadow: 0 4px 20px var(--accent-glow);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px var(--accent-glow);
+  }
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent-border);
+    background: var(--surface-hover);
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 2.25rem;
+    margin-top: 2.25rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    animation: fade-up 1.1s ease-out 0.5s both;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .hero-meta-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero-meta-label {
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === SECTION === */
+  section.block {
+    padding: 3rem 0;
+    position: relative;
+  }
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    max-width: 700px;
+  }
+  .section-title .accent {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .section-lede {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    max-width: 620px;
+    margin-bottom: 2rem;
+  }
+
+  /* === INSTALL PATHS === */
+  .install-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+  @media (max-width: 900px) { .install-grid { grid-template-columns: 1fr; } }
+
+  .install-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    position: relative;
+    transition: border-color 0.2s;
+    min-width: 0;
+  }
+  .install-card:hover { border-color: var(--accent-border); }
+
+  .install-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1.15rem;
+    padding-bottom: 1.15rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .install-card-icon {
+    width: 38px; height: 38px;
+    border-radius: 9px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .install-card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+  }
+  .install-card-sub {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+
+  .install-step {
+    margin-bottom: 0.9rem;
+  }
+  .install-step-label {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+  .install-step-num {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    color: var(--accent-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border: 1px solid var(--accent-border);
+  }
+
+  .code-block {
+    position: relative;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 0.9rem;
+    font-family: 'SF Mono', Menlo, Monaco, Consolas, monospace;
+    font-size: 0.78rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+  .code-block code {
+    flex: 1;
+    min-width: 0;
+    color: var(--accent-bright);
+    white-space: nowrap;
+    overflow-x: auto;
+    display: block;
+  }
+  .code-block code::-webkit-scrollbar { height: 4px; }
+  .code-block code::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+    font-family: inherit;
+  }
+  .copy-btn:hover {
+    border-color: var(--accent-border);
+    color: var(--accent-bright);
+  }
+  .copy-btn.copied {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+
+  .install-final {
+    margin-top: 1.15rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--accent-bright);
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .install-final::before {
+    content: '✓';
+    font-weight: 700;
+  }
+
+  /* === FEATURE GRID === */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 900px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
+
+  .feature-tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.15rem;
+    transition: all 0.2s;
+  }
+  .feature-tile:hover {
+    border-color: var(--accent-border);
+    transform: translateY(-2px);
+  }
+  .feature-tile-icon {
+    width: 32px; height: 32px;
+    background: var(--accent-dim);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .feature-tile-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    font-size: 0.92rem;
+  }
+  .feature-tile-desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* === EXAMPLE CTA === */
+  .example-card {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--bg-elevated) 100%);
+    border: 1px solid var(--accent-border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .example-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .example-card > * { position: relative; z-index: 1; }
+  @media (max-width: 700px) { .example-card { grid-template-columns: 1fr; } }
+
+  .example-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .example-desc {
+    color: var(--text-dim);
+    font-size: 0.88rem;
+  }
+
+  /* === PATTERNS LIST === */
+  .patterns-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  @media (max-width: 700px) { .patterns-list { grid-template-columns: 1fr; } }
+
+  .pattern-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.65rem 0.85rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 0.83rem;
+  }
+  .pattern-item-num {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 0.75rem;
+    color: var(--text-faint);
+    width: 20px;
+  }
+  .pattern-item-name {
+    flex: 1;
+    font-weight: 500;
+  }
+  .pattern-item-badge {
+    font-size: 0.7rem;
+    color: var(--accent-bright);
+    padding: 0.15rem 0.5rem;
+    background: var(--accent-dim);
+    border-radius: 100px;
+    border: 1px solid var(--accent-border);
+  }
+
+  /* === CREDITS / FOOTER === */
+  footer {
+    padding: 2.5rem 0 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+    position: relative;
+    z-index: 2;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 3rem;
+  }
+  @media (max-width: 700px) { .footer-inner { grid-template-columns: 1fr; } }
+
+  .footer-col h4 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    margin-bottom: 1rem;
+  }
+  .footer-col p, .footer-col a {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    text-decoration: none;
+    display: block;
+  }
+  .footer-col a:hover { color: var(--accent-bright); }
+
+  .footer-credits {
+    grid-column: 1 / -1;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="mesh-bg"></div>
+<div class="particles">
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <div class="nav-brand-icon">D</div>
+      Demo Deck Builder
+    </div>
+    <div class="nav-links">
+      <a href="#install">Install</a>
+      <a href="#whats-inside">What's Inside</a>
+      <a href="#example">Example</a>
+      <a href="https://github.com/dustinfloer/b2b-ai-catalog/tree/main/tools/demo-deck-builder" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Claude Code Skill · B2B AI Catalog</div>
+    <h1>Ship polished demo decks in <span class="accent">minutes</span>, not hours.</h1>
+    <p class="hero-lede">
+      A turnkey skill + HTML scaffold for building <strong>Shopify × Merchant</strong> demo decks in the transferflow style.
+      Dark UI. Animated Gemini and Sidekick mockups. 13 slide patterns. Works with or without Claude Code.
+    </p>
+    <div class="hero-ctas">
+      <a href="#install" class="btn btn-primary">Get started →</a>
+      <a href="https://dustinfloer.github.io/b2b-ai-catalog/slide-decks/" target="_blank" class="btn btn-secondary">See example decks</a>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-value">13</div>
+        <div class="hero-meta-label">Slide patterns</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-value">1,700+</div>
+        <div class="hero-meta-label">Lines of tuned CSS/JS</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-value">2 paths</div>
+        <div class="hero-meta-label">Claude Code or plain HTML</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-value">&lt;300KB</div>
+        <div class="hero-meta-label">Quick-site ready</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section class="block" id="install">
+    <div class="section-label">Install</div>
+    <h2 class="section-title">Drop the skill into your IDE, <span class="accent">start building.</span></h2>
+    <p class="section-lede">
+      Works for anyone on the SE or AE team using Claude Code or Cursor. Clone once, copy the skill, invoke by name — the AI reads your merchant context and builds the deck.
+    </p>
+
+    <div class="install-grid">
+
+      <!-- CLAUDE CODE -->
+      <div class="install-card">
+        <div class="install-card-header">
+          <div class="install-card-icon">🤖</div>
+          <div>
+            <div class="install-card-title">Claude Code</div>
+            <div class="install-card-sub">SEs + AEs · ~60 seconds</div>
+          </div>
+        </div>
+
+        <div class="install-step">
+          <div class="install-step-label"><span class="install-step-num">1</span>Download the skill (one command, ~30 KB)</div>
+          <div class="code-block">
+            <code id="cmd-1">mkdir -p ~/.claude/skills/demo-deck-builder &amp;&amp; curl -sL https://github.com/dustinfloer/b2b-ai-catalog/archive/main.tar.gz | tar -xz --strip-components=4 -C ~/.claude/skills/demo-deck-builder b2b-ai-catalog-main/tools/demo-deck-builder/skill</code>
+            <button class="copy-btn" data-target="cmd-1">Copy</button>
+          </div>
+        </div>
+
+        <div class="install-step">
+          <div class="install-step-label"><span class="install-step-num">2</span>Restart Claude Code, then run</div>
+          <div class="code-block">
+            <code id="cmd-3">/demo-deck-builder [merchant-name]</code>
+            <button class="copy-btn" data-target="cmd-3">Copy</button>
+          </div>
+        </div>
+
+        <div class="install-final">Claude reads your merchant folder, asks 3 questions, builds the full deck.</div>
+      </div>
+
+      <!-- CURSOR -->
+      <div class="install-card">
+        <div class="install-card-header">
+          <div class="install-card-icon">🖱️</div>
+          <div>
+            <div class="install-card-title">Cursor</div>
+            <div class="install-card-sub">SEs + AEs · ~60 seconds</div>
+          </div>
+        </div>
+
+        <div class="install-step">
+          <div class="install-step-label"><span class="install-step-num">1</span>Download the skill (one command, ~30 KB)</div>
+          <div class="code-block">
+            <code id="cmd-c1">mkdir -p ~/.cursor/rules/demo-deck-builder &amp;&amp; curl -sL https://github.com/dustinfloer/b2b-ai-catalog/archive/main.tar.gz | tar -xz --strip-components=4 -C ~/.cursor/rules/demo-deck-builder b2b-ai-catalog-main/tools/demo-deck-builder/skill</code>
+            <button class="copy-btn" data-target="cmd-c1">Copy</button>
+          </div>
+        </div>
+
+        <div class="install-step">
+          <div class="install-step-label"><span class="install-step-num">2</span>In Cursor chat, invoke it</div>
+          <div class="code-block">
+            <code id="cmd-c3">@demo-deck-builder build a deck for [merchant]</code>
+            <button class="copy-btn" data-target="cmd-c3">Copy</button>
+          </div>
+        </div>
+
+        <div class="install-final">Cursor reads the skill, follows the same 7-step workflow as Claude Code.</div>
+      </div>
+
+    </div>
+
+    <!-- PROMPTING TIP -->
+    <div class="example-card" style="margin-top: 2.5rem;">
+      <div>
+        <div class="example-title">💡 New to prompting AI for slide decks?</div>
+        <div class="example-desc">Matt Ward's <strong>Slide Deck Exploration</strong> walks through the techniques the team has used to get great results from Claude and Cursor — worth 10 minutes before your first deck.</div>
+      </div>
+      <a href="https://slide-deck-exploration.quick.shopify.io/" target="_blank" class="btn btn-primary">Read Matt's deck →</a>
+    </div>
+  </section>
+
+  <!-- EXAMPLE -->
+  <section class="block" id="example">
+    <div class="section-label">See it in action</div>
+    <h2 class="section-title">Browse decks the team has already <span class="accent">shipped.</span></h2>
+    <p class="section-lede">
+      The catalog has a growing collection of real demo decks built by B2B SEs — PDI Healthcare, TransferFlow, and more. Great inspiration before you start your own.
+    </p>
+    <div class="example-card">
+      <div>
+        <div class="example-title">Example decks in the catalog</div>
+        <div class="example-desc">Real decks, real merchants, real wins — all built with variations of this scaffold.</div>
+      </div>
+      <a href="https://dustinfloer.github.io/b2b-ai-catalog/slide-decks/" target="_blank" class="btn btn-primary">Browse the catalog →</a>
+    </div>
+  </section>
+
+  <!-- WHAT'S INSIDE -->
+  <section class="block" id="whats-inside">
+    <div class="section-label">What's inside</div>
+    <h2 class="section-title">Everything you need, <span class="accent">already built.</span></h2>
+
+    <div class="feature-grid" style="margin-bottom: 3rem;">
+      <div class="feature-tile">
+        <div class="feature-tile-icon">🎨</div>
+        <div class="feature-tile-title">Pre-built visual system</div>
+        <div class="feature-tile-desc">Mesh gradient backgrounds, floating particles, pulse rings, gradient text accents — all tuned, all reusable.</div>
+      </div>
+      <div class="feature-tile">
+        <div class="feature-tile-icon">💬</div>
+        <div class="feature-tile-title">Animated chat mockups</div>
+        <div class="feature-tile-desc">Timed Gemini + Sidekick message reveals with realistic product pages. Narrate over them live.</div>
+      </div>
+      <div class="feature-tile">
+        <div class="feature-tile-icon">⌨️</div>
+        <div class="feature-tile-title">Full navigation</div>
+        <div class="feature-tile-desc">Keyboard arrows, space, click zones, bottom nav dots, progress bar, speaker tag toggle — all wired up.</div>
+      </div>
+      <div class="feature-tile">
+        <div class="feature-tile-icon">📚</div>
+        <div class="feature-tile-title">13 slide patterns</div>
+        <div class="feature-tile-desc">Cover, recap, stats grid, timeline, customer proof, TOC, section header, chat, pricing tiers, closing.</div>
+      </div>
+      <div class="feature-tile">
+        <div class="feature-tile-icon">🎛️</div>
+        <div class="feature-tile-title">Palette recipes</div>
+        <div class="feature-tile-desc">Healthcare, Tech, Industrial, Food/Bev, Fashion, Finance. Swap CSS variables, done.</div>
+      </div>
+      <div class="feature-tile">
+        <div class="feature-tile-icon">🚀</div>
+        <div class="feature-tile-title">Quick-site ready</div>
+        <div class="feature-tile-desc">Single HTML file under 300KB. Drop into <code>quick init → quick deploy</code>, shareable URL.</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 3rem;">
+      <div style="font-weight: 600; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-dim);">All 13 patterns, copy-paste ready:</div>
+      <div class="patterns-list">
+        <div class="pattern-item"><span class="pattern-item-num">01</span><span class="pattern-item-name">Cover slide</span><span class="pattern-item-badge">Hero</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">02</span><span class="pattern-item-name">Discovery Recap</span><span class="pattern-item-badge">Two-col</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">03</span><span class="pattern-item-name">About Shopify stats</span><span class="pattern-item-badge">Grid</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">04</span><span class="pattern-item-name">B2B Evolution timeline</span><span class="pattern-item-badge">Timeline</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">05</span><span class="pattern-item-name">Customer Proof</span><span class="pattern-item-badge">6-tile</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">06</span><span class="pattern-item-name">Aspiration vision</span><span class="pattern-item-badge">Centered</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">07</span><span class="pattern-item-name">Agenda (3-col TOC)</span><span class="pattern-item-badge">Grouped</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">08</span><span class="pattern-item-name">Section Headers</span><span class="pattern-item-badge">Pulse rings</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">09</span><span class="pattern-item-name">Agentic Commerce (Gemini)</span><span class="pattern-item-badge">Animated</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">10</span><span class="pattern-item-name">Sidekick mockup</span><span class="pattern-item-badge">Animated</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">11</span><span class="pattern-item-name">Feature slides</span><span class="pattern-item-badge">Two-col</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">12</span><span class="pattern-item-name">Pricing Tiers</span><span class="pattern-item-badge">3-col</span></div>
+        <div class="pattern-item"><span class="pattern-item-num">13</span><span class="pattern-item-name">Closing / Next Steps</span><span class="pattern-item-badge">CTA</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h4>Demo Deck Builder</h4>
+      <p>A reusable scaffold for shipping demo decks that feel like the transferflow original. Built for Shopify SEs and AEs.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="https://github.com/dustinfloer/b2b-ai-catalog/tree/main/tools/demo-deck-builder" target="_blank">GitHub repo</a>
+      <a href="https://github.com/dustinfloer/b2b-ai-catalog/blob/main/tools/demo-deck-builder/skill/references/customization-guide.md" target="_blank">Customization guide</a>
+      <a href="https://github.com/dustinfloer/b2b-ai-catalog/blob/main/tools/demo-deck-builder/skill/references/slide-patterns.md" target="_blank">Slide patterns</a>
+      <a href="https://github.com/dustinfloer/b2b-ai-catalog/blob/main/tools/demo-deck-builder/skill/references/chat-animation.md" target="_blank">Chat animation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Feedback</h4>
+      <a href="https://shopify.enterprise.slack.com/archives/global-b2b-sales-team" target="_blank">#global-b2b-sales-team</a>
+      <a href="https://app.slack.com/client/T02DEC5PB/@dustin.floer" target="_blank">DM @dustin.floer</a>
+      <a href="https://github.com/dustinfloer/b2b-ai-catalog/issues/new" target="_blank">Open an issue</a>
+    </div>
+    <div class="footer-credits">
+      Built by the B2B SE Team · April 2026
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Copy-to-clipboard for install commands
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const targetId = btn.dataset.target;
+      const codeEl = document.getElementById(targetId);
+      if (!codeEl) return;
+      try {
+        await navigator.clipboard.writeText(codeEl.textContent);
+        btn.textContent = 'Copied ✓';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1600);
+      } catch (e) {
+        btn.textContent = 'Select & copy';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
