@@ -14,7 +14,7 @@
     "description": "AI-generated HTML deck for the Arlington merchant demo.",
     "url": "https://arlington-demo.quick.shopify.io/",
     "industry": "",
-    "author": "",
+    "author": "Dustin Floer",
     "tags": []
   },
   {
@@ -23,7 +23,7 @@
     "description": "AI-generated HTML deck for TransferFlow.",
     "url": "https://transferflow.quick.shopify.io/",
     "industry": "",
-    "author": "",
+    "author": "Jordan Murphy",
     "tags": []
   },
   {
@@ -32,7 +32,7 @@
     "description": "AI-generated HTML deck for Feniex.",
     "url": "https://feniex.quick.shopify.io/",
     "industry": "Automotive / Emergency Lighting",
-    "author": "",
+    "author": "Jordan Murphy",
     "tags": ["automotive"]
   }
 ]
