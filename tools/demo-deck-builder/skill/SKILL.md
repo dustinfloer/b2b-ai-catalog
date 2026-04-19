@@ -19,7 +19,7 @@ Generate a polished, self-contained HTML demo deck for any merchant using the pr
 
 ## Output
 
-One self-contained HTML file at `merchants/[merchant]/demo-deck.html` containing:
+One self-contained HTML file at `merchants/[merchant]/index.html` (named `index.html` so it works as the root of a quick site) containing:
 - Navigation (progress bar, nav dots, counter, keyboard, click zones, swipe)
 - All CSS/JS embedded (no external deps beyond Google Fonts)
 - Merchant logo embedded as base64 (if available at `merchants/[merchant]/[name]_logo.png`)
@@ -69,7 +69,7 @@ Before building, confirm:
 ### Step 3: Copy Template + Customize
 
 ```bash
-cp .claude/skills/demo-deck-builder/references/template.html merchants/[merchant]/demo-deck.html
+cp .claude/skills/demo-deck-builder/references/template.html merchants/[merchant]/index.html
 ```
 
 Then edit to:
@@ -112,8 +112,8 @@ Open the file in Chrome and walk through:
 
 ### Step 7: Offer to Deploy to Quick Site
 
-Ask the user if they want to:
-- Rename to `index.html` and deploy to a quick site
+File is already named `index.html` — ready to upload. Ask the user if they want to:
+- Deploy to a quick site (upload `merchants/[merchant]/index.html` at https://quick.shopify.io — see README for upload steps)
 - Or just present locally from Chrome (full-screen with `F` key)
 
 ## Key Principles

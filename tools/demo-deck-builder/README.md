@@ -98,6 +98,17 @@ The [PDI demo deck](./examples/pdi-demo-deck.html) (152KB, 25 slides) is the ref
 - [`skill/references/chat-animation.md`](./skill/references/chat-animation.md) — Gemini/Sidekick animated chat pattern
 - [`skill/references/customization-guide.md`](./skill/references/customization-guide.md) — 9-step adaptation workflow
 
+## Deploying to a Quick Site
+
+The skill outputs `merchants/[merchant]/index.html` so the file is ready to upload as the root of a quick site.
+
+1. Go to [quick.shopify.io](https://quick.shopify.io)
+2. Create a new site (pick a short, memorable subdomain — e.g. `acme-demo`)
+3. Upload the `index.html` file from your merchant folder
+4. Share the link: `https://[subdomain].quick.shopify.io/`
+
+If your deck references additional assets (embedded images beyond the logo, extra HTML files), upload those too. The default deck is self-contained so usually just the one file is needed.
+
 ## Tips
 
 - **Let the Gemini chat play out** — the 12.5s message reveal sequence gives you time to narrate
