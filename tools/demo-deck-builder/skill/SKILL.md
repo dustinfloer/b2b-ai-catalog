@@ -40,23 +40,61 @@ Read these before starting:
 
 ## Workflow
 
-### Step 1: Gather Merchant Context
+### Step 1: Gather Merchant Context (Thorough)
 
-Read (skip missing files):
+Do NOT skip this. A deck built on incomplete context is generic. Systematically check all available sources in parallel where possible:
+
+**Local merchant folder:**
 - `merchants/[merchant]/briefing-document.md`
 - `merchants/[merchant]/raw-files/config.md`
+- `merchants/[merchant]/discovery-notes.md`
 - `merchants/[merchant]/raw-files/additional-context/*`
-- Salesforce via `revenue-mcp` if no brief exists
+- Any other files in `merchants/[merchant]/`
 
-Capture:
+**Salesforce (via revenue-mcp):**
+- Opportunity (stage, amount, close date, merchant intent, SE next steps)
+- Account (industry, GMV, plan, country)
+- Team members (AE, SE — use for speaker names)
+- Products on the opp
+
+**Meeting notes & transcripts:**
+- Gmail search for `from:gemini-notes@google.com` with merchant name in subject — Gemini auto-generates these as `Notes: "<meeting>" <date>`
+- Google Drive search for merchant name — turn up transcripts, discovery docs, proposals
+- Scout for call transcripts if the merchant has been called
+
+**Collaborative context:**
+- Slack: search for merchant-specific channels (common pattern: `#account-b2b-[merchant]`, `#account-[merchant]`) — read recent threads
+- SENTRAL: query for merchant context and similar-merchant patterns
+
+**Capture:**
 - Merchant name, logo path, industry
 - Deal size, deal type (B2B / DTC / hybrid)
 - Discovery recap (what's confirmed / in motion)
 - Product/use-case specifics
 - Stakeholders (attendees, decision makers)
 - AE and SE names (speakers)
+- Signature pain points or aspirations (pulled from notes/transcripts verbatim when possible)
 
-### Step 2: Ask 3 Clarifying Questions (via AskUserQuestion)
+### Step 2: Verify Context Before Building
+
+Present a summary of what was found and what's missing. Example:
+
+> Found:
+> - briefing-document.md (updated 3 days ago)
+> - Salesforce opp ($450K, Negotiating, close 2026-05-15)
+> - 3 Gemini meeting notes (Apr 8, Apr 12, Apr 15)
+> - 2 Drive docs (Discovery Deck, Technical Assessment)
+>
+> Missing:
+> - No call transcript in Scout
+> - No Slack channel found for `#account-[merchant]`
+> - No SENTRAL context on similar merchants
+>
+> Proceed with what I have, or do you want to point me to additional context?
+
+Wait for confirmation before moving on. This is the moment to catch missing sources — AFTER the deck is built it's painful to redo.
+
+### Step 3: Ask 3 Clarifying Questions (via AskUserQuestion)
 
 Before building, confirm:
 
@@ -66,7 +104,7 @@ Before building, confirm:
 
 3. **Brand palette preference** — Default is teal (`#14a098` + `#1cc7bd`) + navy (`#1e3a5f`). Offer to swap if merchant has distinct brand colors (check their website). Always keep dark bg and Inter typography.
 
-### Step 3: Copy Template + Customize
+### Step 4: Copy Template + Customize
 
 ```bash
 cp .claude/skills/demo-deck-builder/references/template.html merchants/[merchant]/index.html
@@ -78,7 +116,7 @@ Then edit to:
 - Update `:root` CSS variables if palette swap
 - Add the speakers' first names to `data-speaker` attributes
 
-### Step 4: Build the Slides
+### Step 5: Build the Slides
 
 Use `slide-patterns.md` to compose slides in order. Typical 18-25 slide structure:
 
@@ -91,7 +129,7 @@ Use `slide-patterns.md` to compose slides in order. Typical 18-25 slide structur
 | **Operations & Integration** | Section Header, ERP integration, 3PL/fulfillment, Marketing & Analytics | SE |
 | **Close** | Three Anchors, Pricing, Closing Steps | AE |
 
-### Step 5: Wire Animated Chats
+### Step 6: Wire Animated Chats
 
 For Gemini slide (`id="gemini-chat"`) and/or Sidekick slide (`id="sidekick-chat"`):
 - Give each message a `data-chat-delay="N"` in milliseconds
@@ -99,7 +137,7 @@ For Gemini slide (`id="gemini-chat"`) and/or Sidekick slide (`id="sidekick-chat"
 - The JS handles everything once IDs + delays are in place
 - See `chat-animation.md` for patterns
 
-### Step 6: Verify
+### Step 7: Verify
 
 Open the file in Chrome and walk through:
 - Arrow keys navigate
@@ -110,7 +148,7 @@ Open the file in Chrome and walk through:
 - Pulse rings only on section-header slides
 - Speaker tag (top-right) toggles correctly
 
-### Step 7: Offer to Deploy to Quick Site
+### Step 8: Offer to Deploy to Quick Site
 
 File is already named `index.html` — ready to upload. Ask the user if they want to:
 - Deploy to a quick site (upload `merchants/[merchant]/index.html` at https://quick.shopify.io — see README for upload steps)
