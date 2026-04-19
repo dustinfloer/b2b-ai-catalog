@@ -66,6 +66,15 @@ Do NOT skip this. A deck built on incomplete context is generic. Systematically 
 - Slack: search for merchant-specific channels (common pattern: `#account-b2b-[merchant]`, `#account-[merchant]`) — read recent threads
 - SENTRAL: query for merchant context and similar-merchant patterns
 
+**Public research (WebFetch / WebSearch):**
+- Merchant homepage — product lines, positioning, hero messaging
+- About / company pages — mission, team, brand voice signals
+- Recent news or press releases (last 90 days) — launches, funding, expansion, leadership changes
+- If B2B: check for a wholesale or trade portal — tells you their current B2B UX
+- Brand palette signals (colors on their site) for the palette decision in Step 3
+
+This is how the deck stops feeling like a template and starts feeling like you did your homework.
+
 **Capture:**
 - Merchant name, logo path, industry
 - Deal size, deal type (B2B / DTC / hybrid)
@@ -129,6 +138,18 @@ Use `slide-patterns.md` to compose slides in order. Typical 18-25 slide structur
 | **Operations & Integration** | Section Header, ERP integration, 3PL/fulfillment, Marketing & Analytics | SE |
 | **Close** | Three Anchors, Pricing, Closing Steps | AE |
 
+**Grounding rule — write specific, not generic.**
+
+Every content slide should pull from the merchant context gathered in Step 1, not template language. Specific > generic.
+
+- Discovery Recap: use the merchant's actual confirmed/in-motion points from meeting notes, not made-up bullets
+- Aspiration: quote or paraphrase the merchant's own vision statement where one exists in notes
+- Feature slides: tie each to a real pain point or goal the merchant mentioned. If config.md says "reconciling orders between Shopify and NetSuite takes 15 hours a week," that's what the ERP slide addresses — by name
+- Customer Proof: pick peer brands in the merchant's vertical or with a similar business model, not a generic hall of fame
+- Pricing: reference the actual opportunity amount and structure from Salesforce
+
+If a slide can't be grounded in merchant-specific context, either pull it (don't pad the deck) or mark it clearly as a generic Shopify capability slide, not a "this is about you" slide. Generic slides in a tailored deck are the tell that you didn't do the work.
+
 ### Step 6: Wire Animated Chats
 
 For Gemini slide (`id="gemini-chat"`) and/or Sidekick slide (`id="sidekick-chat"`):
@@ -148,7 +169,34 @@ Open the file in Chrome and walk through:
 - Pulse rings only on section-header slides
 - Speaker tag (top-right) toggles correctly
 
-### Step 8: Offer to Deploy to Quick Site
+### Step 8: Content Review with User
+
+Before calling the deck done, walk the user through the slides for a content pass. Don't skip — this is the step that catches hollow or off-brand content before it lives through a merchant call.
+
+Present a concise slide-by-slide summary, e.g.:
+
+> I've built 22 slides. Key content per section:
+>
+> **Opening (Jordan)**
+> - Cover: Shopify × Acme, Apr 22 meeting
+> - Discovery Recap: 4 confirmed points (catalog migration, NetSuite sync, Tier-1 pricing, B2B launch Q3), 2 in-motion (agentic commerce interest, POS expansion)
+>
+> **Modern Commerce Platform (Dustin)**
+> - Agentic Commerce: Gemini sim with "find me a replacement brake pad for my 2019 F-150" scenario — pulled from Apr 15 meeting where Jim mentioned fleet buyers researching parts on their phones
+> - Sidekick: warehouse ops scenario (reorder ping based on stock thresholds)
+>
+> **Buyer Journeys (Dustin)**
+> - 4 feature slides: B2B login, Tiered pricing catalogs, Quote-to-order flow, ERP sync with NetSuite
+>
+> **Close (Jordan)**
+> - Pricing: $280K ARR Plus + Implementation ($45K)
+> - Closing Steps: Technical Assessment by May 1, POC kickoff May 15
+>
+> Anything feel off, missing, or too generic? Want me to tweak any slide before we wrap?
+
+Iterate on any flagged slides before moving on. Small fixes here save painful rework after the merchant sees the deck.
+
+### Step 9: Offer to Deploy to Quick Site
 
 File is already named `index.html` — ready to upload. Ask the user if they want to:
 - Deploy to a quick site (upload `merchants/[merchant]/index.html` at https://quick.shopify.io — see README for upload steps)
