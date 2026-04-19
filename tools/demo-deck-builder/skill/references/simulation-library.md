@@ -4,19 +4,23 @@ A grab-and-go catalog of animated simulations at **[simulations.quick.shopify.io
 
 When a merchant deck needs an architecture, payment, integration, or agentic-commerce slide, pull the source from here instead of generating from scratch.
 
+> ⚠️ **Important:** The simulations site is behind Google SSO (Shopify-only). This means **you cannot iframe sims into a deck** and **external viewers cannot open sim links**. The only pattern that works for merchant-facing decks is inline embedding the HTML. See below.
+
 ---
 
-## How to grab a simulation as a slide
+## How to grab a simulation as a slide (the only reliable method)
 
-1. Open the sim at `https://simulations.quick.shopify.io/<sim-name>.html`
-2. Click the **`</> Source`** button (bottom-right of any sim page)
-3. Click **Copy HTML** — you get a clean, self-contained HTML file with the `<script src="source-viewer.js">` tag already stripped
-4. Either:
-   - Use the HTML as a standalone artifact (separate file, link to it from your deck)
-   - Embed the sim's `<style>` + slide container + `<script>` into your deck as one slide
-   - iframe it (if the deck will always be presented online): `<iframe src="https://simulations.quick.shopify.io/<sim-name>.html"></iframe>`
+1. Sign in with your Shopify Google account
+2. Open the sim at `https://simulations.quick.shopify.io/<sim-name>.html`
+3. Click the **`</> Source`** button (bottom-right of any sim page)
+4. Click **Copy HTML** — you get a clean, self-contained HTML block with the `<script src="source-viewer.js">` tag already stripped
+5. Paste the `<style>` + slide container + `<script>` blocks directly into your deck (see "Integration patterns" below)
 
-All sims are fully self-contained (no build step, no external JS deps beyond Google Fonts).
+Once pasted inline, the sim runs self-contained in the deck. No network call, no auth, works for merchants viewing the deck externally.
+
+**Do NOT iframe sims.** `simulations.quick.shopify.io` is behind Google Identity-Aware Proxy — iframes will 404 or hit a login wall, even for Shopify employees. The previous version of this doc suggested iframes; it was wrong.
+
+All sims are fully self-contained (no build step, no external JS deps beyond Google Fonts) — they're designed to be copy-pasted, not linked.
 
 ---
 
@@ -73,34 +77,38 @@ All sims are fully self-contained (no build step, no external JS deps beyond Goo
 
 ## Integration patterns
 
-### As a standalone artifact
-
-Link to the live sim from a slide's CTA. Best when the sim is the "go deeper" moment and you want to keep the deck itself compact.
-
-### As an embedded slide
+### Inline embed (recommended, works everywhere)
 
 Copy the sim's full HTML body into one of your deck's `<section class="slide">` blocks. You'll need to:
 1. Merge its `<style>` into your deck's `<head>` (all classes are namespaced to avoid collisions)
 2. Paste the sim's main container into the slide
 3. Append its `<script>` before `</body>`
 
-The `agentic-commerce-sim.html` in this folder is an example of a pre-extracted embed-ready version.
+The [`agentic-commerce-sim.html`](./agentic-commerce-sim.html) in this folder is an example of a pre-extracted embed-ready version. Any SE can do the same for other sims — copy, paste, drop the extracted file into this folder, and it becomes reusable for the whole team.
 
-### As an iframe (for online-only decks)
+### Pre-extracted sims in this folder
 
-```html
-<section class="slide" data-speaker="SE">
-  <div class="mesh-bg"></div>
-  <iframe src="https://simulations.quick.shopify.io/netsuite-shopify-flow.html"
-          style="width:100%;height:100%;border:0;border-radius:12px"
-          loading="lazy"></iframe>
-</section>
-```
+When a sim is used often enough, extract it once and commit the embed-ready HTML here. The skill will then reference it by filename instead of asking SEs to re-extract from the Quick site every time.
 
-Only use this when the deck will be presented live with internet access. Don't iframe for a client hand-off — use a standalone or embedded approach.
+Current pre-extracted sims:
+- `agentic-commerce-sim.html` — Google Gemini + UCP agentic commerce end-to-end
+
+Contribute more by following the same pattern: copy the sim's source from the Quick site, drop the `<style>` + `<div class="slide">` + `<script>` blocks into a new `.html` file in this folder with a header comment explaining what it is and how to use it.
+
+---
+
+## Why linking and iframes don't work
+
+`simulations.quick.shopify.io` is gated by Google Identity-Aware Proxy (IAP), which means:
+
+- **Iframes fail** — browsers block IAP login pages inside iframes, and cross-origin auth cookies don't flow reliably
+- **External links fail** — merchants (or anyone not signed into a Shopify Google account) hit a login wall, not the sim
+- **Copy-paste always works** — once the sim HTML is inline in your deck, it runs standalone with no auth
+
+If the sim must be presentation-only and the presenter is always a signed-in Shopify employee, linking from a deck CTA is acceptable. For anything that gets shared with a merchant: inline embed only.
 
 ---
 
 ## Contributing a new simulation
 
-If you build a sim that'd be useful to the SE team, add it to the simulations quick site (not this repo). Instructions live in the simulations repo itself. Once it's up, update the table above with a link.
+If you build a sim that'd be useful to the SE team, add it to the simulations quick site. Once it's up, update the table above with a link. If it's going to be used often, also extract an embed-ready version into this folder (see "Pre-extracted sims" above).

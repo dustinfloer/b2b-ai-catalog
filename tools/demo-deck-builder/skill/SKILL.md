@@ -34,7 +34,7 @@ Read these before starting:
 - `references/visual-effects.md` — mesh bg, particles, pulse rings, gradient accents, nav dots
 - `references/chat-animation.md` — timed message reveal pattern for Gemini/Sidekick/etc
 - `references/agentic-commerce-sim.html` — full UCP agentic-commerce sim variant (multi-product mosaic, Google Pay checkout overlay, discount/loyalty/subscription, order confirmation back into chat). Use **instead of** `chat-animation.md` when you want the complete discovery → checkout → confirmation story
-- `references/simulation-library.md` — catalog of 12+ animated simulations at simulations.quick.shopify.io (NetSuite, SAP, Oracle, ERP, payments, API, agentic commerce). For architecture / integration / payment-flow slides, grab the source from there instead of generating from scratch
+- `references/simulation-library.md` — catalog of 12+ animated simulations at simulations.quick.shopify.io (NetSuite, SAP, Oracle, ERP, payments, API, agentic commerce). For architecture / integration / payment-flow slides, prefer these over generating from scratch. **Always inline embed — never iframe.** The sims site is behind Google SSO, so iframes 404 for external viewers and even for signed-in users (IAP blocks iframing). Use a pre-extracted file from this folder when available (`agentic-commerce-sim.html`), or ask the user to paste the sim's "Copy HTML" output for inline embedding
 - `references/customization-guide.md` — how to adapt palette, logo, speakers per merchant
 - `examples/pdi-demo-deck.html` — full reference implementation
 
