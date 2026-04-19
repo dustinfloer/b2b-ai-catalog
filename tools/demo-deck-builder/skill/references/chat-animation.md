@@ -18,7 +18,19 @@ All of this is **already wired up** in the template. You just need to write HTML
 ```html
 <div class="chat-window">
   <div class="chat-header">
-    <div class="gemini-icon">G</div>
+    <div class="gemini-icon">
+      <svg viewBox="0 0 28 28" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gem-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4285F4"/>
+            <stop offset="33%" stop-color="#9168C0"/>
+            <stop offset="66%" stop-color="#EA4335"/>
+            <stop offset="100%" stop-color="#FBBC04"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#gem-grad-1)" d="M14 0 C14 7.732 20.268 14 28 14 C20.268 14 14 20.268 14 28 C14 20.268 7.732 14 0 14 C7.732 14 14 7.732 14 0 Z"/>
+      </svg>
+    </div>
     <span>Google Gemini</span>
     <span style="margin-left:auto;font-size:0.65rem;opacity:0.4">AI Mode</span>
   </div>
