@@ -1,0 +1,530 @@
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  gemini-sim-slide.html — drop-in agentic commerce simulation slide
+  ════════════════════════════════════════════════════════════════════════════
+
+  USAGE:
+    1. Paste the <style> block into the <head> of your deck (or keep it
+       scoped to this slide — it's all .gemini-* prefixed).
+    2. Paste the <div class="slide"> block as one of your deck's slides.
+    3. Paste the <script> block before </body> of your deck.
+    4. Customize the sections marked CUSTOMIZE below — 5 of them.
+
+  The sim auto-plays on slide entry. Replay + speed controls are included.
+  Buttons: "Buy for me" on the selected product → checkout overlay → order
+  confirmation back into the chat conversation.
+
+  NEED A DIFFERENT SIM? (architecture, payment flow, ERP sync, API rate
+  limits, etc.) — see `simulation-library.md` in this folder for the full
+  catalog at simulations.quick.shopify.io. Any sim on that site has a
+  "</> Source" button that copies clean HTML for drop-in use.
+
+  Credits: pattern originated with Terry Kealey's Hatley deck (Feb 2026),
+  codified by Matt Ward's simulations.quick.shopify.io, enriched with the
+  full UCP launch context (discount codes, loyalty, subscriptions, virtual
+  try-on, My Orders, PayPal-coming-soon, UCP partner ecosystem).
+  ════════════════════════════════════════════════════════════════════════════
+-->
+
+<!-- ═══ PASTE BELOW INTO <head> ═══════════════════════════════════════ -->
+<style>
+  /* Gemini sim — all classes prefixed with .gemini- or .gs- to avoid collisions */
+
+  .gemini-sim {
+    background: rgba(15, 15, 25, 0.95);
+    border: 1px solid rgba(99, 102, 241, 0.15);
+    border-radius: 16px;
+    padding: 0;
+    overflow: hidden;
+    max-width: 1040px;
+    margin: 12px auto 0;
+    position: relative;
+  }
+
+  .gemini-header {
+    background: linear-gradient(135deg, rgba(66, 133, 244, 0.12), rgba(234, 67, 53, 0.08), rgba(251, 188, 4, 0.08), rgba(52, 168, 83, 0.08));
+    border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 10px 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .gemini-logo {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: conic-gradient(from 0deg, #4285F4 0deg 90deg, #EA4335 90deg 180deg, #FBBC04 180deg 270deg, #34A853 270deg 360deg);
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .gemini-logo::after {
+    content: ''; width: 12px; height: 12px; border-radius: 50%;
+    background: rgba(15, 15, 25, 0.95); position: absolute;
+  }
+  .gemini-header span { font-size: 0.9em; font-weight: 600; color: #f1f5f9; }
+  .gemini-header .ai-mode-pill {
+    background: rgba(66, 133, 244, 0.15); border: 1px solid rgba(66, 133, 244, 0.3);
+    color: #93bbfc; padding: 2px 10px; border-radius: 12px;
+    font-size: 0.65em; font-weight: 600; letter-spacing: 0.04em; margin-left: auto;
+  }
+
+  .gs-controls {
+    position: absolute; top: 8px; right: 120px; z-index: 5;
+    display: flex; gap: 4px; align-items: center;
+  }
+  .gs-speed {
+    display: flex; background: rgba(0,0,0,0.3); border-radius: 6px; overflow: hidden;
+    font-size: 0.65em;
+  }
+  .gs-speed button {
+    padding: 3px 8px; border: none; background: none; color: #8899af;
+    cursor: pointer; font-family: inherit; font-weight: 600;
+  }
+  .gs-speed button.active { background: rgba(66,133,244,0.25); color: #93bbfc; }
+  .gs-replay {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    color: #ccc; padding: 3px 10px; border-radius: 6px;
+    font-size: 0.7em; cursor: pointer; font-family: inherit;
+  }
+  .gs-replay:hover { background: rgba(255,255,255,0.15); }
+
+  .gemini-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 360px; }
+
+  /* Left: conversation */
+  .gemini-convo {
+    padding: 16px 18px;
+    border-right: 1px solid rgba(99, 102, 241, 0.18);
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .gemini-convo::-webkit-scrollbar { width: 3px; }
+  .gemini-convo::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+  .sim-step {
+    display: flex; gap: 10px; opacity: 0; transform: translateY(8px);
+    animation: simFadeIn 0.4s ease forwards;
+  }
+  .sim-step:nth-child(1) { animation-delay: 0.5s; }
+  .sim-step:nth-child(2) { animation-delay: 2s; }
+  .sim-step:nth-child(3) { animation-delay: 4s; }
+  .sim-step:nth-child(4) { animation-delay: 6s; }
+  .sim-step.waiting { animation: none; opacity: 0; transform: translateY(8px); display: none; }
+
+  @keyframes simFadeIn { to { opacity: 1; transform: translateY(0); } }
+
+  .sim-avatar {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6em; font-weight: 700; color: white; margin-top: 2px;
+  }
+  .sim-avatar.user { background: linear-gradient(135deg, #6366f1, #a78bfa); }
+  .sim-avatar.gemini { background: conic-gradient(from 0deg, #4285F4, #EA4335, #FBBC04, #34A853); }
+  .sim-avatar.shopify { background: linear-gradient(135deg, #96bf48, #5e8e3e); }
+
+  .sim-bubble {
+    background: rgba(35, 35, 65, 0.85); border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 10px; padding: 10px 14px; max-width: 100%;
+  }
+  .sim-bubble.user-msg {
+    background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.2);
+  }
+  .sim-bubble p { font-size: 0.8em; margin: 0; line-height: 1.4; color: #c8ccd4; }
+  .sim-bubble .sim-label {
+    font-size: 0.6em; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; margin-bottom: 4px; color: #8899af;
+  }
+  .sim-bubble .sim-label.ucp { color: #96bf48; }
+  .sim-bubble .sim-meta { font-size: 0.65em; color: #8899af; margin-top: 4px; }
+
+  .ucp-badge {
+    display: inline-block; background: rgba(150, 191, 72, 0.15);
+    border: 1px solid rgba(150, 191, 72, 0.3); color: #96bf48;
+    padding: 1px 6px; border-radius: 4px; font-size: 0.7em;
+    font-weight: 600; letter-spacing: 0.04em; margin-left: 4px;
+  }
+
+  /* Right: product panel */
+  .gemini-products {
+    padding: 16px 18px; background: rgba(10, 10, 20, 0.5);
+    display: flex; flex-direction: column;
+  }
+  .product-panel-header {
+    font-size: 0.65em; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8899af; margin-bottom: 10px;
+  }
+  .product-mosaic {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1;
+  }
+
+  .mosaic-card {
+    background: rgba(35, 35, 65, 0.75); border: 1px solid rgba(99, 102, 241, 0.18);
+    border-radius: 10px; padding: 10px; cursor: pointer;
+    transition: all 0.3s ease; opacity: 0; animation: simFadeIn 0.4s ease forwards;
+    position: relative;
+  }
+  .mosaic-card:nth-child(1) { animation-delay: 2.5s; }
+  .mosaic-card:nth-child(2) { animation-delay: 2.8s; }
+  .mosaic-card:nth-child(3) { animation-delay: 3.1s; }
+  .mosaic-card:nth-child(4) { animation-delay: 3.4s; }
+  .mosaic-card:hover { border-color: rgba(66, 133, 244, 0.4); transform: translateY(-2px); }
+  .mosaic-card.selected {
+    border-color: rgba(66, 133, 244, 0.6);
+    box-shadow: 0 0 12px rgba(66, 133, 244, 0.15);
+  }
+
+  .mosaic-img {
+    width: 100%; height: 58px; border-radius: 6px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.1));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6em; margin-bottom: 6px;
+  }
+  .mosaic-card h5 { color: #f1f5f9; font-size: 0.72em; margin: 0 0 2px; line-height: 1.3; }
+  .mosaic-card .mosaic-store { font-size: 0.58em; color: #8899af; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1px; }
+  .mosaic-card .mosaic-price { color: #6ee7b7; font-size: 0.75em; font-weight: 600; }
+  .mosaic-card .mosaic-rating { color: #b0bcd0; font-size: 0.6em; }
+  .mosaic-card .mosaic-badges { display: flex; gap: 3px; margin-top: 4px; flex-wrap: wrap; }
+  .mosaic-card .badge {
+    font-size: 0.52em; padding: 1px 5px; border-radius: 3px; font-weight: 600;
+  }
+  .badge-shopify { background: rgba(150,191,72,0.12); color: #96bf48; }
+  .badge-tryon { background: rgba(167,139,250,0.12); color: #a78bfa; }
+
+  .mosaic-card .mosaic-buy { display: none; margin-top: 6px; }
+  .mosaic-card.selected .mosaic-buy { display: block; }
+
+  .buy-for-me-btn {
+    display: inline-block; background: linear-gradient(135deg, #4285F4, #1a73e8);
+    color: white; padding: 5px 14px; border-radius: 20px;
+    font-size: 0.7em; font-weight: 600; cursor: pointer;
+    animation: btnPulse 2s ease-in-out infinite;
+    border: none; width: 100%; text-align: center;
+  }
+  @keyframes btnPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.4); }
+    50% { box-shadow: 0 0 10px 3px rgba(66, 133, 244, 0.2); }
+  }
+
+  /* Checkout overlay */
+  .checkout-overlay {
+    display: none; position: absolute; inset: 0; z-index: 10;
+    background: rgba(5, 5, 15, 0.95); border-radius: 16px;
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 30px; gap: 16px; backdrop-filter: blur(10px);
+  }
+  .checkout-overlay.active { display: flex; }
+
+  .checkout-card {
+    background: rgba(35, 35, 65, 0.95); border: 1px solid rgba(66, 133, 244, 0.2);
+    border-radius: 14px; padding: 22px; max-width: 340px; width: 100%;
+  }
+  .checkout-card h3 { color: #f1f5f9; font-size: 0.95em; margin: 0 0 14px; text-align: center; }
+
+  .co-item { display: flex; gap: 10px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid rgba(99,102,241,0.15); }
+  .co-item-img { width: 42px; height: 42px; border-radius: 8px; background: linear-gradient(135deg, rgba(66,133,244,0.15), rgba(167,139,250,0.1)); display: flex; align-items: center; justify-content: center; font-size: 1.3em; flex-shrink: 0; }
+  .co-item-info h4 { font-size: 0.75em; color: #f1f5f9; margin: 0 0 1px; }
+  .co-item-info p { font-size: 0.65em; color: #8899af; margin: 0; }
+
+  .co-field {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(99,102,241,0.15);
+    border-radius: 8px; padding: 6px 10px; font-size: 0.68em; margin-bottom: 6px;
+  }
+  .co-field.applied { border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.04); }
+  .co-field.applied .val { color: #6ee7b7; font-weight: 600; }
+  .co-field span.val { margin-left: auto; }
+
+  .checkout-line {
+    display: flex; justify-content: space-between; padding: 4px 0;
+    font-size: 0.72em; color: #b0bcd0;
+  }
+  .checkout-line .val { color: #f1f5f9; font-weight: 500; }
+  .checkout-line.discount .val { color: #6ee7b7; }
+  .checkout-line.total { border-top: 1px solid rgba(99,102,241,0.15); margin-top: 4px; padding-top: 6px; }
+  .checkout-line.total span { color: #6ee7b7; font-weight: 700; font-size: 0.9em; }
+
+  .checkout-address { font-size: 0.62em; color: #8899af; margin: 8px 0; text-align: center; }
+
+  .gpay-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: #000; color: white; border: 1px solid #333;
+    border-radius: 20px; padding: 9px 20px; margin-top: 10px;
+    font-size: 0.78em; font-weight: 600; cursor: pointer; width: 100%;
+  }
+  .gpay-btn:hover { background: #1a1a1a; border-color: #555; }
+  .g-icon { font-weight: 700; font-size: 0.92em; background: linear-gradient(135deg, #4285F4, #EA4335, #FBBC04, #34A853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  .checkout-success { display: none; text-align: center; max-width: 340px; }
+  .checkout-success.active { display: block; }
+  .checkout-success .big-check { font-size: 2.5em; margin-bottom: 8px; }
+  .checkout-success h3 { color: #6ee7b7; font-size: 1.1em; margin: 0 0 6px; }
+  .checkout-success p { color: #b0bcd0; font-size: 0.78em; margin: 2px 0; }
+  .my-orders-hint {
+    display: inline-block; margin-top: 12px; padding: 6px 12px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; font-size: 0.7em; color: #8899af;
+  }
+
+  .sim-success {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.25);
+    border-radius: 8px; padding: 6px 10px; margin-top: 4px;
+  }
+  .sim-success span:first-child { font-size: 0.9em; }
+  .sim-success span:last-child { font-size: 0.7em; color: #a7f3d0; }
+</style>
+<!-- ═══ END <head> BLOCK ═══════════════════════════════════════════════ -->
+
+
+<!-- ═══ SLIDE BLOCK ═══════════════════════════════════════════════════ -->
+<div class="slide" id="gemini-sim-slide">
+  <span class="section-tag cyan">Live Simulation</span>
+  <h1>Agentic Commerce on <span class="accent">Gemini</span></h1>
+  <!-- CUSTOMIZE: subtitle (can reference merchant's category) -->
+  <p class="subtitle">A buyer searching for your products inside Google Gemini &mdash; powered by the Universal Commerce Protocol</p>
+
+  <div class="gemini-sim">
+    <div class="gs-controls">
+      <div class="gs-speed">
+        <button data-speed="0.5">0.5×</button>
+        <button data-speed="1" class="active">1×</button>
+        <button data-speed="2">2×</button>
+      </div>
+      <button class="gs-replay" onclick="gsRestart()">↻ Replay</button>
+    </div>
+    <div class="gemini-header">
+      <div class="gemini-logo"></div>
+      <span>Gemini</span>
+      <span class="ai-mode-pill">✨ AI MODE</span>
+    </div>
+    <div class="gemini-split">
+      <!-- Conversation -->
+      <div class="gemini-convo" id="gs-body">
+        <div class="sim-step">
+          <div class="sim-avatar user">U</div>
+          <div class="sim-bubble user-msg">
+            <!-- CUSTOMIZE: user query — write as a buyer for THIS merchant would ask -->
+            <p>"I'm looking for [product type] from [merchant-appropriate category] — something [specific criteria], under $[price]."</p>
+          </div>
+        </div>
+
+        <div class="sim-step">
+          <div class="sim-avatar gemini">G</div>
+          <div class="sim-bubble">
+            <div class="sim-label">AI Mode <span class="ucp-badge">UCP</span></div>
+            <!-- CUSTOMIZE: AI response tied to the query -->
+            <p>I searched across Shopify merchants for [matching criteria]. Here are 4 top options — pulled live from their catalogs with real-time pricing and availability.</p>
+            <div class="sim-meta">Queried via Universal Commerce Protocol · 4 Shopify merchants · Google Shopping Graph</div>
+          </div>
+        </div>
+
+        <div class="sim-step">
+          <div class="sim-avatar user">U</div>
+          <div class="sim-bubble user-msg">
+            <!-- CUSTOMIZE: user refinement — should mention the selected product -->
+            <p>"The [selected product] looks great. Can I buy that one right here?"</p>
+          </div>
+        </div>
+
+        <div class="sim-step">
+          <div class="sim-avatar gemini">G</div>
+          <div class="sim-bubble">
+            <div class="sim-label">AI Mode</div>
+            <p>Done — I've selected it for you. Tap <strong>Buy for me</strong> on the card and I'll handle checkout with your saved Google Pay. You can apply a discount code or connect loyalty points before you confirm.</p>
+          </div>
+        </div>
+
+        <div class="sim-step waiting" id="gs-step-confirm">
+          <div class="sim-avatar shopify">S</div>
+          <div class="sim-bubble">
+            <div class="sim-label ucp">Order Confirmed <span class="ucp-badge">Shopify</span></div>
+            <div class="sim-success">
+              <span>✅</span>
+              <!-- CUSTOMIZE: order ID + delivery window -->
+              <span>Order #[ID] · Est. delivery [dates] · Tracking sent to your email</span>
+            </div>
+            <p style="font-size: 0.72em; color: #b0bcd0; margin-top: 6px;">
+              <!-- CUSTOMIZE: merchant as seller of record -->
+              [Merchant] is the seller of record. View anytime in Menu → My stuff → My orders.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products -->
+      <div class="gemini-products">
+        <div class="product-panel-header">🛒 Matching your search · Powered by Shopify</div>
+        <div class="product-mosaic" id="gs-mosaic">
+          <!-- CUSTOMIZE: 4 real products from the merchant's catalog -->
+          <!-- Product 1 — this is the one the sim buys -->
+          <div class="mosaic-card" onclick="gsSelect(this, 0)">
+            <div class="mosaic-img">🎁</div>
+            <div class="mosaic-store">[MERCHANT]</div>
+            <h5>[Product 1 Name]</h5>
+            <div class="mosaic-price">$[price]</div>
+            <div class="mosaic-rating">4.8★ (2,340)</div>
+            <div class="mosaic-badges">
+              <span class="badge badge-shopify">Shopify</span>
+            </div>
+            <div class="mosaic-buy">
+              <button class="buy-for-me-btn" onclick="event.stopPropagation(); gsBuy()">Buy for me</button>
+            </div>
+          </div>
+          <div class="mosaic-card" onclick="gsSelect(this, 1)">
+            <div class="mosaic-img">🎁</div>
+            <div class="mosaic-store">[MERCHANT]</div>
+            <h5>[Product 2 Name]</h5>
+            <div class="mosaic-price">$[price]</div>
+            <div class="mosaic-rating">4.6★ (1,820)</div>
+            <div class="mosaic-badges">
+              <span class="badge badge-shopify">Shopify</span>
+              <span class="badge badge-tryon">Try-on</span>
+            </div>
+            <div class="mosaic-buy">
+              <button class="buy-for-me-btn" onclick="event.stopPropagation(); gsBuy()">Buy for me</button>
+            </div>
+          </div>
+          <div class="mosaic-card" onclick="gsSelect(this, 2)">
+            <div class="mosaic-img">🎁</div>
+            <div class="mosaic-store">[COMPETITOR/ALTERNATIVE]</div>
+            <h5>[Product 3 Name]</h5>
+            <div class="mosaic-price">$[price]</div>
+            <div class="mosaic-rating">4.9★ (3,102)</div>
+            <div class="mosaic-badges">
+              <span class="badge badge-shopify">Shopify</span>
+            </div>
+            <div class="mosaic-buy">
+              <button class="buy-for-me-btn" onclick="event.stopPropagation(); gsBuy()">Buy for me</button>
+            </div>
+          </div>
+          <div class="mosaic-card" onclick="gsSelect(this, 3)">
+            <div class="mosaic-img">🎁</div>
+            <div class="mosaic-store">[COMPETITOR/ALTERNATIVE]</div>
+            <h5>[Product 4 Name]</h5>
+            <div class="mosaic-price">$[price]</div>
+            <div class="mosaic-rating">4.5★ (980)</div>
+            <div class="mosaic-badges">
+              <span class="badge badge-shopify">Shopify</span>
+            </div>
+            <div class="mosaic-buy">
+              <button class="buy-for-me-btn" onclick="event.stopPropagation(); gsBuy()">Buy for me</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checkout overlay -->
+    <div class="checkout-overlay" id="gs-checkout">
+      <div class="checkout-card" id="gs-checkout-form">
+        <h3>Review your order</h3>
+        <div class="co-item">
+          <div class="co-item-img">🎁</div>
+          <div class="co-item-info">
+            <!-- CUSTOMIZE: selected product name + merchant -->
+            <h4>[Product 1 Name]</h4>
+            <p>[Merchant]</p>
+          </div>
+        </div>
+        <div class="co-field applied">
+          <span>🏷️</span><span>WELCOME10 applied</span><span class="val">-$[amt]</span>
+        </div>
+        <div class="co-field applied">
+          <span>🏆</span><span>[Merchant] Rewards connected</span><span class="val">+128 pts</span>
+        </div>
+        <div class="checkout-line"><span>Subtotal</span><span class="val">$[price]</span></div>
+        <div class="checkout-line discount"><span>Discount</span><span class="val">-$[amt]</span></div>
+        <div class="checkout-line"><span>Shipping</span><span class="val">Free</span></div>
+        <div class="checkout-line"><span>Tax</span><span class="val">$[tax]</span></div>
+        <div class="checkout-line total"><span>Total</span><span>$[total]</span></div>
+        <div class="checkout-address">📍 Sarah J. · 142 Oak Ave, Austin TX 78704</div>
+        <button class="gpay-btn" onclick="gsPurchase()"><span class="g-icon">G</span> Pay — $[total]</button>
+      </div>
+      <div class="checkout-success" id="gs-checkout-success">
+        <div class="big-check">✅</div>
+        <h3>Order placed!</h3>
+        <!-- CUSTOMIZE: product name + order ID + delivery window -->
+        <p>[Product 1 Name]</p>
+        <p>Order #[ID] · Est. delivery [dates]</p>
+        <p style="margin-top: 8px; color: #8899af; font-size: 0.7em;">🏆 +128 points earned</p>
+        <div class="my-orders-hint">📦 View in My Orders (Menu › My stuff)</div>
+        <p style="margin-top: 10px; color: #8899af; font-size: 0.66em;">Checkout via <span style="color:#96bf48;font-weight:600">Shopify</span> · <span style="color:#96bf48;font-weight:600">UCP</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ═══ END SLIDE BLOCK ═══════════════════════════════════════════════ -->
+
+
+<!-- ═══ PASTE BELOW BEFORE </body> ═══════════════════════════════════ -->
+<script>
+  // ── Gemini sim state ─────────────────────────
+  let gsSpeed = 1;
+
+  // Speed controls
+  document.querySelectorAll('.gs-speed button').forEach(b => {
+    b.onclick = () => {
+      const sp = parseFloat(b.dataset.speed);
+      gsSpeed = sp;
+      document.querySelectorAll('.gs-speed button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      // Re-apply animation-delay scaling by restarting
+      gsRestart();
+    };
+  });
+
+  function gsSelect(card, idx) {
+    document.querySelectorAll('#gs-mosaic .mosaic-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+  }
+
+  function gsBuy() {
+    document.getElementById('gs-checkout').classList.add('active');
+    document.getElementById('gs-checkout-form').style.display = 'block';
+    document.getElementById('gs-checkout-success').classList.remove('active');
+  }
+
+  function gsPurchase() {
+    const btn = document.querySelector('#gs-checkout .gpay-btn');
+    btn.textContent = 'Processing...';
+    btn.style.opacity = '0.6';
+    btn.style.cursor = 'default';
+
+    setTimeout(() => {
+      document.getElementById('gs-checkout-form').style.display = 'none';
+      document.getElementById('gs-checkout-success').classList.add('active');
+
+      setTimeout(() => {
+        document.getElementById('gs-checkout').classList.remove('active');
+        const confirm = document.getElementById('gs-step-confirm');
+        confirm.classList.remove('waiting');
+        confirm.style.display = 'flex';
+        confirm.style.animation = 'simFadeIn 0.5s ease forwards';
+        const convo = document.querySelector('.gemini-convo');
+        if (convo) convo.scrollTop = convo.scrollHeight;
+      }, 2000);
+    }, 1500);
+  }
+
+  function gsRestart() {
+    // Reset confirmation step
+    const confirm = document.getElementById('gs-step-confirm');
+    if (confirm) { confirm.classList.add('waiting'); confirm.style.display = 'none'; confirm.style.animation = 'none'; }
+
+    // Reset checkout
+    const overlay = document.getElementById('gs-checkout');
+    overlay.classList.remove('active');
+    const form = document.getElementById('gs-checkout-form');
+    form.style.display = 'block';
+    const btn = form.querySelector('.gpay-btn');
+    btn.innerHTML = '<span class="g-icon">G</span> Pay — $[total]'; // CUSTOMIZE: same total as above
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+    document.getElementById('gs-checkout-success').classList.remove('active');
+
+    // Re-animate conversation + products
+    document.querySelectorAll('.sim-step:not(.waiting), .mosaic-card').forEach(el => {
+      el.style.animation = 'none';
+      el.offsetHeight;  // force reflow
+      el.style.animation = '';
+    });
+
+    // Clear selections
+    document.querySelectorAll('#gs-mosaic .mosaic-card').forEach(c => c.classList.remove('selected'));
+  }
+</script>
+<!-- ═══ END SCRIPT BLOCK ═══════════════════════════════════════════════ -->
