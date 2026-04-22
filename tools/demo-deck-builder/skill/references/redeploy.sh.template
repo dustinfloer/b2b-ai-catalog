@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# Redeploy the {{MERCHANT}} demo deck to GitHub Pages.
+#
+# Usage:  ./redeploy.sh [--force]
+# Run from the .deploy directory.
+#
+# What it does:
+#   1. Re-encrypts merchant's latest index.html with staticrypt
+#   2. Commits the encrypted output + pushes to GitHub
+#   3. GitHub Pages rebuilds automatically (30-60 sec)
+#
+# Idempotent: if the source hasn't changed, this is a no-op.
+
+set -euo pipefail
+
+# ---- Config (filled in by the demo-deck-builder skill) --------------------
+SOURCE_HTML="{{SOURCE_HTML}}"
+PASSWORD="{{PASSWORD}}"
+DECK_TITLE="{{DECK_TITLE}}"
+LIVE_URL="{{LIVE_URL}}"
+# ---------------------------------------------------------------------------
+
+cd "$(dirname "$0")"
+
+if [ ! -f "$SOURCE_HTML" ]; then
+  echo "❌ Source deck not found at $SOURCE_HTML" >&2
+  echo "   Run this script from merchants/[merchant]/.deploy" >&2
+  exit 1
+fi
+
+# Skip if source hasn't changed since last deploy.
+# (staticrypt uses a fresh salt every run, so we can't compare encrypted output directly.)
+LAST_HASH_FILE=".last-source-hash"
+SOURCE_HASH=$(shasum "$SOURCE_HTML" | cut -d' ' -f1)
+
+if [ "${1:-}" != "--force" ] && [ -f "$LAST_HASH_FILE" ] && [ "$(cat "$LAST_HASH_FILE")" = "$SOURCE_HASH" ]; then
+  echo "ℹ️  Source deck unchanged since last deploy. Nothing to do."
+  echo "   (Use ./redeploy.sh --force to re-encrypt anyway.)"
+  exit 0
+fi
+
+echo "🔐 Encrypting deck..."
+cp "$SOURCE_HTML" index.html
+
+# Prefer pnpx; fall back to npx if needed.
+if command -v pnpx > /dev/null 2>&1; then
+  RUNNER="pnpx"
+elif command -v npx > /dev/null 2>&1; then
+  RUNNER="npx --yes"
+else
+  echo "❌ Neither pnpx nor npx is available. Install pnpm or npm first." >&2
+  exit 1
+fi
+
+$RUNNER staticrypt index.html \
+  -p "$PASSWORD" \
+  --short \
+  -d . \
+  --template-title "$DECK_TITLE" \
+  --template-instructions "Enter the password shared with you to view this deck." \
+  --template-color-primary "#14a098" \
+  --template-color-secondary "#0a1420" \
+  --template-button "Unlock" > /dev/null 2>&1
+
+if [ ! -f "index.html" ]; then
+  echo "❌ Encrypted output not found after staticrypt ran" >&2
+  exit 1
+fi
+
+echo "📦 Staging changes..."
+echo "$SOURCE_HASH" > "$LAST_HASH_FILE"
+git add index.html "$LAST_HASH_FILE"
+
+COMMIT_MSG="Update deck ($(date +%Y-%m-%d\ %H:%M))"
+git commit -m "$COMMIT_MSG" > /dev/null
+git push origin main 2>&1 | tail -1
+
+echo ""
+echo "✅ Pushed. GitHub Pages will rebuild in 30-60 seconds."
+echo ""
+echo "   URL:      $LIVE_URL"
+echo "   Password: $PASSWORD"
+echo ""

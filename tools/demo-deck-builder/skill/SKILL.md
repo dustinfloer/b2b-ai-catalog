@@ -34,9 +34,13 @@ Read these before starting:
 - `references/visual-effects.md` — mesh bg, particles, pulse rings, gradient accents, nav dots
 - `references/chat-animation.md` — timed message reveal pattern for Gemini/Sidekick/etc
 - `references/agentic-commerce-sim.html` — full UCP agentic-commerce sim variant (multi-product mosaic, Google Pay checkout overlay, discount/loyalty/subscription, order confirmation back into chat). Use **instead of** `chat-animation.md` when you want the complete discovery → checkout → confirmation story
-- `references/simulation-library.md` — catalog of 12+ animated simulations at simulations.quick.shopify.io (NetSuite, SAP, Oracle, ERP, payments, API, agentic commerce). For architecture / integration / payment-flow slides, prefer these over generating from scratch. **Always inline embed — never iframe.** The sims site is behind Google SSO, so iframes 404 for external viewers and even for signed-in users (IAP blocks iframing). Use a pre-extracted file from this folder when available (`agentic-commerce-sim.html`), or ask the user to paste the sim's "Copy HTML" output for inline embedding
+- `references/simulation-library.md` — catalog of 12+ animated simulations at simulations.quick.shopify.io (NetSuite, SAP, Oracle, ERP, payments, API, agentic commerce). For architecture / integration / payment-flow slides, grab the source from there instead of generating from scratch
+- `references/interactive-storefront-mockup.html` — drop-in multi-view merchant storefront (D2C PDP, Bulk Order, CSV Upload, Resources). Tabbed nav with working add-to-cart and cart counter. Use for one "live" demo moment instead of 4–5 static feature slides. Extracted from Terry Kealey's Taylor Guitars deck
 - `references/customization-guide.md` — how to adapt palette, logo, speakers per merchant
-- `examples/pdi-demo-deck.html` — full reference implementation
+- `references/deploy-github-pages.md` — protocol for publishing a password-protected deck to GitHub Pages (staticrypt + gh CLI). Referenced from Step 9 when the user picks Option A
+- `references/redeploy.sh.template` — parameterized helper script for idempotent redeploys. Used by Step 9 Option A
+- `examples/pdi-demo-deck.html` — reference implementation for SaaS-style merchants
+- `examples/taylor-guitars-demo-deck.html` — reference for premium consumer brand B2B. Showcases Challenges×Solutions summary, Case Study with hard metrics, interactive storefront mockup, and named attendees on cover. Built by Terry Kealey
 
 ## Workflow
 
@@ -196,11 +200,30 @@ Present a concise slide-by-slide summary, e.g.:
 
 Iterate on any flagged slides before moving on. Small fixes here save painful rework after the merchant sees the deck.
 
-### Step 9: Offer to Deploy to Quick Site
+### Step 9: Offer to Share the Deck
 
-File is already named `index.html` — ready to upload. Ask the user if they want to:
-- Deploy to a quick site (upload `merchants/[merchant]/index.html` at https://quick.shopify.io — see README for upload steps)
-- Or just present locally from Chrome (full-screen with `F` key)
+The deck file is already named `index.html`. Ask the user how they want to share/present it, using `AskUserQuestion` to offer these options:
+
+**Option A — Password-protected GitHub Pages (recommended for merchant share)**
+A public URL the merchant can open, with AES-256 encryption + password gate. Uses `staticrypt` + `gh` CLI. Full execution protocol in `references/deploy-github-pages.md`. When the user picks this:
+1. Read `references/deploy-github-pages.md` and follow the 10-step protocol
+2. Copy `references/redeploy.sh.template` to `merchants/[merchant]/.deploy/redeploy.sh`, substituting `{{SOURCE_HTML}}`, `{{PASSWORD}}`, `{{DECK_TITLE}}`, `{{LIVE_URL}}`, `{{MERCHANT}}`
+3. Return the URL, password, and a draft email the user can paste and send
+
+**Option B — Quick site (internal / @shopify.com audience only)**
+Upload `merchants/[merchant]/index.html` at https://quick.shopify.io. IAP-gated — only accessible to Shopify employees. Good for internal reviews, NOT for external merchant share.
+
+**Option C — Present locally from Chrome**
+Open the HTML file locally, present full-screen with the `F` key. No hosting involved. Best if the demo is happening live in the current session and no follow-up share is needed.
+
+**Option D — Email the HTML file**
+Zip `index.html` and attach to an email. Simplest share path if the user wants to skip hosting entirely. Warn that some corporate email filters strip HTML; zipping avoids most filters.
+
+**Decision guide:**
+- Merchant-facing follow-up after a demo → **Option A** (encrypted, professional URL, iteration-friendly)
+- Internal review by Shopify colleagues → **Option B** (IAP-gated is a feature, not a bug, here)
+- Live in-call presentation only → **Option C** (no overhead)
+- One-off share with a low-tech stakeholder → **Option D** (lowest friction)
 
 ## Key Principles
 

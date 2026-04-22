@@ -1,0 +1,878 @@
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  interactive-storefront-mockup.html — drop-in multi-view merchant storefront
+  ════════════════════════════════════════════════════════════════════════════
+
+  A fully interactive merchant storefront embedded as a single slide. Four tabbed
+  views: D2C PDP, Bulk Order, CSV Upload, Resources. All interactions (tab switch,
+  add-to-cart, cart counter, upload/download toasts) are wired up and self-contained.
+
+  Use this when you want one "live" demo moment instead of 4–5 static feature slides.
+  The SE can click through views while narrating the B2B workflow, then show the
+  cart counter tick up as they add items.
+
+  EXTRACTED FROM: Taylor Guitars demo deck by Terry Kealey.
+
+  USAGE:
+    1. Paste the <style> block into your deck's <head>
+       (all classes are .tg-* prefixed — no collisions with the base template)
+    2. Paste the <div class="slide taylor-site-slide"> block as one slide
+    3. Paste the <script> block before </body>
+    4. CUSTOMIZE below (6 sections marked CUSTOMIZE)
+
+  CUSTOMIZE:
+    - Merchant logo + brand name (tg-site-logo, tg-brand-name, tg-brand-tagline)
+    - Featured PDP product (image, title, price, description, SKU)
+    - Bulk order catalog (rows of products with SKU/qty/inventory)
+    - CSV upload hero copy (headline, subheadline, CTA labels)
+    - Resources downloads (catalog PDF, price list, dealer handbook)
+    - Color palette: all colors inherit from your deck's :root variables
+
+  COLLISION NOTE:
+    All classes prefixed .tg- or .taylor-site-slide. Safe to drop into any deck
+    using the demo-deck-builder scaffold.
+-->
+
+<style>
+
+
+
+  /* ─── Slide: TaylorGuitars.com experience (after slide 3) ─── */
+  .slide.taylor-site-slide {
+    padding: 0 !important;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow: hidden;
+    background: #0d0d0d;
+  }
+
+  .slide.taylor-site-slide .tg-site-wrap {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    background: #f7f6f4;
+    color: #1a1a1a;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .tg-site-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 22px;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+  }
+
+  .tg-logo-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .tg-site-logo {
+    height: 42px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    flex-shrink: 0;
+    visibility: hidden;
+  }
+
+  .tg-site-logo.is-loaded { visibility: visible; }
+
+  .tg-brand-stack { min-width: 0; }
+
+  .tg-brand-name {
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    color: #111;
+    line-height: 1.2;
+  }
+
+  .tg-brand-tagline {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #666;
+    margin-top: 4px;
+  }
+
+  .tg-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 0.8rem;
+    color: #444;
+    flex-shrink: 0;
+  }
+
+  .tg-cart-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: #111;
+    color: #fff;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  .tg-cart-pill span { background: #c9a227; color: #111; border-radius: 999px; min-width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+
+
+  .tg-site-nav {
+    flex-shrink: 0;
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .tg-nav-btn {
+    flex: 1;
+    padding: 14px 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #555;
+    border-bottom: 3px solid transparent;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .tg-nav-btn:hover { background: #f4f4f4; color: #111; }
+
+  .tg-nav-btn.active {
+    color: #111;
+    border-bottom-color: #b8860b;
+    background: #fafafa;
+  }
+
+
+  .tg-site-main {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 22px 24px 32px;
+  }
+
+  .tg-view { display: none; animation: tgFade 0.35s ease; }
+
+  .tg-view.active { display: block; }
+
+
+  .tg-pdp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    max-width: 920px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  @media (max-width: 800px) { .tg-pdp-grid { grid-template-columns: 1fr; } } @media (max-width: 800px) { .tg-pdp-icons { grid-template-columns: 1fr; } }
+
+  .tg-pdp-breadcrumb { font-size: 0.72rem; color: #888; margin: 0 0 10px; letter-spacing: 0.02em; }
+
+  .tg-pdp-img {
+    aspect-ratio: 4/5;
+    background: #fafafa;
+    border-radius: 12px;
+    display: block;
+    overflow: hidden;
+    border: 1px solid #e5e5e5;
+    padding: 0;
+  }
+
+  .tg-pdp-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    vertical-align: top;
+  }
+
+  .tg-pdp-series { font-size: 0.72rem; color: #444; margin: -8px 0 14px; line-height: 1.45; }
+
+  .tg-pdp-icons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .tg-pdp-iconcard {
+    background: #f6f6f6;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.68rem;
+    color: #555;
+    line-height: 1.45;
+    border: 1px solid #ececec;
+  }
+
+  .tg-pdp-iconcard strong {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 4px;
+  }
+
+  .tg-pdp-highlights {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #e8e8e8;
+  }
+
+  .tg-pdp-highlights h2 {
+    font-size: 0.88rem;
+    font-weight: 800;
+    margin: 0 0 10px;
+    color: #111;
+  }
+
+  .tg-pdp-highlights ul {
+    margin: 0;
+    padding-left: 1.15em;
+    font-size: 0.78rem;
+    color: #444;
+    line-height: 1.55;
+  }
+
+  .tg-pdp-highlights li { margin-bottom: 6px; }
+
+  .tg-pdp-note {
+    font-size: 0.68rem;
+    color: #777;
+    margin: 18px 0 0;
+    line-height: 1.45;
+  }
+
+  .tg-pdp-body h1 { font-size: 1.35rem; font-weight: 800; margin-bottom: 8px; line-height: 1.2; color: #111; }
+
+  .tg-pdp-sub { font-size: 0.78rem; color: #666; line-height: 1.5; margin-bottom: 16px; }
+
+  .tg-pdp-price { font-size: 1.5rem; font-weight: 800; margin-bottom: 16px; color: #111; }
+
+  .tg-pdp-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+
+  .tg-pdp-row label { font-size: 0.75rem; font-weight: 600; color: #444; }
+
+  .tg-pdp-row input[type="number"] {
+    width: 72px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-family: inherit;
+  }
+
+  .tg-btn-primary {
+    display: inline-block;
+    padding: 14px 28px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .tg-btn-primary:hover { background: #333; }
+
+  .tg-btn-primary:active { transform: scale(0.98); }
+
+  .tg-toast {
+    margin-top: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #0a7a4b;
+    min-height: 1.2em;
+  }
+
+
+  .tg-bulk-head {
+    max-width: 880px;
+    margin: 0 auto 18px;
+    padding: 16px 20px;
+    background: #1e2936;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .tg-bulk-list { max-width: 880px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+
+  .tg-bulk-row {
+    display: grid;
+    grid-template-columns: 72px 1fr auto auto;
+    gap: 14px;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  @media (max-width: 720px) {
+    .tg-bulk-row { grid-template-columns: 56px 1fr; }
+    .tg-bulk-meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px; }
+  }
+
+  .tg-bulk-thumb {
+    width: 72px; height: 72px; border-radius: 8px; background: #f5f5f5;
+    overflow: hidden; flex-shrink: 0;
+    border: 1px solid #e8e8e8;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .tg-bulk-thumb img {
+    width: 100%; height: 100%; object-fit: contain; display: block;
+  }
+
+  .tg-bulk-title { font-weight: 700; font-size: 0.9rem; color: #111; }
+
+  .tg-bulk-sku { font-size: 0.72rem; color: #666; margin-top: 4px; }
+
+  .tg-bulk-inv { font-size: 0.72rem; font-weight: 600; color: #0a7a4b; }
+
+  .tg-bulk-row input[type="number"] { width: 56px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
+
+  .tg-btn-sm { padding: 10px 16px; font-size: 0.72rem; border-radius: 6px; background: #111; color: #fff; border: none; font-weight: 700; cursor: pointer; font-family: inherit; }
+
+  .tg-btn-sm:hover { background: #333; }
+
+
+  .tg-upload-hero {
+    max-width: 560px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 24px 0 8px;
+  }
+
+  .tg-upload-hero h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; color: #111; }
+
+  .tg-upload-hero p { font-size: 0.85rem; color: #666; line-height: 1.5; }
+
+  .tg-cta-row {
+    max-width: 560px;
+    margin: 28px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .tg-cta-big {
+    padding: 22px 24px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    background: #fff;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .tg-cta-big:hover { background: #111; color: #fff; }
+
+  .tg-cta-big.secondary { border-color: #b8860b; color: #7a5f12; }
+
+  .tg-cta-big.secondary:hover { background: #b8860b; color: #111; }
+
+
+  .tg-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .tg-modal.is-open { display: flex; }
+
+  .tg-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+  }
+
+  .tg-modal-panel {
+    position: relative;
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+  }
+
+  .tg-modal-panel h3 { font-size: 1rem; font-weight: 800; margin-bottom: 16px; color: #111; }
+
+  .tg-file-pick {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fafafa;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  .tg-file-pick:hover { border-color: #111; background: #fff; }
+
+  .tg-file-pick span { color: #0a7a4b; font-size: 0.75rem; }
+
+  .tg-modal-close {
+    margin-top: 8px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: #666;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+
+  .tg-res-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .tg-res-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tg-res-card h3 { font-size: 0.9rem; font-weight: 800; color: #111; }
+
+  .tg-res-card p { font-size: 0.75rem; color: #666; line-height: 1.45; flex: 1; }
+
+  .tg-res-card button {
+    align-self: flex-start;
+    padding: 10px 18px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 8px;
+    border: 1px solid #111;
+    background: #fff;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .tg-res-card button:hover { background: #111; color: #fff; }
+</style>
+
+<div class="slide taylor-site-slide" data-slide="4">
+    <div class="tg-site-wrap">
+      <header class="tg-site-header" id="tg-site-header">
+        <div class="tg-logo-block">
+          <img class="tg-site-logo" id="tg-site-logo" alt="Taylor Guitars" width="140" height="48" />
+          <div class="tg-brand-stack">
+            <div class="tg-brand-name">Taylor Guitars</div>
+            <div class="tg-brand-tagline">Step forward. Music is Waiting™</div>
+          </div>
+        </div>
+        <div class="tg-header-actions">
+          <span>English</span>
+          <div class="tg-cart-pill">Cart <span id="tg-cart-count">0</span></div>
+        </div>
+      </header>
+      <nav class="tg-site-nav" role="tablist" aria-label="Store modes">
+        <button type="button" class="tg-nav-btn active" data-tg-view="d2c">Standard / D2C</button>
+        <button type="button" class="tg-nav-btn" data-tg-view="bulk">Bulk Order</button>
+        <button type="button" class="tg-nav-btn" data-tg-view="upload">Order Upload</button>
+        <button type="button" class="tg-nav-btn" data-tg-view="resources">Resources</button>
+      </nav>
+      <main class="tg-site-main" id="tg-site-main">
+        <div class="tg-view active" id="tg-view-d2c">
+          <div class="tg-pdp-grid">
+            <div>
+              <p class="tg-pdp-breadcrumb">Acoustic · T5z · T5z Pro, Harbor Blue</p>
+              <div class="tg-pdp-img">
+                <img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_desktop/public/images/2023-04/taylor-t5z-pro-blue-1203203139-frontleft-2023.png.webp?itok=WU7HPcX9" alt="T5z Pro, Harbor Blue — front three-quarter view" width="800" height="1000" decoding="async" />
+              </div>
+            </div>
+            <div class="tg-pdp-body">
+              <h1>T5z Pro, Harbor Blue</h1>
+              <p class="tg-pdp-sub">Electric · Big Leaf Maple Top · Shamel Ash Back and Sides · Neo-Tropical Mahogany Neck · West African Crelicam Ebony Fretboard · Venetian Cutaway</p>
+              <p class="tg-pdp-series">Series: T5z · UPC: #00887766120360</p>
+              <div class="tg-pdp-price">$3,299 USD</div>
+              <div class="tg-pdp-row">
+                <label for="tg-pdp-qty">Qty</label>
+                <input type="number" id="tg-pdp-qty" min="1" value="1" />
+              </div>
+              <button type="button" class="tg-btn-primary" id="tg-pdp-add">Add to Cart</button>
+              <div class="tg-toast" id="tg-pdp-toast" role="status"></div>
+              <div class="tg-pdp-icons">
+                <div class="tg-pdp-iconcard"><strong>Responsibly sourced materials</strong>Taylor is committed to ethical sourcing and sustainable practices.</div>
+                <div class="tg-pdp-iconcard"><strong>Deluxe hardshell case included</strong>Protective case included at no extra charge.</div>
+                <div class="tg-pdp-iconcard"><strong>Lifetime warranty with registration</strong>Limited Lifetime Warranty (U.S./Canada) with registration.</div>
+                <div class="tg-pdp-iconcard"><strong>Factory expert service &amp; support</strong>Responsive help from factory-trained experts.</div>
+              </div>
+              <div class="tg-pdp-highlights">
+                <h2>Overview</h2>
+                <ul>
+                  <li>Hybrid electric hollowbody with highly adaptable sound</li>
+                  <li>Three pickups and five-way switching for a huge range of tones</li>
+                  <li>Slender, fast-playing neck with jumbo frets</li>
+                  <li>Rounded edges and integrated armrest for a seamless feel</li>
+                  <li>Includes hardshell case for storage and transport</li>
+                </ul>
+              </div>
+              <p class="tg-pdp-note">Note: Each guitar has unique visual traits due to differences in wood grain. Instruments may show minor visual variations from the one pictured.</p>
+            </div>
+          </div>
+        </div>
+                <div class="tg-view" id="tg-view-bulk">
+          <div class="tg-bulk-head">Wholesale bulk order · Best sellers collection</div>
+          <p style="max-width:880px;margin:0 auto 16px;font-size:0.8rem;color:#555">Reference assortment from <a href="https://www.taylorguitars.com/guitars/acoustic/best-sellers" target="_blank" rel="noopener" style="color:#0a7a4b">Taylor best sellers</a> — simulated SKUs &amp; inventory.</p>
+          <div class="tg-bulk-list">
+        <div class="tg-bulk-row">
+          <div class="tg-bulk-thumb"><img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_compare_crop_large_2x/public/images/2025-12/Taylor-814ce-1208285067-2026-Spec-FrontLeft-2025.png.webp" alt="Next Generation 814ce" width="144" height="144" loading="lazy" decoding="async" /></div>
+          <div>
+            <div class="tg-bulk-title">Next Generation 814ce</div>
+            <div class="tg-bulk-sku">SKU: TG-NG814CE</div>
+            <div class="tg-bulk-meta">
+              <span class="tg-bulk-inv">Available: 48 units</span>
+            </div>
+          </div>
+          <input type="number" min="0" value="1" aria-label="Qty TG-NG814CE" class="tg-bulk-qty"/>
+          <button type="button" class="tg-btn-sm tg-bulk-add">Add</button>
+        </div>
+        <div class="tg-bulk-row">
+          <div class="tg-bulk-thumb"><img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_compare_crop_large_2x/public/images/2025-11/Taylor-Trey-Hensley-Gold-Label-510e-SE-%28THSM%29-1209035090-FrontLeft-2025.png.webp" alt="Trey Hensley Gold Label 510e" width="144" height="144" loading="lazy" decoding="async" /></div>
+          <div>
+            <div class="tg-bulk-title">Trey Hensley Gold Label 510e</div>
+            <div class="tg-bulk-sku">SKU: TG-GL510E-TH</div>
+            <div class="tg-bulk-meta">
+              <span class="tg-bulk-inv">Available: 12 units</span>
+            </div>
+          </div>
+          <input type="number" min="0" value="1" aria-label="Qty TG-GL510E-TH" class="tg-bulk-qty"/>
+          <button type="button" class="tg-btn-sm tg-bulk-add">Add</button>
+        </div>
+        <div class="tg-bulk-row">
+          <div class="tg-bulk-thumb"><img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_compare_crop_large_2x/public/images/2025-12/Taylor-314ce-1208275085-%282026%20Spec%29-FrontLeft-2025.png.webp" alt="Next Generation 314ce" width="144" height="144" loading="lazy" decoding="async" /></div>
+          <div>
+            <div class="tg-bulk-title">Next Generation 314ce</div>
+            <div class="tg-bulk-sku">SKU: TG-NG314CE</div>
+            <div class="tg-bulk-meta">
+              <span class="tg-bulk-inv">Available: 64 units</span>
+            </div>
+          </div>
+          <input type="number" min="0" value="1" aria-label="Qty TG-NG314CE" class="tg-bulk-qty"/>
+          <button type="button" class="tg-btn-sm tg-bulk-add">Add</button>
+        </div>
+        <div class="tg-bulk-row">
+          <div class="tg-bulk-thumb"><img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_compare_crop_large_2x/public/images/2024-11/Taylor-314ce-Studio-Special-Edition-1208234110-FrontLeft-2024.png.webp" alt="314ce Studio" width="144" height="144" loading="lazy" decoding="async" /></div>
+          <div>
+            <div class="tg-bulk-title">314ce Studio</div>
+            <div class="tg-bulk-sku">SKU: TG-314CE-ST</div>
+            <div class="tg-bulk-meta">
+              <span class="tg-bulk-inv">Available: 22 units</span>
+            </div>
+          </div>
+          <input type="number" min="0" value="1" aria-label="Qty TG-314CE-ST" class="tg-bulk-qty"/>
+          <button type="button" class="tg-btn-sm tg-bulk-add">Add</button>
+        </div>
+        <div class="tg-bulk-row">
+          <div class="tg-bulk-thumb"><img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_compare_crop_large_2x/public/images/2024-03/Taylor-210ce-2209013076-FrontLeft-2023.png.webp" alt="210ce" width="144" height="144" loading="lazy" decoding="async" /></div>
+          <div>
+            <div class="tg-bulk-title">210ce</div>
+            <div class="tg-bulk-sku">SKU: TG-210CE</div>
+            <div class="tg-bulk-meta">
+              <span class="tg-bulk-inv">Available: 103 units</span>
+            </div>
+          </div>
+          <input type="number" min="0" value="1" aria-label="Qty TG-210CE" class="tg-bulk-qty"/>
+          <button type="button" class="tg-btn-sm tg-bulk-add">Add</button>
+        </div>
+        <div class="tg-bulk-row">
+          <div class="tg-bulk-thumb"><img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_compare_crop_large_2x/public/images/2024-04/Taylor-114ce-%28C-Class%29-2210243411-FrontLeft-2023.png.webp" alt="114ce" width="144" height="144" loading="lazy" decoding="async" /></div>
+          <div>
+            <div class="tg-bulk-title">114ce</div>
+            <div class="tg-bulk-sku">SKU: TG-114CE</div>
+            <div class="tg-bulk-meta">
+              <span class="tg-bulk-inv">Available: 156 units</span>
+            </div>
+          </div>
+          <input type="number" min="0" value="1" aria-label="Qty TG-114CE" class="tg-bulk-qty"/>
+          <button type="button" class="tg-btn-sm tg-bulk-add">Add</button>
+        </div>
+        <div class="tg-bulk-row">
+          <div class="tg-bulk-thumb"><img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_compare_crop_large_2x/public/images/2024-03/Taylor-214ce-2209073120-FrontLeft-2023.png.webp" alt="214ce" width="144" height="144" loading="lazy" decoding="async" /></div>
+          <div>
+            <div class="tg-bulk-title">214ce</div>
+            <div class="tg-bulk-sku">SKU: TG-214CE</div>
+            <div class="tg-bulk-meta">
+              <span class="tg-bulk-inv">Available: 88 units</span>
+            </div>
+          </div>
+          <input type="number" min="0" value="1" aria-label="Qty TG-214CE" class="tg-bulk-qty"/>
+          <button type="button" class="tg-btn-sm tg-bulk-add">Add</button>
+        </div>
+        <div class="tg-bulk-row">
+          <div class="tg-bulk-thumb"><img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_compare_crop_large_2x/public/images/2023-11/Taylor-GS%20Mini%20Mahogany-00841060045279-FrontLeft-2021_0.png.webp" alt="GS Mini Mahogany" width="144" height="144" loading="lazy" decoding="async" /></div>
+          <div>
+            <div class="tg-bulk-title">GS Mini Mahogany</div>
+            <div class="tg-bulk-sku">SKU: TG-GSMM</div>
+            <div class="tg-bulk-meta">
+              <span class="tg-bulk-inv">Available: 200 units</span>
+            </div>
+          </div>
+          <input type="number" min="0" value="1" aria-label="Qty TG-GSMM" class="tg-bulk-qty"/>
+          <button type="button" class="tg-btn-sm tg-bulk-add">Add</button>
+        </div>
+        <div class="tg-bulk-row">
+          <div class="tg-bulk-thumb"><img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_compare_crop_large_2x/public/images/2024-03/Taylor-214ce-Plus-2209073118-FrontLeft-2023.png.webp" alt="214ce Plus" width="144" height="144" loading="lazy" decoding="async" /></div>
+          <div>
+            <div class="tg-bulk-title">214ce Plus</div>
+            <div class="tg-bulk-sku">SKU: TG-214CE-P</div>
+            <div class="tg-bulk-meta">
+              <span class="tg-bulk-inv">Available: 34 units</span>
+            </div>
+          </div>
+          <input type="number" min="0" value="1" aria-label="Qty TG-214CE-P" class="tg-bulk-qty"/>
+          <button type="button" class="tg-btn-sm tg-bulk-add">Add</button>
+        </div>
+        <div class="tg-bulk-row">
+          <div class="tg-bulk-thumb"><img src="https://www.taylorguitars.com/sites/default/files/styles/guitar_compare_crop_large_2x/public/images/2025-06/Taylor-Gold-Label-517e-SB-1202125101-FrontLeft-2025.png.webp" alt="Gold Label 517e SB" width="144" height="144" loading="lazy" decoding="async" /></div>
+          <div>
+            <div class="tg-bulk-title">Gold Label 517e SB</div>
+            <div class="tg-bulk-sku">SKU: TG-GL517E-SB</div>
+            <div class="tg-bulk-meta">
+              <span class="tg-bulk-inv">Available: 19 units</span>
+            </div>
+          </div>
+          <input type="number" min="0" value="1" aria-label="Qty TG-GL517E-SB" class="tg-bulk-qty"/>
+          <button type="button" class="tg-btn-sm tg-bulk-add">Add</button>
+        </div>
+          </div>
+        </div>
+        <div class="tg-view" id="tg-view-upload">
+          <div class="tg-upload-hero">
+            <h2>Order upload</h2>
+            <p>Download the latest wholesale catalog template, or upload a CSV to submit a multi-line order.</p>
+          </div>
+          <div class="tg-cta-row">
+            <button type="button" class="tg-cta-big" id="tg-download-catalog">Download Catalog</button>
+            <button type="button" class="tg-cta-big secondary" id="tg-open-upload">Upload CSV</button>
+          </div>
+          <p class="tg-toast" id="tg-upload-toast" style="text-align:center"></p>
+        </div>
+        <div class="tg-view" id="tg-view-resources">
+          <div class="tg-upload-hero">
+            <h2>Marketing resources</h2>
+            <p>Simulated dealer assets — click to download sample files.</p>
+          </div>
+          <div class="tg-res-grid">
+            <div class="tg-res-card">
+              <h3>2026 Product Guide</h3>
+              <p>Overview of new models, specs, and merchandising notes for your floor.</p>
+              <button type="button" class="tg-res-dl" data-fn="Taylor_2026_Product_Guide.pdf" data-body="Taylor Guitars — 2026 Product Guide (sample)">Download PDF</button>
+            </div>
+            <div class="tg-res-card">
+              <h3>Dealer Merchandising Kit</h3>
+              <p>Posters, shelf talkers, and seasonal campaign starters.</p>
+              <button type="button" class="tg-res-dl" data-fn="Taylor_Dealer_Merch_Kit.zip.txt" data-body="Merchandising kit manifest (sample)">Download kit</button>
+            </div>
+            <div class="tg-res-card">
+              <h3>Social media pack</h3>
+              <p>Approved lifestyle crops and hashtag suggestions for local posts.</p>
+              <button type="button" class="tg-res-dl" data-fn="Taylor_Social_Assets_2026.txt" data-body="#StepForward #TaylorGuitars — sample caption sheet">Download pack</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="tg-modal" id="tg-upload-modal" aria-hidden="true">
+      <div class="tg-modal-backdrop" id="tg-modal-backdrop"></div>
+      <div class="tg-modal-panel" role="dialog" aria-labelledby="tg-modal-title">
+        <h3 id="tg-modal-title">Select file to upload</h3>
+        <p style="font-size:0.8rem;color:#666;margin-bottom:12px">Simulated picker — choose the sample dealer order file.</p>
+        <button type="button" class="tg-file-pick" id="tg-pick-steves">steves_music_order.csv <span>Ready to upload</span></button>
+        <input type="file" id="tg-file-input" accept=".csv,text/csv" style="display:none" />
+        <button type="button" class="tg-modal-close" id="tg-modal-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide section-title-slide" data-slide="5">
+    <div class="mesh-bg"></div>
+    <div class="subtle-bg-motion"></div>
+    <div class="slide-header">
+      <img src="[IMG_URL]" alt="" class="logo-merchant-img" style="display:none" id="header-merchant-logo-3">
+      <div class="merchant-logo-placeholder" id="header-merchant-placeholder-3">Logo</div>
+      <span class="logo-times">×</span>
+      <img src="[IMG_URL]" alt="Shopify" style="height:36px;width:auto">
+    </div>
+    <div class="slide-content" style="text-align:center">
+      <div class="section-num slide-in-up">02</div>
+      <h2 class="section-headline fade-in-delay"><span class="accent">Inventory &amp; Pricing</span> Synced To Syspro</h2>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: TaylorGuitars.com multi-experience (D2C / B2B / upload / resources) -->
+  <div class="slide section-title-slide" data-slide="6">
+    <div class="mesh-bg"></div>
+    <div class="subtle-bg-motion"></div>
+    <div class="slide-header">
+      <img src="[IMG_URL]" alt="" class="logo-merchant-img" style="display:none" id="header-merchant-logo-4">
+      <div class="merchant-logo-placeholder" id="header-merchant-placeholder-4">Logo</div>
+      <span class="logo-times">×</span>
+      <img src="[IMG_URL]" alt="Shopify" style="height:36px;width:auto">
+    </div>
+    <div class="slide-content" style="text-align:center">
+      <div class="section-num slide-in-up">03</div>
+      <h2 class="section-headline fade-in-delay"><span class="accent">Account Visibility</span> &amp; Dealer Tools</h2>
+    </div>
+  </div>
+
+  <div class="slide section-title-slide" data-slide="7">
+    <div class="mesh-bg"></div>
+    <div class="subtle-bg-motion"></div>
+    <div class="slide-header">
+      <img src="[IMG_URL]" alt="" class="logo-merchant-img" style="display:none" id="header-merchant-logo-5">
+      <div class="merchant-logo-placeholder" id="header-merchant-placeholder-5">Logo</div>
+      <span class="logo-times">×</span>
+      <img src="[IMG_URL]" alt="Shopify" style="height:36px;width:auto">
+    </div>
+    <div class="slide-content" style="text-align:center">
+      <div class="section-num slide-in-up">04</div>
+      <h2 class="section-headline fade-in-delay"><span class="accent">Payment Terms</span> &amp; Approval Flows</h2>
+    </div>
+  </div>
+
+  <div class="slide section-title-slide section-title-slide--with-logos" data-slide="8">
+    <div class="mesh-bg"></div>
+    <div class="subtle-bg-motion"></div>
+    <div class="slide-header">
+      <img src="[IMG_URL]" alt="" class="logo-merchant-img" style="display:none" id="header-merchant-logo-6">
+      <div class="merchant-logo-placeholder" id="header-merchant-placeholder-6">Logo</div>
+      <span class="logo-times">×</span>
+      <img src="[IMG_URL]" alt="Shopify" style="height:36px;width:auto">
+    </div>
+    <div class="slide-content" style="text-align:center">
+      <div class="section-num slide-in-up">05</div>
+      <h2 class="section-headline fade-in-delay"><span class="accent">Enterprise-Ready</span> Platform</h2>
+      <div class="enterprise-b2b-logos-block fade-in-delay" style="--delay:0.15s">
+        <h3 class="enterprise-b2b-logos-deck-title">Top brands are choosing Shopify B2B</h3>
+        <div class="enterprise-b2b-logos-scroll" role="img" aria-label="Brand logos on Shopify B2B">
+          <img class="enterprise-b2b-logos-composite" src="[IMG_URL]" alt="Nike Strength, Caraway, LifeFitness, YETI, nuun, Revlon, Momofuku, Brooklinen, Lulu and Georgia, and other brands on Shopify B2B" width="1200" height="1200" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  var slide = document.querySelector('.taylor-site-slide');
+  if (!slide) return;
+
+  function init() {
+    if (slide.getAttribute('data-tg-init') === '1') return;
+    slide.setAttribute('data-tg-init', '1');
+    var root = slide.querySelector('.tg-site-wrap');
+    if (!root) return;
+
+    // Tab nav switching
+    root.querySelectorAll('.tg-nav-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var v = btn.getAttribute('data-tg-view');
+        root.querySelectorAll('.tg-nav-btn').forEach(function (b) {
+          b.classList.toggle('active', b === btn);
+        });
+        root.querySelectorAll('.tg-view').forEach(function (panel) {
+          panel.classList.toggle('active', panel.id === 'tg-view-' + v);
+        });
+      });
+    });
+
+    // Cart counter
+    var cartEl = document.getElementById('tg-cart-count');
+    var cartCount = 0;
+    function addToCart(n) {
+      cartCount += n;
+      if (cartEl) cartEl.textContent = String(cartCount);
+    }
+
+    // D2C PDP add-to-cart
+    var pdpToast = document.getElementById('tg-pdp-toast');
+    var pdpAdd = document.getElementById('tg-pdp-add');
+    if (pdpAdd) {
+      pdpAdd.addEventListener('click', function () {
+        var qEl = document.getElementById('tg-pdp-qty');
+        var q = parseInt(qEl && qEl.value ? qEl.value : '1', 10) || 1;
+        addToCart(q);
+        if (pdpToast) {
+          pdpToast.textContent = 'Added to cart.';
+          setTimeout(function () { pdpToast.textContent = ''; }, 2000);
+        }
+      });
+    }
+
+    // Bulk order add-to-cart (per row)
+    slide.querySelectorAll('.tg-bulk-add').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var row = btn.closest('.tg-bulk-row');
+        var qtyEl = row && row.querySelector('.tg-bulk-qty');
+        var q = parseInt(qtyEl && qtyEl.value ? qtyEl.value : '0', 10) || 0;
+        addToCart(q);
+      });
+    });
+
+    // Upload / resources demo toasts
+    var uploadToast = document.getElementById('tg-upload-toast');
+    var downloadBtn = document.getElementById('tg-download-catalog');
+    if (downloadBtn) downloadBtn.addEventListener('click', function () {
+      if (uploadToast) uploadToast.textContent = 'Catalog download started (demo).';
+    });
+    var openUpload = document.getElementById('tg-open-upload');
+    if (openUpload) openUpload.addEventListener('click', function () {
+      if (uploadToast) uploadToast.textContent = 'Upload dialog (demo).';
+    });
+  }
+
+  // Initialize immediately — if the slide is nested in a deck that inits on activation, call init() when it becomes active instead
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>

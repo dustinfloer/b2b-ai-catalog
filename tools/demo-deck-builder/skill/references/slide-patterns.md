@@ -384,3 +384,296 @@ Next-steps call to action.
   </div>
 </section>
 ```
+
+---
+
+## 14. Challenges × Solutions Summary
+
+Two-column grid that pairs each merchant goal/pain with the Shopify solution that addresses it. Strong mid-deck consolidation pattern — visually shows "you said X, here's how we solve X." Extracted from Terry Kealey's Taylor Guitars deck.
+
+```html
+<section class="slide summary-slide" data-speaker="SE">
+  <div class="mesh-bg"></div>
+  <div class="slide-inner">
+    <h2 class="slide-title">Your goals &mdash; <span class="accent">mapped to Shopify.</span></h2>
+
+    <div class="summary-layout">
+      <div class="summary-head-challenges">Goals</div>
+      <div class="summary-head-solutions">Shopify B2B Solutions</div>
+
+      <div class="summary-card summary-challenge-card" style="grid-column:1;grid-row:2">
+        <div class="summary-challenge-text">
+          [Merchant's goal or pain, pulled verbatim from discovery]
+        </div>
+      </div>
+      <div class="summary-solution-wrap" style="grid-column:2;grid-row:2">
+        <div class="summary-card summary-solution-card">
+          <div class="summary-solution">[How Shopify solves it — specific products/APIs]</div>
+          <div class="summary-benefit">[One-line benefit in the merchant's language]</div>
+        </div>
+      </div>
+
+      <!-- Repeat challenge/solution pair for rows 3, 4, 5, 6 -->
+    </div>
+  </div>
+</section>
+```
+
+**CSS (include in `<style>` block):**
+
+```css
+.summary-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto repeat(5, minmax(90px, 1fr));
+  gap: 0 32px;
+  row-gap: 14px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.summary-head-challenges,
+.summary-head-solutions {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+}
+.summary-head-solutions { color: var(--accent); }
+.summary-card {
+  padding: 18px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.summary-challenge-text {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.5;
+}
+.summary-solution {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.95);
+  margin-bottom: 8px;
+}
+.summary-benefit {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.4;
+}
+```
+
+**Tip:** Target 4–6 challenge/solution pairs. More than 6 makes the slide too dense.
+
+---
+
+## 15. Case Study (Peer Merchant with Hard Metrics)
+
+Replaces the generic 6-tile customer proof grid when you want to tell a specific peer story with hard numbers. Extracted from Terry Kealey's Taylor Guitars deck (Gesswein case study).
+
+```html
+<section class="slide case-study-slide" data-speaker="SE">
+  <div class="mesh-bg"></div>
+  <div class="slide-header">
+    <img src="[peer-merchant-logo]" alt="[Peer]" style="height:36px;width:auto">
+    <span class="logo-times">×</span>
+    <img src="[shopify-logo]" alt="Shopify" style="height:36px;width:auto">
+  </div>
+
+  <div class="slide-inner">
+    <div class="cs-eyebrow">Case study</div>
+    <h2 class="cs-title">[Peer]: [headline] &mdash; <span class="accent">[lesson that mirrors merchant's situation]</span></h2>
+
+    <div class="cs-parallels">
+      <span class="cs-pill">[Parallel 1]</span>
+      <span class="cs-pill">[Parallel 2]</span>
+      <span class="cs-pill">[Parallel 3]</span>
+      <span class="cs-pill">[Parallel 4]</span>
+    </div>
+
+    <div class="cs-metrics">
+      <div class="cs-metric">
+        <div class="cs-metric-val">+101%</div>
+        <div class="cs-metric-lbl">YoY transactions</div>
+      </div>
+      <div class="cs-metric">
+        <div class="cs-metric-val">+225%</div>
+        <div class="cs-metric-lbl">Site traffic</div>
+      </div>
+      <div class="cs-metric">
+        <div class="cs-metric-val">+343%</div>
+        <div class="cs-metric-lbl">Site users</div>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+**CSS:**
+
+```css
+.cs-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.cs-title {
+  font-size: clamp(1.35rem, 2.8vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+.cs-parallels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 14px;
+  margin-bottom: 22px;
+  max-width: 720px;
+  margin: 0 auto 22px;
+}
+.cs-pill {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.cs-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.cs-metric {
+  padding: 16px 12px;
+  border-radius: 14px;
+  background: rgba(var(--accent-rgb), 0.18);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+}
+.cs-metric-val {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.cs-metric-lbl {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.65);
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+}
+```
+
+**Tip:** The `cs-parallels` pills are the secret sauce — they explicitly tell the merchant "this story maps to your situation." Always pull 3–4 parallels that match something the merchant actually said in discovery.
+
+---
+
+## 16. Cover Variant — Named Attendees with Avatars
+
+More personal version of the cover slide meta-bar. Instead of just text names, show each Shopify team member with their Slack avatar, name, and title. Good for high-stakes first meetings.
+
+```html
+<section class="slide cover" data-speaker="AE">
+  <div class="mesh-bg"></div>
+  <div class="slide-particles">...</div>
+
+  <div class="slide-inner">
+    <!-- Merchant × Shopify logos, title, tagline — same as standard Cover pattern -->
+    <div class="title-logos">...</div>
+    <h1 class="slide-title">...</h1>
+    <p class="title-tagline">...</p>
+  </div>
+
+  <div class="title-slide-attendees">
+    <div class="attendees-label">Shopify team</div>
+    <div class="attendee-row">
+      <div class="attendee-avatar">
+        <img src="[slack-avatar-url]" alt="">
+      </div>
+      <div class="attendee-meta">
+        <div class="attendee-name">[Full Name]</div>
+        <div class="attendee-title">[Role]</div>
+      </div>
+    </div>
+    <!-- Repeat attendee-row for each team member -->
+  </div>
+</section>
+```
+
+**CSS:**
+
+```css
+.title-slide-attendees {
+  position: absolute;
+  bottom: 64px;
+  left: 28px;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-width: min(440px, 88vw);
+}
+.attendees-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1px;
+}
+.attendee-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.attendee-avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.attendee-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.attendee-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.2;
+}
+.attendee-title {
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.42);
+  line-height: 1.25;
+  margin-top: 1px;
+}
+```
+
+**Tip:** Slack avatars work well (pull from the user's Slack profile). If no photo is available, use initials on a colored background. Don't mix photo and initials — pick one style for consistency.
+
+---
+
+## 17. Interactive Merchant Storefront Mockup
+
+See [`interactive-storefront-mockup.html`](./interactive-storefront-mockup.html) in this folder. It's too large for a snippet — a full multi-view storefront (D2C PDP, Bulk Order, CSV Upload, Resources) with working tab nav and add-to-cart. Drop-in pattern for when you want one "live" demo moment instead of 4–5 static feature slides.
