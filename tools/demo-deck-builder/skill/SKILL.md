@@ -107,15 +107,56 @@ Present a summary of what was found and what's missing. Example:
 
 Wait for confirmation before moving on. This is the moment to catch missing sources — AFTER the deck is built it's painful to redo.
 
-### Step 3: Ask 3 Clarifying Questions (via AskUserQuestion)
+### Step 3: Effort-Appropriate Branching (via AskUserQuestion)
 
-Before building, confirm:
+Before building, give the user **three paths at each decision point** — Lean (defaults), Collaborative (user picks), or Delegated (skill does the research). Option (a) is always zero-decision for speed. Option (c) costs the skill more effort but no user time.
 
-1. **Macro structure** — How many sections? Suggested: `Opening (AE) → Modern Platform → Buyer Journeys → Operations → Pricing & Close (AE)`. User may want fewer sections or different groupings.
+Ask these as separate `AskUserQuestion` calls OR batched in one multi-question prompt:
 
-2. **Signature "wow" scenario** — What scenario plays in the animated Gemini chat? Should reflect merchant's ICP buyer asking a realistic question. For B2B-light merchants, keep it DTC. For B2B-heavy, can include company context.
+**1. Branding & palette**
 
-3. **Brand palette preference** — Default is teal (`#14a098` + `#1cc7bd`) + navy (`#1e3a5f`). Offer to swap if merchant has distinct brand colors (check their website). Always keep dark bg and Inter typography.
+- a. Use defaults (teal `#14a098` + navy `#1e3a5f`, Inter font) — fastest
+- b. I'll tell you the colors/fonts
+- c. Do a brief check on [merchant]'s website and propose a palette
+
+If (c): WebFetch the merchant's homepage + about page. Extract:
+- 1–2 signature colors from hero/nav/buttons (convert to hex)
+- Primary font family (heading + body if different)
+- Logo URL if available
+- Brand voice signal (crisp / luxe / playful / technical — 1 word)
+
+Then propose: *"Their site uses deep green + cream, serif headlines, luxury tone. Propose: swap `--c-accent` → `#1a4d3a`, use Cormorant Garamond for headings, dark bg stays. Approve, tweak, or fall back to defaults?"*
+
+Always keep dark background and swap only `--c-accent` / `--c-accent-bright` / `--font-heading` to preserve the scaffold's visual identity.
+
+**2. Slide mix**
+
+- a. Use the recommended 18–25 slide set for this deal type (see Step 5 table)
+- b. I'll pick which patterns are relevant
+- c. Tailor the mix based on what you found in context
+
+If (c): cross-reference context from Step 1 against `slide-patterns.md`:
+- B2B-only merchant → include B2B Evolution, skip DTC-only patterns
+- ERP mentioned in config → include ERP integration slide
+- No field sales mentioned → skip Sales Rep
+- Peer merchant identified → Case Study slide #15
+- Merchant has diverse storefront use cases → Interactive Storefront mockup
+
+**3. Peer case study (new Case Study pattern)**
+
+- a. Skip — no peer story in this deck
+- b. I have a peer merchant in mind (user names it)
+- c. Find me a relevant peer story (query SENTRAL + public case studies for a match by industry + business model)
+
+**4. Interactive storefront mockup (optional, higher effort)**
+
+- a. Skip — stick to static feature slides
+- b. Include a generic version (Taylor scaffold as-is)
+- c. Include a merchant-branded version (adds ~5 min — reskin logo, colors, sample products)
+
+**5. Signature "wow" Gemini/Sidekick scenario**
+
+This one's not optional — always ask. What scenario plays in the animated chat? Should be a realistic question the merchant's ICP buyer would ask. For B2B-heavy merchants, can include company context.
 
 ### Step 4: Copy Template + Customize
 
@@ -153,6 +194,20 @@ Every content slide should pull from the merchant context gathered in Step 1, no
 - Pricing: reference the actual opportunity amount and structure from Salesforce
 
 If a slide can't be grounded in merchant-specific context, either pull it (don't pad the deck) or mark it clearly as a generic Shopify capability slide, not a "this is about you" slide. Generic slides in a tailored deck are the tell that you didn't do the work.
+
+**Mid-build checkpoints — pause at two natural points:**
+
+Don't build the whole deck silently and reveal a 20-slide wall of text at the end. Pause at two checkpoints so the user catches direction issues early:
+
+1. **After Opening section drafted** (Cover → Discovery Recap → About Shopify → B2B Evolution → Customer Proof)
+
+   > Opening section is drafted — cover, discovery recap, about Shopify, customer proof. Before I move to the platform section: anything feel off here? Wrong framing, missing context, tone adjustments?
+
+2. **After Buyer Journeys section drafted** (feature slides — the most merchant-specific section)
+
+   > Buyer Journeys section done — [N] feature slides covering [list them]. This is the meat of the deck. Anything to cut, add, or reframe before I wrap the Operations and Close sections?
+
+Keep the pause light — the user can say "looks good, continue" in 2 seconds. But if direction is off, catching it at 30% or 60% is 10x cheaper than at 100%.
 
 ### Step 6: Wire Animated Chats
 
