@@ -34,5 +34,14 @@
     "industry": "Automotive / Emergency Lighting",
     "author": "Jordan Murphy",
     "tags": ["automotive"]
+  },
+  {
+    "id": "taylor-guitars",
+    "name": "Taylor Guitars",
+    "description": "B2B deck focused on challenges, objectives, and solutions for a premium instruments brand selling to dealers and music retailers.",
+    "url": "https://taylor-guitars-demo-deck.quick.shopify.io/",
+    "industry": "Musical Instruments / Premium Goods",
+    "author": "Terry Kealey",
+    "tags": ["b2b", "premium", "dealer-network"]
   }
 ]
