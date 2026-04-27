@@ -1,5 +1,20 @@
 [
   {
+    "slug": "weekly-deal-update",
+    "name": "Weekly Deal Update",
+    "description": "AI-generated deal summaries with current state, next steps, and PMF/TA status — sent as a DM to review, edit, approve, or auto-send on a schedule",
+    "url": "https://skills.quick.shopify.io/#/weekly-deal-update",
+    "category": "Tools",
+    "built_with": "Skill",
+    "audience": "SE-facing",
+    "author": "Anna Feichtner",
+    "author_slack": "@anna.feichtner",
+    "date_added": "2026-04-27",
+    "screenshot": "",
+    "slack_channel": "",
+    "repo_url": ""
+  },
+  {
     "slug": "demo-deck-builder",
     "name": "Demo Deck Builder",
     "description": "Claude Code skill for building Shopify × Merchant demo decks. Dark UI with teal accents, animated chat mockups (Gemini/Sidekick), a drop-in agentic commerce simulation, and a library of 12+ pre-built sims covering NetSuite, SAP, Oracle, payments, and ERP integrations. Quick-site ready.",
