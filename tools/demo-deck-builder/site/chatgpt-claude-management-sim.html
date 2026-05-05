@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════════════════════════════════
+  chatgpt-claude-management-sim.html — drop-in store-management simulation
+  ════════════════════════════════════════════════════════════════════════════
+
+  THE STORY:
+    Same merchant, same Shopify store, two AI interfaces. ChatGPT runs
+    daily ops (snapshots, inventory edits). Claude runs strategic asks
+    (build a promo, draft a campaign). A live admin strip shows both
+    AIs writing to the same store via the official Shopify connector.
+
+  ANNOUNCEMENTS REFERENCED:
+    - Shopify app for ChatGPT (ChatGPT Apps SDK, Oct/Nov 2025)
+    - Shopify connector for Claude.ai (Anthropic Connectors Directory)
+
+  USAGE — TWO MODES:
+    A) Open this file directly in Chrome — full standalone preview.
+    B) Embed in a deck:
+       1. Copy everything between BEGIN <style> / END <style>
+          into your deck's <head>.
+       2. Copy the <div class="slide" id="cc-sim-slide"> block into
+          your deck as one slide.
+       3. Copy the <script> block before your deck's </body>.
+       4. CUSTOMIZE the 4 sections marked "CUSTOMIZE" — merchant
+          name, scenarios, and product names.
+
+  All classes prefixed .cc- (chatgpt-claude) to avoid collisions.
+  ════════════════════════════════════════════════════════════════════════════
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Manage Your Store From Any AI · Live Simulation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- ═══ BEGIN <style> ═══════════════════════════════════════════════════ -->
+<style>
+  /* Deck design tokens — these match the demo-deck-builder template.
+     When embedded in a deck, these vars are already defined, so this
+     block becomes a no-op. */
+  :root {
+    --cc-bg: #0a1420;
+    --cc-bg-elevated: #0f1a28;
+    --cc-surface: #14202e;
+    --cc-border: #233345;
+    --cc-border-light: #1a2738;
+    --cc-text: #e6edf3;
+    --cc-text-secondary: #9ba4af;
+    --cc-text-muted: #6b7380;
+    --cc-accent: #14a098;
+    --cc-accent-bright: #1cc7bd;
+    --cc-accent-dim: rgba(20, 160, 152, 0.12);
+    --cc-accent-glow: rgba(20, 160, 152, 0.4);
+    --cc-accent-border: rgba(20, 160, 152, 0.35);
+    --cc-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--cc-bg);
+    color: var(--cc-text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 40px 28px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Standalone-preview mesh — drop the .cc-mesh-bg div if your deck
+     already provides one. Mirrors the deck's body::before. */
+  .cc-mesh-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 50%, rgba(20, 160, 152, 0.06), transparent 60%),
+      radial-gradient(ellipse 40% 30% at 10% 90%, rgba(20, 160, 152, 0.04), transparent 50%),
+      radial-gradient(ellipse 30% 40% at 90% 10%, rgba(30, 58, 95, 0.10), transparent 50%);
+  }
+
+  /* Floating teal particles — deck signature */
+  .cc-particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+  .cc-particles span {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--cc-accent);
+    box-shadow: 0 0 12px var(--cc-accent-glow), 0 0 24px var(--cc-accent-glow);
+    opacity: 0;
+    animation: ccParticleFloat 18s ease-in-out infinite;
+  }
+  .cc-particles span:nth-child(1) { top: 18%; left: 6%;  animation-delay: 0s; }
+  .cc-particles span:nth-child(2) { top: 70%; left: 9%;  animation-delay: -4s; width: 3px; height: 3px; }
+  .cc-particles span:nth-child(3) { top: 40%; right: 7%; animation-delay: -9s; }
+  .cc-particles span:nth-child(4) { top: 86%; right: 12%; animation-delay: -13s; width: 2px; height: 2px; }
+  .cc-particles span:nth-child(5) { top: 12%; right: 22%; animation-delay: -6s; width: 3px; height: 3px; }
+  .cc-particles span:nth-child(6) { top: 55%; left: 48%; animation-delay: -2s; width: 2px; height: 2px; }
+  .cc-particles span:nth-child(7) { top: 30%; left: 30%; animation-delay: -11s; width: 3px; height: 3px; }
+  .cc-particles span:nth-child(8) { top: 78%; right: 35%; animation-delay: -15s; }
+  @keyframes ccParticleFloat {
+    0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+    10%      { opacity: 0.6; }
+    50%      { opacity: 0.9; transform: translateY(-30px) translateX(10px); }
+    90%      { opacity: 0.5; }
+  }
+
+  .slide {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 28px 32px 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--cc-mono);
+    font-size: 0.65em;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 12px 5px 10px;
+    border-radius: 14px;
+    margin-bottom: 16px;
+    background: var(--cc-accent-dim);
+    border: 1px solid var(--cc-accent-border);
+    color: var(--cc-accent);
+  }
+  .section-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cc-accent);
+    box-shadow: 0 0 8px var(--cc-accent);
+  }
+
+  .slide h1 {
+    font-size: 2.6em;
+    font-weight: 800;
+    line-height: 1.08;
+    margin-bottom: 10px;
+    letter-spacing: -0.025em;
+    color: var(--cc-text);
+  }
+  .slide h1 .accent {
+    background: linear-gradient(120deg, #10A37F 0%, var(--cc-accent-bright) 50%, #D97757 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .slide .subtitle {
+    color: var(--cc-text-secondary);
+    font-size: 0.95em;
+    margin-bottom: 22px;
+    max-width: 760px;
+    line-height: 1.55;
+  }
+
+  /* ── Sim shell ─────────────────────────────────────────── */
+  .cc-sim {
+    background: var(--cc-bg-elevated);
+    border: 1px solid var(--cc-border);
+    border-radius: 16px;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 30px 80px rgba(0,0,0,0.45),
+      0 0 0 1px rgba(20, 160, 152, 0.04);
+  }
+  /* Subtle ambient glow behind the sim card */
+  .cc-sim::before {
+    content: '';
+    position: absolute;
+    inset: -40px;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 0%, rgba(20, 160, 152, 0.10), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 100% 100%, rgba(217, 119, 87, 0.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  .cc-controls {
+    display: flex; gap: 6px; align-items: center;
+    font-family: var(--cc-mono);
+  }
+  .cc-speed {
+    display: flex; background: rgba(0,0,0,0.35); border-radius: 6px; overflow: hidden;
+    font-size: 0.62em; border: 1px solid var(--cc-border);
+  }
+  .cc-speed button {
+    padding: 4px 9px; border: none; background: none; color: var(--cc-text-muted);
+    cursor: pointer; font-family: var(--cc-mono); font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .cc-speed button.active {
+    background: var(--cc-accent-dim); color: var(--cc-accent-bright);
+  }
+  .cc-replay {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--cc-border);
+    color: var(--cc-text-secondary); padding: 4px 10px; border-radius: 6px;
+    font-size: 0.62em; cursor: pointer; font-family: var(--cc-mono);
+    font-weight: 500; letter-spacing: 0.04em;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .cc-replay:hover { background: rgba(255,255,255,0.07); color: var(--cc-text); }
+
+  /* ── Top bar: store identity ───────────────────────────── */
+  .cc-store-bar {
+    background:
+      linear-gradient(90deg,
+        rgba(20, 160, 152, 0.06) 0%,
+        rgba(20, 160, 152, 0.02) 50%,
+        rgba(217, 119, 87, 0.05) 100%),
+      var(--cc-surface);
+    border-bottom: 1px solid var(--cc-border);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .cc-store-mark {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: linear-gradient(135deg, #96BF48, #5e8e3e);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    box-shadow: 0 0 0 1px rgba(150, 191, 72, 0.2), 0 0 18px rgba(150, 191, 72, 0.15);
+  }
+  .cc-store-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .cc-store-name { font-size: 0.95em; font-weight: 700; color: var(--cc-text); }
+  .cc-store-sub  {
+    font-family: var(--cc-mono);
+    font-size: 0.66em; color: var(--cc-text-muted);
+    letter-spacing: 0.04em;
+  }
+  .cc-store-right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 12px;
+    flex-shrink: 0;
+  }
+  .cc-store-pill {
+    padding: 5px 10px;
+    background: var(--cc-accent-dim);
+    border: 1px solid var(--cc-accent-border);
+    color: var(--cc-accent);
+    border-radius: 12px;
+    font-family: var(--cc-mono);
+    font-size: 0.6em; font-weight: 500; letter-spacing: 0.12em;
+    display: flex; align-items: center; gap: 7px;
+    text-transform: uppercase;
+  }
+  .cc-pulse-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cc-accent);
+    box-shadow: 0 0 8px var(--cc-accent);
+    animation: ccPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes ccPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.4); opacity: 0.6; }
+  }
+
+  /* ── Two-pane chat layout ──────────────────────────────── */
+  .cc-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 480px;
+  }
+
+  .cc-pane {
+    padding: 0;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    background: var(--cc-bg-elevated);
+  }
+  .cc-pane.gpt {
+    background:
+      linear-gradient(180deg, rgba(16,163,127,0.04) 0%, transparent 30%),
+      var(--cc-bg-elevated);
+    border-right: 1px solid var(--cc-border-light);
+  }
+  .cc-pane.claude {
+    background:
+      linear-gradient(180deg, rgba(217,119,87,0.04) 0%, transparent 30%),
+      var(--cc-bg-elevated);
+  }
+
+  .cc-pane-header {
+    padding: 12px 18px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid var(--cc-border-light);
+  }
+  .cc-pane-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; flex-shrink: 0;
+  }
+  .cc-pane-icon svg { width: 18px; height: 18px; display: block; }
+  .cc-pane-icon.gpt    { background: linear-gradient(135deg, #10A37F, #0d8466); }
+  .cc-pane-icon.claude { background: linear-gradient(135deg, #D97757, #b85f3d); }
+
+  .cc-pane-title { font-size: 0.92em; font-weight: 700; color: var(--cc-text); }
+  .cc-pane-sub   {
+    font-family: var(--cc-mono);
+    font-size: 0.62em; color: var(--cc-text-muted);
+    letter-spacing: 0.06em;
+  }
+  .cc-pane-conn {
+    margin-left: auto;
+    font-family: var(--cc-mono);
+    font-size: 0.58em; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .cc-pane-conn.gpt {
+    background: rgba(16,163,127,0.10);
+    color: #4ad4a8;
+    border: 1px solid rgba(16,163,127,0.28);
+  }
+  .cc-pane-conn.claude {
+    background: rgba(217,119,87,0.10);
+    color: #ee9b78;
+    border: 1px solid rgba(217,119,87,0.28);
+  }
+  .cc-conn-dot {
+    width: 5px; height: 5px; border-radius: 50%; background: currentColor;
+    box-shadow: 0 0 6px currentColor;
+    animation: ccPulse 1.8s ease-in-out infinite;
+  }
+
+  .cc-chat-body {
+    flex: 1;
+    padding: 16px 18px;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 10px;
+    min-height: 380px;
+  }
+  .cc-chat-body::-webkit-scrollbar { width: 4px; }
+  .cc-chat-body::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.08); border-radius: 2px;
+  }
+
+  /* Messages */
+  .cc-msg {
+    display: flex; gap: 8px; align-items: flex-start;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: ccFadeIn 0.45s ease forwards;
+  }
+  @keyframes ccFadeIn { to { opacity: 1; transform: translateY(0); } }
+
+  .cc-msg.user { flex-direction: row-reverse; }
+
+  .cc-avatar {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6em; font-weight: 700; color: white;
+  }
+  .cc-avatar svg { width: 15px; height: 15px; display: block; }
+  .cc-avatar.user   { background: linear-gradient(135deg, #6366f1, #a78bfa); }
+  .cc-avatar.gpt    { background: linear-gradient(135deg, #10A37F, #0d8466); }
+  .cc-avatar.claude { background: linear-gradient(135deg, #D97757, #b85f3d); }
+
+  /* Store brand mark — Shopify shopping bag */
+  .cc-store-mark svg { width: 18px; height: 18px; display: block; }
+  .cc-admin-label .shop-mark svg { width: 11px; height: 11px; display: block; }
+
+  .cc-bubble {
+    background: var(--cc-surface);
+    border: 1px solid var(--cc-border);
+    border-radius: 12px;
+    padding: 10px 13px;
+    max-width: 88%;
+    font-size: 0.78em;
+    line-height: 1.5;
+    color: var(--cc-text-secondary);
+  }
+  .cc-msg.user .cc-bubble {
+    background: var(--cc-accent-dim);
+    border-color: var(--cc-accent-border);
+    color: var(--cc-text);
+  }
+  .cc-msg.gpt .cc-bubble {
+    background: rgba(16, 163, 127, 0.04);
+    border-color: rgba(16, 163, 127, 0.22);
+  }
+  .cc-msg.claude .cc-bubble {
+    background: rgba(217, 119, 87, 0.04);
+    border-color: rgba(217, 119, 87, 0.22);
+  }
+
+  .cc-bubble p { margin: 0 0 6px; }
+  .cc-bubble p:last-child { margin: 0; }
+  .cc-bubble strong { color: var(--cc-text); font-weight: 600; }
+
+  .cc-tool-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--cc-mono);
+    font-size: 0.62em; font-weight: 500;
+    color: var(--cc-text-muted);
+    margin-bottom: 8px;
+    padding: 3px 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--cc-border-light);
+    border-radius: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .cc-tool-tag.gpt    {
+    color: #4ad4a8; background: rgba(16,163,127,0.06);
+    border-color: rgba(16,163,127,0.18);
+  }
+  .cc-tool-tag.claude {
+    color: #ee9b78; background: rgba(217,119,87,0.06);
+    border-color: rgba(217,119,87,0.18);
+  }
+
+  /* Data table inside response */
+  .cc-data {
+    margin-top: 8px;
+    background: var(--cc-bg);
+    border: 1px solid var(--cc-border-light);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.92em;
+  }
+  .cc-data-row {
+    display: flex; justify-content: space-between;
+    padding: 4px 0;
+    color: var(--cc-text-secondary);
+  }
+  .cc-data-row strong { color: var(--cc-text); font-weight: 600; }
+  .cc-data-row + .cc-data-row { border-top: 1px solid var(--cc-border-light); }
+  .cc-data-row.win strong { color: var(--cc-accent-bright); }
+
+  /* Inline action confirmation */
+  .cc-action-row {
+    margin-top: 8px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 11px;
+    border-radius: 7px;
+    font-size: 0.92em;
+    background: var(--cc-accent-dim);
+    border: 1px solid var(--cc-accent-border);
+  }
+  .cc-action-row .check { color: var(--cc-accent-bright); font-weight: 700; }
+  .cc-action-row span { color: var(--cc-text); }
+
+  /* Inline reasoning bullets (Claude) */
+  .cc-reason {
+    margin-top: 6px;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.2);
+    border-left: 2px solid rgba(217, 119, 87, 0.5);
+    border-radius: 4px;
+    font-size: 0.92em;
+  }
+  .cc-reason ul { margin: 0; padding-left: 16px; }
+  .cc-reason li {
+    color: var(--cc-text-secondary); line-height: 1.5; margin-bottom: 3px;
+  }
+  .cc-reason li strong { color: var(--cc-text); }
+  .cc-reason li::marker { color: #ee9b78; }
+
+  /* ── Bottom: Live Admin Sync strip ─────────────────────── */
+  .cc-admin {
+    background: var(--cc-bg);
+    border-top: 1px solid var(--cc-border);
+    padding: 14px 22px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 18px;
+    align-items: center;
+  }
+  .cc-admin-label {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--cc-mono);
+    font-size: 0.62em;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--cc-accent);
+  }
+  .cc-admin-label .shop-mark {
+    width: 20px; height: 20px; border-radius: 5px;
+    background: linear-gradient(135deg, #96BF48, #5e8e3e);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    box-shadow: 0 0 0 1px rgba(150, 191, 72, 0.2);
+  }
+  .cc-admin-events {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .cc-admin-event {
+    display: flex; align-items: center; gap: 7px;
+    padding: 5px 10px;
+    background: var(--cc-accent-dim);
+    border: 1px solid var(--cc-accent-border);
+    border-radius: 7px;
+    font-size: 0.7em;
+    color: var(--cc-text);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .cc-admin-event.shown {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .cc-admin-event .check {
+    color: var(--cc-accent-bright); font-weight: 700;
+  }
+  .cc-admin-event .src {
+    font-family: var(--cc-mono);
+    font-size: 0.8em; font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--cc-text-muted);
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--cc-border-light);
+    margin-left: 2px;
+  }
+  .cc-admin-event .src.gpt    {
+    color: #4ad4a8;
+    background: rgba(16,163,127,0.08);
+    border-color: rgba(16,163,127,0.22);
+  }
+  .cc-admin-event .src.claude {
+    color: #ee9b78;
+    background: rgba(217,119,87,0.08);
+    border-color: rgba(217,119,87,0.22);
+  }
+
+  .cc-admin-status {
+    font-family: var(--cc-mono);
+    font-size: 0.6em;
+    color: var(--cc-text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .cc-admin-status .pulse-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cc-accent);
+    box-shadow: 0 0 8px var(--cc-accent);
+    animation: ccPulse 1.6s ease-in-out infinite;
+  }
+
+  /* Footer note (compact source ribbon) */
+  .cc-footnote {
+    margin-top: 16px;
+    font-family: var(--cc-mono);
+    font-size: 0.62em;
+    color: var(--cc-text-muted);
+    text-align: center;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .cc-footnote em {
+    color: var(--cc-text-muted);
+    font-style: normal;
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 940px) {
+    .cc-split { grid-template-columns: 1fr; }
+    .cc-pane.gpt { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .slide h1 { font-size: 1.8em; }
+  }
+</style>
+<!-- ═══ END <style> ═════════════════════════════════════════════════════ -->
+
+</head>
+<body>
+
+<!-- ═══ Brand mark SVG defs (referenced via <use> below) ════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- OpenAI / ChatGPT rosette (official mark) -->
+    <symbol id="logo-openai" viewBox="0 0 320 320">
+      <path fill="currentColor" d="M297.06 130.97a80.06 80.06 0 0 0-6.88-65.76c-17.06-29.6-51.2-44.83-84.6-37.7C190.4 9.42 168.18 0 144.94 0c-34.18 0-64.49 22-75.06 54.49a80 80 0 0 0-53.5 38.79 80.07 80.07 0 0 0 9.83 93.71 80.05 80.05 0 0 0 6.87 65.76c17.06 29.6 51.21 44.83 84.6 37.7 14.95 16.84 36.34 26.41 58.95 26.41 34.18 0 64.49-22 75.06-54.49a80.16 80.16 0 0 0 53.5-38.79 80.05 80.05 0 0 0-9.83-93.71l-.21-.07Zm-120.41 168.39A59.39 59.39 0 0 1 138.6 285.5l1.92-1.06 64.92-37.49a10.59 10.59 0 0 0 5.34-9.21V146.05l27.45 15.85a.95.95 0 0 1 .53.81v75.78c0 33.04-26.84 59.85-59.94 59.87Zm-128.84-55.04a59.07 59.07 0 0 1-7.06-39.56l1.92 1.15 64.93 37.49a10.55 10.55 0 0 0 10.66 0l79.27-45.77v31.7c.02.34-.14.66-.42.86l-65.65 37.89a59.96 59.96 0 0 1-81.94-21.94l-1.71-1.82Zm-17.07-141.83A59.93 59.93 0 0 1 60.04 76.3v77.3a10.5 10.5 0 0 0 5.32 9.18l79.27 45.76-27.45 15.85a.95.95 0 0 1-.94 0l-65.5-37.81a59.96 59.96 0 0 1-21.99-81.95l-.01-.04Zm225.36 52.4-79.27-45.79 27.45-15.84a.95.95 0 0 1 .94 0l65.49 37.83a59.97 59.97 0 0 1-9.27 108.31v-77.3a10.69 10.69 0 0 0-5.34-9.21Zm27.32-41.13c-.6-.36-1.62-1.02-2.34-1.41l-64.79-37.49a10.55 10.55 0 0 0-10.66 0L147.3 121.16V89.46c0-.36.16-.7.43-.91l65.55-37.83a59.96 59.96 0 0 1 89.04 67.96l.1-.42Zm-171.64 56.66-27.43-15.83a.95.95 0 0 1-.53-.81v-75.78a59.95 59.95 0 0 1 98.31-46.04l-1.92 1.06-64.92 37.49a10.59 10.59 0 0 0-5.34 9.21l-.17 90.7Zm14.91-32.16 35.32-20.39 35.32 20.38v40.77l-35.32 20.39-35.32-20.39V138.27Z"/>
+    </symbol>
+
+    <!-- Anthropic / Claude burst (8-point asterisk inspired by Anthropic mark) -->
+    <symbol id="logo-claude" viewBox="-50 -50 100 100">
+      <g fill="currentColor">
+        <!-- 4 long beams (cardinals) -->
+        <polygon points="0,-46 10,0 0,4 -10,0"/>
+        <polygon points="0,-46 10,0 0,4 -10,0" transform="rotate(90)"/>
+        <polygon points="0,-46 10,0 0,4 -10,0" transform="rotate(180)"/>
+        <polygon points="0,-46 10,0 0,4 -10,0" transform="rotate(270)"/>
+        <!-- 4 short beams (diagonals) -->
+        <polygon points="0,-30 7,0 0,3 -7,0" transform="rotate(45)"/>
+        <polygon points="0,-30 7,0 0,3 -7,0" transform="rotate(135)"/>
+        <polygon points="0,-30 7,0 0,3 -7,0" transform="rotate(225)"/>
+        <polygon points="0,-30 7,0 0,3 -7,0" transform="rotate(315)"/>
+      </g>
+    </symbol>
+
+    <!-- Shopify shopping bag (simplified) -->
+    <symbol id="logo-shopify" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M14.92 4.7a.34.34 0 0 0-.3-.28L13.31 4.3l-.96-.95a.32.32 0 0 0-.27-.09l-.5.15c-.04-.1-.08-.21-.13-.32-.18-.36-.46-.55-.79-.55h-.06c-.03-.04-.07-.08-.1-.11a1.06 1.06 0 0 0-.83-.27c-.66.02-1.3.5-1.83 1.34-.36.59-.64 1.32-.72 1.9l-1.27.4c-.38.12-.39.13-.44.49-.04.27-1.04 8.05-1.04 8.05L13.66 18l3.65-.79s-2.39-12.26-2.39-12.51zM11.05 4l-.81.25v-.18c0-.55-.07-.99-.2-1.34.5.06.84.62 1.01 1.27zm-1.4-1.18c.13.32.21.78.21 1.4v.1l-1.7.52c.32-1.25.93-1.86 1.49-2.02zM8.7 2.6c.09 0 .18.03.25.1-.59.27-1.21.96-1.48 2.34l-1.34.42c.27-.91.95-2.86 2.57-2.86z"/>
+      <path fill="rgba(0,0,0,0.45)" d="M14.62 4.42a.34.34 0 0 0-.3-.28c-.02 0-.43-.03-.43-.03l-1.04 12.95L17 16.1S14.65 4.69 14.62 4.42z"/>
+      <path fill="#fff" d="m11.31 6.55-.45 1.36s-.4-.2-.89-.18c-.71.05-.72.5-.71.61.04.59 1.6.71 1.69 2.1.07 1.1-.58 1.85-1.51 1.91-1.13.07-1.74-.6-1.74-.6l.24-1.02s.62.47 1.12.43c.32-.02.43-.28.42-.46-.05-.77-1.31-.72-1.4-2-.07-1.07.63-2.16 2.18-2.26.6-.04.91.11.91.11z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="cc-mesh-bg"></div>
+<div class="cc-particles">
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<!-- ═══ SLIDE BLOCK ═══════════════════════════════════════════════════ -->
+<div class="slide" id="cc-sim-slide">
+  <span class="section-tag">Live Simulation</span>
+  <h1>Manage your store from <span class="accent">any AI</span></h1>
+  <p class="subtitle">
+    One Shopify store. ChatGPT for daily ops, Claude for strategic work — both
+    talking to the same admin via the official Shopify connector.
+  </p>
+
+  <div class="cc-sim">
+    <!-- Store identity bar -->
+    <div class="cc-store-bar">
+      <div class="cc-store-mark"><svg><use href="#logo-shopify"/></svg></div>
+      <div class="cc-store-meta">
+        <!-- CUSTOMIZE: merchant name + plan -->
+        <div class="cc-store-name">ACME Bath &amp; Body</div>
+        <div class="cc-store-sub">Shopify Plus · 1 store · acme.myshopify.com</div>
+      </div>
+      <div class="cc-store-right">
+        <div class="cc-store-pill">
+          <span class="cc-pulse-dot"></span>
+          One store · Two AIs
+        </div>
+        <div class="cc-controls">
+          <div class="cc-speed">
+            <button data-speed="0.5">0.5×</button>
+            <button data-speed="1" class="active">1×</button>
+            <button data-speed="2">2×</button>
+          </div>
+          <button class="cc-replay" onclick="ccRestart()">↻ Replay</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two panes -->
+    <div class="cc-split">
+
+      <!-- ─── ChatGPT pane (daily ops) ───────────────────── -->
+      <div class="cc-pane gpt">
+        <div class="cc-pane-header">
+          <div class="cc-pane-icon gpt"><svg><use href="#logo-openai"/></svg></div>
+          <div>
+            <div class="cc-pane-title">ChatGPT</div>
+            <div class="cc-pane-sub">Shopify app · Daily ops</div>
+          </div>
+          <div class="cc-pane-conn gpt">
+            <span class="cc-conn-dot"></span>
+            Store linked
+          </div>
+        </div>
+        <div class="cc-chat-body" id="cc-gpt-body">
+
+          <div class="cc-msg user" data-cc-delay="500" data-cc-pane="gpt">
+            <div class="cc-avatar user">M</div>
+            <div class="cc-bubble">
+              <p>How did we do yesterday?</p>
+            </div>
+          </div>
+
+          <div class="cc-msg gpt" data-cc-delay="3000" data-cc-pane="gpt">
+            <div class="cc-avatar gpt"><svg><use href="#logo-openai"/></svg></div>
+            <div class="cc-bubble">
+              <span class="cc-tool-tag gpt">📊 Shopify · analytics.read</span>
+              <p>Yesterday's snapshot for <strong>ACME Bath &amp; Body</strong>:</p>
+              <div class="cc-data">
+                <div class="cc-data-row"><span>Orders</span><strong>87</strong></div>
+                <div class="cc-data-row win"><span>GMV</span><strong>$12,840</strong></div>
+                <div class="cc-data-row"><span>AOV</span><strong>$147</strong></div>
+                <div class="cc-data-row"><span>Top product</span><strong>Lavender Bath Bomb (24 sold)</strong></div>
+                <div class="cc-data-row"><span>Returns</span><strong>2 (1.4%)</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cc-msg user" data-cc-delay="11500" data-cc-pane="gpt">
+            <div class="cc-avatar user">M</div>
+            <div class="cc-bubble">
+              <p>Pause the Lavender Bath Bomb — we're backordered until Friday.</p>
+            </div>
+          </div>
+
+          <div class="cc-msg gpt" data-cc-delay="14500" data-cc-pane="gpt">
+            <div class="cc-avatar gpt"><svg><use href="#logo-openai"/></svg></div>
+            <div class="cc-bubble">
+              <span class="cc-tool-tag gpt">✏️ Shopify · products.update</span>
+              <p>Done. <strong>Lavender Bath Bomb</strong> moved to <strong>Draft</strong>.</p>
+              <div class="cc-action-row">
+                <span class="check">✓</span>
+                <span>12 in-fulfillment orders unaffected · restock alert added for Friday</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ─── Claude pane (strategic work) ────────────────── -->
+      <div class="cc-pane claude">
+        <div class="cc-pane-header">
+          <div class="cc-pane-icon claude"><svg><use href="#logo-claude"/></svg></div>
+          <div>
+            <div class="cc-pane-title">Claude</div>
+            <div class="cc-pane-sub">Shopify connector · Strategic work</div>
+          </div>
+          <div class="cc-pane-conn claude">
+            <span class="cc-conn-dot"></span>
+            Store linked
+          </div>
+        </div>
+        <div class="cc-chat-body" id="cc-claude-body">
+
+          <div class="cc-msg user" data-cc-delay="6000" data-cc-pane="claude">
+            <div class="cc-avatar user">M</div>
+            <div class="cc-bubble">
+              <p>Build me a promo for our slow-movers this month — protect margin.</p>
+            </div>
+          </div>
+
+          <div class="cc-msg claude" data-cc-delay="9500" data-cc-pane="claude">
+            <div class="cc-avatar claude"><svg><use href="#logo-claude"/></svg></div>
+            <div class="cc-bubble">
+              <span class="cc-tool-tag claude">🔍 Shopify · inventory + 30-day velocity</span>
+              <p>Pulled your catalog. <strong>8 SKUs</strong> are &gt;60 days old with low velocity. Bundling is your best margin protector here.</p>
+              <div class="cc-reason">
+                <ul>
+                  <li>Bundle: <strong>Pre-Summer Refresh</strong> — Eucalyptus Soap, Citrus Scrub, Mint Balm</li>
+                  <li>25% off · margin floor preserved at <strong>$12 avg</strong></li>
+                  <li>Forecast: ~140 units / $4.2K incremental in 14 days</li>
+                </ul>
+              </div>
+              <p style="margin-top:8px;">Approve and I'll create the discount + draft a launch email.</p>
+            </div>
+          </div>
+
+          <div class="cc-msg user" data-cc-delay="17000" data-cc-pane="claude">
+            <div class="cc-avatar user">M</div>
+            <div class="cc-bubble">
+              <p>Approved — create it and queue the email.</p>
+            </div>
+          </div>
+
+          <div class="cc-msg claude" data-cc-delay="20500" data-cc-pane="claude">
+            <div class="cc-avatar claude"><svg><use href="#logo-claude"/></svg></div>
+            <div class="cc-bubble">
+              <span class="cc-tool-tag claude">✏️ Shopify · discounts.create + drafts.email</span>
+              <p>Created <strong>PRESUMMER25</strong> · 25% off the bundle · expires May 31.</p>
+              <div class="cc-action-row">
+                <span class="check">✓</span>
+                <span>Email draft saved (3 subject-line variants) · scheduled for tomorrow 9am ET pending your review</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Live Admin Sync strip -->
+    <div class="cc-admin">
+      <div class="cc-admin-label">
+        <span class="shop-mark"><svg><use href="#logo-shopify"/></svg></span>
+        Live admin sync
+      </div>
+      <div class="cc-admin-events">
+        <div class="cc-admin-event" id="cc-event-1" data-cc-delay="16500">
+          <span class="check">✓</span>
+          <span>Lavender Bath Bomb · Draft</span>
+          <span class="src gpt">ChatGPT</span>
+        </div>
+        <div class="cc-admin-event" id="cc-event-2" data-cc-delay="22500">
+          <span class="check">✓</span>
+          <span>PRESUMMER25 · Active</span>
+          <span class="src claude">Claude</span>
+        </div>
+        <div class="cc-admin-event" id="cc-event-3" data-cc-delay="23000">
+          <span class="check">✓</span>
+          <span>Email draft queued</span>
+          <span class="src claude">Claude</span>
+        </div>
+      </div>
+      <div class="cc-admin-status">
+        <span class="pulse-dot"></span>
+        All changes synced
+      </div>
+    </div>
+
+  </div>
+
+  <p class="cc-footnote">
+    Shopify app for ChatGPT (Apps SDK) · Shopify connector for Claude.ai · Both write to the same Admin API. <em>Demo data shown.</em>
+  </p>
+</div>
+<!-- ═══ END SLIDE BLOCK ═══════════════════════════════════════════════ -->
+
+
+<!-- ═══ PASTE BELOW BEFORE </body> ═══════════════════════════════════ -->
+<script>
+  // ── ChatGPT × Claude sim state ─────────────────────────
+  let ccSpeed = 1;
+  let ccTimers = [];
+
+  function ccClearTimers() {
+    ccTimers.forEach(t => clearTimeout(t));
+    ccTimers = [];
+  }
+
+  function ccRevealMessages() {
+    ccClearTimers();
+    const msgs = document.querySelectorAll('#cc-sim-slide .cc-msg');
+    msgs.forEach(el => {
+      // Reset
+      el.style.opacity = 0;
+      el.style.transform = 'translateY(8px)';
+      el.style.animation = 'none';
+      const delay = parseInt(el.dataset.ccDelay || '0', 10) / ccSpeed;
+      const t = setTimeout(() => {
+        el.style.animation = 'ccFadeIn 0.45s ease forwards';
+        // Auto-scroll the right pane
+        const pane = el.dataset.ccPane;
+        const body = document.getElementById('cc-' + pane + '-body');
+        if (body) body.scrollTop = body.scrollHeight;
+      }, delay);
+      ccTimers.push(t);
+    });
+
+    // Reveal admin events on their own delays
+    const events = document.querySelectorAll('#cc-sim-slide .cc-admin-event');
+    events.forEach(el => {
+      el.classList.remove('shown');
+      const delay = parseInt(el.dataset.ccDelay || '0', 10) / ccSpeed;
+      const t = setTimeout(() => el.classList.add('shown'), delay);
+      ccTimers.push(t);
+    });
+  }
+
+  function ccRestart() {
+    ccRevealMessages();
+  }
+
+  // Speed controls
+  document.querySelectorAll('#cc-sim-slide .cc-speed button').forEach(b => {
+    b.onclick = () => {
+      ccSpeed = parseFloat(b.dataset.speed);
+      document.querySelectorAll('#cc-sim-slide .cc-speed button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      ccRestart();
+    };
+  });
+
+  // Auto-play on load (when used as a standalone preview)
+  // For deck embed, hook this into your slide-activation system instead.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ccRevealMessages);
+  } else {
+    ccRevealMessages();
+  }
+</script>
+<!-- ═══ END SCRIPT BLOCK ═══════════════════════════════════════════════ -->
+
+</body>
+</html>

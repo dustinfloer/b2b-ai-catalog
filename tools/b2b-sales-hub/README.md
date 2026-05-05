@@ -8,6 +8,7 @@ audience: "SE-facing"
 author: "Lizzie Ficken"
 author_slack: "@lizzie.ficken"
 date_added: "2026-03-24"
+b2b_specific: true
 ---
 
 ## What It Does

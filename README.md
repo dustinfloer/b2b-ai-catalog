@@ -1,24 +1,28 @@
-# B2B AI Tools Catalog
+# SE Field Guide
 
-A shared directory of AI-powered tools, simulations, and references built by the B2B SE team.
+Tools, simulations, references, and guides — built by the **B2B SE Team** for the broader SE community.
 
-**[Browse the Catalog](https://dustinfloer.github.io/b2b-ai-catalog/)**
+**[Browse the Field Guide](https://dustinfloer.github.io/b2b-ai-catalog/)**
 
 ---
 
 ## What Is This?
 
-We're building incredible AI resources across the B2B team — quick sites, MCP tools, simulations, and more. This repo is the single place to discover everything that exists, find the link, and learn how to use it.
+The B2B SE team builds a lot — quick sites, MCP tools, simulations, primers, theme forks. This is the single place to discover everything that exists, find the link, and learn how to use it.
 
-The repo is a **catalog** (directory), not a hosting platform. Each entry links out to wherever the tool actually lives.
+The repo is a **catalog** (directory), not a hosting platform. Each entry links out to wherever the asset actually lives.
+
+Items that are specifically about B2B (App Directory, Field Learnings, Demo Recipes, Punchout primer, etc.) are tagged **B2B** so cross-segment SEs can filter them out or in.
 
 ## Categories
 
 | Category | What Belongs Here |
 |----------|-------------------|
-| **Simulations** | Interactive demos, sandbox environments, merchant-facing proof of concepts |
 | **Tools** | Utilities that help SEs do their job — research, prep, scoring, automation |
+| **Simulations** | Interactive demos, sandbox environments, merchant-facing proof of concepts |
 | **References** | Lookup resources, cheat sheets, decision trees, comparison guides |
+| **Workflows** | End-to-end processes the team has codified (deck building, demo prep, etc.) |
+| **Guides** | Primers, walkthroughs, and explainers that level up SE craft |
 
 ## Adding a Tool
 

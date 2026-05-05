@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B2B AI Tools Catalog</title>
+    <title>SE Field Guide</title>
     <link rel="icon" type="image/svg+xml" href="logo.svg">
     <style>
         :root {
@@ -277,6 +277,7 @@
         .card-category-bar.Tools { background: linear-gradient(90deg, var(--cat-tools), transparent); }
         .card-category-bar.References { background: linear-gradient(90deg, var(--cat-references), transparent); }
         .card-category-bar.Workflows { background: linear-gradient(90deg, var(--cat-workflows), transparent); }
+        .card-category-bar.Guides { background: linear-gradient(90deg, #818cf8, transparent); }
 
         .card-header {
             display: flex;
@@ -332,6 +333,24 @@
         .card-badge.Workflows {
             background: var(--cat-workflows-bg);
             color: var(--cat-workflows);
+        }
+        .card-badge.Guides {
+            background: rgba(99, 102, 241, 0.12);
+            color: #818cf8;
+        }
+
+        .b2b-tag {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            line-height: 1.3;
+            vertical-align: middle;
         }
 
         .card-description {
@@ -509,8 +528,8 @@
     </header>
 
     <div class="hero">
-        <h2>AI tools built by the team, for the team</h2>
-        <p>Everything the B2B SE team has built — searchable, filterable, one click away.</p>
+        <h2>SE Field Guide</h2>
+        <p>Tools, simulations, references, and guides — built by the B2B SE Team for the broader SE community. Items tagged <span class="b2b-tag" style="font-size:0.65rem;vertical-align:middle">B2B</span> are B2B-specific.</p>
     </div>
 
     <div class="controls">
@@ -524,6 +543,8 @@
             <button class="filter-btn" data-filter="Simulations">Simulations</button>
             <button class="filter-btn" data-filter="References">References</button>
             <button class="filter-btn" data-filter="Workflows">Workflows</button>
+            <button class="filter-btn" data-filter="Guides">Guides</button>
+            <button class="filter-btn" data-filter="b2b">🏢 B2B-only</button>
         </div>
     </div>
 
@@ -541,16 +562,19 @@
             'Tools':       '⚙️',
             'Simulations': '🎭',
             'References':  '📚',
-            'Workflows':   '⚡'
+            'Workflows':   '⚡',
+            'Guides':      '📖'
         };
 
         function updateFilterCounts() {
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 const filter = btn.dataset.filter;
-                const label = filter === 'all' ? 'All' : filter;
-                const count = filter === 'all'
-                    ? catalog.length
-                    : catalog.filter(t => t.category === filter).length;
+                const baseLabel = btn.textContent.replace(/\s*\(\d+\)\s*$/, '').trim();
+                const label = baseLabel || (filter === 'all' ? 'All' : filter);
+                let count;
+                if (filter === 'all') count = catalog.length;
+                else if (filter === 'b2b') count = catalog.filter(t => t.b2b_specific === true).length;
+                else count = catalog.filter(t => t.category === filter).length;
                 btn.textContent = `${label} (${count})`;
             });
         }
@@ -574,7 +598,10 @@
         function render() {
             const query = document.getElementById('search').value.toLowerCase();
             const filtered = catalog.filter(tool => {
-                const matchesFilter = activeFilter === 'all' || tool.category === activeFilter;
+                let matchesFilter;
+                if (activeFilter === 'all') matchesFilter = true;
+                else if (activeFilter === 'b2b') matchesFilter = tool.b2b_specific === true;
+                else matchesFilter = tool.category === activeFilter;
                 const matchesSearch = !query ||
                     tool.name.toLowerCase().includes(query) ||
                     tool.description.toLowerCase().includes(query) ||
@@ -606,6 +633,7 @@
                         <div class="card-title-row">
                             <span class="card-icon">${categoryIcons[tool.category] || '🔧'}</span>
                             <h3>${escapeHtml(tool.name)}</h3>
+                            ${tool.b2b_specific ? '<span class="b2b-tag" title="B2B-specific">B2B</span>' : ''}
                         </div>
                         <span class="card-badge ${tool.category}">${escapeHtml(tool.category)}</span>
                     </div>

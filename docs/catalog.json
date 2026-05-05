@@ -1,5 +1,85 @@
 [
   {
+    "slug": "github-for-dummies",
+    "name": "GitHub for SE Dummies",
+    "description": "GitHub primer for SEs. Repos, branches, PRs, forks, the gh CLI — explained without assuming a software engineering background. Just enough to ship and collaborate.",
+    "url": "https://github-for-dummies.quick.shopify.io/",
+    "category": "Guides",
+    "built_with": "HTML + CSS + JS",
+    "audience": "SE-facing",
+    "author": "Dustin Floer",
+    "author_slack": "@dustin.floer",
+    "date_added": "2026-05-05",
+    "screenshot": "",
+    "slack_channel": "global-b2b-sales-team",
+    "repo_url": "",
+    "b2b_specific": false
+  },
+  {
+    "slug": "punchout-edi-dummies",
+    "name": "Punchout & EDI for Dummies",
+    "description": "Plain-English primer on Punchout and EDI for B2B SEs. What they are, when merchants ask for them, the cXML/OCI/EDIFACT lingo, and where Shopify's native B2B fits vs. when you need an integration partner.",
+    "url": "https://punchout-edi-dummies.quick.shopify.io/",
+    "category": "Guides",
+    "built_with": "HTML + CSS + JS",
+    "audience": "SE-facing",
+    "author": "Dustin Floer",
+    "author_slack": "@dustin.floer",
+    "date_added": "2026-05-05",
+    "screenshot": "",
+    "slack_channel": "global-b2b-sales-team",
+    "repo_url": "",
+    "b2b_specific": true
+  },
+  {
+    "slug": "terminal-cheats",
+    "name": "Terminal Cheats",
+    "description": "Quick-reference cheatsheet for SEs getting comfortable in the terminal. Common commands, keyboard shortcuts, and workflow tips for Ghostty, zsh, and the modern terminal stack.",
+    "url": "https://terminal-cheats.quick.shopify.io/",
+    "category": "Guides",
+    "built_with": "HTML + CSS + JS",
+    "audience": "SE-facing",
+    "author": "Dustin Floer",
+    "author_slack": "@dustin.floer",
+    "date_added": "2026-05-05",
+    "screenshot": "",
+    "slack_channel": "global-b2b-sales-team",
+    "repo_url": "",
+    "b2b_specific": false
+  },
+  {
+    "slug": "terminal-presentation",
+    "name": "Terminal Presentation",
+    "description": "How to give a polished demo or talk straight from the terminal. Covers presentation-ready Ghostty setup, font/theme choices, and pacing tips for live coding moments.",
+    "url": "https://terminal-presentation.quick.shopify.io/",
+    "category": "Guides",
+    "built_with": "HTML + CSS + JS",
+    "audience": "SE-facing",
+    "author": "Dustin Floer",
+    "author_slack": "@dustin.floer",
+    "date_added": "2026-05-05",
+    "screenshot": "",
+    "slack_channel": "global-b2b-sales-team",
+    "repo_url": "",
+    "b2b_specific": false
+  },
+  {
+    "slug": "terminal-store",
+    "name": "Terminal Store",
+    "description": "The terminal stack the SE team uses — Ghostty, Starship, zsh, zoxide, fzf, eza, bat. What each one does, why it matters, and how to set it up.",
+    "url": "https://terminal-store.quick.shopify.io/",
+    "category": "Guides",
+    "built_with": "HTML + CSS + JS",
+    "audience": "SE-facing",
+    "author": "Dustin Floer",
+    "author_slack": "@dustin.floer",
+    "date_added": "2026-05-05",
+    "screenshot": "",
+    "slack_channel": "global-b2b-sales-team",
+    "repo_url": "",
+    "b2b_specific": false
+  },
+  {
     "slug": "weekly-deal-update",
     "name": "Weekly Deal Update",
     "description": "AI-generated deal summaries with current state, next steps, and PMF/TA status — sent as a DM to review, edit, approve, or auto-send on a schedule",
@@ -12,7 +92,8 @@
     "date_added": "2026-04-27",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": ""
+    "repo_url": "",
+    "b2b_specific": false
   },
   {
     "slug": "demo-deck-builder",
@@ -27,7 +108,8 @@
     "date_added": "2026-04-17",
     "screenshot": "",
     "slack_channel": "global-b2b-sales-team",
-    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog/tree/main/tools/demo-deck-builder"
+    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog/tree/main/tools/demo-deck-builder",
+    "b2b_specific": false
   },
   {
     "slug": "demo-recipes",
@@ -42,7 +124,8 @@
     "date_added": "2026-04-16",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog"
+    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog",
+    "b2b_specific": true
   },
   {
     "slug": "slide-decks",
@@ -57,7 +140,8 @@
     "date_added": "2026-04-16",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog"
+    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog",
+    "b2b_specific": false
   },
   {
     "slug": "ai-html-decks",
@@ -72,7 +156,8 @@
     "date_added": "2026-04-09",
     "screenshot": "",
     "slack_channel": "global-b2b-sales-team",
-    "repo_url": ""
+    "repo_url": "",
+    "b2b_specific": false
   },
   {
     "slug": "b2b-apps",
@@ -87,7 +172,8 @@
     "date_added": "2026-04-09",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog"
+    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog",
+    "b2b_specific": true
   },
   {
     "slug": "b2b-field-learnings",
@@ -102,7 +188,8 @@
     "date_added": "2026-04-09",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog"
+    "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog",
+    "b2b_specific": true
   },
   {
     "slug": "launch-inspector",
@@ -117,7 +204,8 @@
     "date_added": "2026-04-06",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": ""
+    "repo_url": "",
+    "b2b_specific": false
   },
   {
     "slug": "agency-intel",
@@ -132,7 +220,8 @@
     "date_added": "2026-03-24",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": ""
+    "repo_url": "",
+    "b2b_specific": false
   },
   {
     "slug": "b2b-sales-hub",
@@ -147,7 +236,8 @@
     "date_added": "2026-03-24",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": ""
+    "repo_url": "",
+    "b2b_specific": true
   },
   {
     "slug": "demo-prep",
@@ -162,7 +252,8 @@
     "date_added": "2026-03-24",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": ""
+    "repo_url": "",
+    "b2b_specific": false
   },
   {
     "slug": "discovery-prep",
@@ -177,7 +268,8 @@
     "date_added": "2026-03-24",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": ""
+    "repo_url": "",
+    "b2b_specific": false
   },
   {
     "slug": "simulations",
@@ -192,6 +284,7 @@
     "date_added": "2026-03-24",
     "screenshot": "",
     "slack_channel": "",
-    "repo_url": ""
+    "repo_url": "",
+    "b2b_specific": false
   }
 ]

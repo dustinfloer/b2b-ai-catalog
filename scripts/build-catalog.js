@@ -77,6 +77,7 @@ function buildCatalog() {
             screenshot: frontmatter.screenshot || '',
             slack_channel: frontmatter.slack_channel || '',
             repo_url: frontmatter.repo_url || '',
+            b2b_specific: frontmatter.b2b_specific === 'true' || frontmatter.b2b_specific === true,
         });
     }
 

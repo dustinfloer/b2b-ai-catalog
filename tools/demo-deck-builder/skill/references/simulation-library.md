@@ -30,7 +30,8 @@ All sims are fully self-contained (no build step, no external JS deps beyond Goo
 
 | Sim | URL | Use when |
 |---|---|---|
-| **Google Gemini Shopping** | `/gemini-shopping-sim.html` | "Where commerce is going" slide. Merchant wants to see what agentic commerce actually looks like end-to-end. See also the drop-in variant at `agentic-commerce-sim.html` in this skill's references. |
+| **Google Gemini Shopping** | `/gemini-shopping-sim.html` | Buyer-side: consumer searches/buys inside Gemini AI Mode via UCP. See also drop-in variant at `agentic-commerce-sim.html` in this skill's references. |
+| **ChatGPT × Claude Store Management** | local: `chatgpt-claude-management-sim.html` | Merchant-side: same Shopify store managed from both ChatGPT (daily ops) and Claude (strategic) in parallel, with live admin sync. References the Shopify ChatGPT Apps SDK app + Anthropic Connectors directory entry. |
 
 ### NetSuite
 

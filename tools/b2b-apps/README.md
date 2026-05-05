@@ -11,6 +11,7 @@ date_added: "2026-04-09"
 screenshot: ""
 slack_channel: ""
 repo_url: "https://github.com/dustinfloer/b2b-ai-catalog"
+b2b_specific: true
 ---
 
 # B2B App Directory
