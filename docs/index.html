@@ -124,6 +124,60 @@
             color: var(--text-primary);
         }
 
+        /* Contribute dropdown */
+        .contribute {
+            position: relative;
+        }
+
+        .contribute-menu {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 110;
+        }
+
+        .contribute.open .contribute-menu {
+            display: block;
+        }
+
+        .contribute-menu a {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .contribute-menu a:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .contribute-menu-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 4px 0;
+        }
+
+        .contribute-caret {
+            transition: transform 0.2s ease;
+            font-size: 10px;
+        }
+
+        .contribute.open .contribute-caret {
+            transform: rotate(180deg);
+        }
+
         /* Hero */
         .hero {
             max-width: 1200px;
@@ -277,7 +331,7 @@
         .card-category-bar.Tools { background: linear-gradient(90deg, var(--cat-tools), transparent); }
         .card-category-bar.References { background: linear-gradient(90deg, var(--cat-references), transparent); }
         .card-category-bar.Workflows { background: linear-gradient(90deg, var(--cat-workflows), transparent); }
-        .card-category-bar.Guides { background: linear-gradient(90deg, #818cf8, transparent); }
+        .card-category-bar.Guides { background: linear-gradient(90deg, #f472b6, transparent); }
 
         .card-header {
             display: flex;
@@ -335,8 +389,8 @@
             color: var(--cat-workflows);
         }
         .card-badge.Guides {
-            background: rgba(99, 102, 241, 0.12);
-            color: #818cf8;
+            background: rgba(244, 114, 182, 0.12);
+            color: #f472b6;
         }
 
         .b2b-tag {
@@ -450,18 +504,56 @@
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 60px 20px;
+            padding: 72px 20px;
             color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+            opacity: 0.5;
         }
 
         .empty-state p {
             font-size: 16px;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            font-weight: 600;
         }
 
         .empty-state small {
             font-size: 13px;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .empty-state-actions {
+            display: inline-flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .empty-state-actions .btn {
+            font-size: 12px;
+            padding: 7px 14px;
+        }
+
+        .empty-state-link {
+            background: transparent;
+            border: none;
+            color: var(--green-primary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .empty-state-link:hover {
+            color: var(--green-dim);
         }
 
         /* Loading */
@@ -514,15 +606,17 @@
                 <a href="./slide-decks/" style="font-size:13px;font-weight:500;color:var(--text-secondary);border-radius:8px;padding:6px 12px;text-decoration:none;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-secondary)'">Slide Decks</a>
             </nav>
             <div class="header-actions">
-                <a href="https://github.com/dustinfloer/b2b-ai-catalog" class="btn btn-secondary" target="_blank" rel="noopener">
-                    GitHub
-                </a>
-                <a href="https://github.com/dustinfloer/b2b-ai-catalog/issues/new?template=tool-request.yml" class="btn btn-secondary" target="_blank" rel="noopener">
-                    Request a Tool
-                </a>
-                <a href="https://github.com/dustinfloer/b2b-ai-catalog/blob/main/CONTRIBUTING.md" class="btn btn-primary" target="_blank" rel="noopener">
-                    + Add a Tool
-                </a>
+                <div class="contribute" id="contribute">
+                    <button type="button" class="btn btn-primary" id="contribute-toggle" aria-haspopup="true" aria-expanded="false">
+                        Contribute <span class="contribute-caret">▾</span>
+                    </button>
+                    <div class="contribute-menu" role="menu">
+                        <a href="https://github.com/dustinfloer/b2b-ai-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" role="menuitem">+ Add a tool</a>
+                        <a href="https://github.com/dustinfloer/b2b-ai-catalog/issues/new?template=tool-request.yml" target="_blank" rel="noopener" role="menuitem">Request a tool</a>
+                        <div class="contribute-menu-divider"></div>
+                        <a href="https://github.com/dustinfloer/b2b-ai-catalog" target="_blank" rel="noopener" role="menuitem">View on GitHub</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -616,12 +710,36 @@
             const grid = document.getElementById('grid');
 
             if (filtered.length === 0) {
+                const hasQuery = query.length > 0;
+                const hasFilter = activeFilter !== 'all';
+                const headline = hasQuery
+                    ? `No tools match “${escapeHtml(query)}”`
+                    : (hasFilter ? `No tools in this category yet` : `No tools found`);
+                const sub = hasQuery || hasFilter
+                    ? `Try a different search, or contribute one — every gap is a chance to help the team.`
+                    : `The catalog is empty. Add the first tool.`;
                 grid.innerHTML = `
                     <div class="empty-state">
-                        <p>No tools found</p>
-                        <small>Try adjusting your search or filter</small>
+                        <div class="empty-state-icon">${hasQuery ? '\u{1F50D}' : '\u{1F4E6}'}</div>
+                        <p>${headline}</p>
+                        <small>${sub}</small>
+                        <div class="empty-state-actions">
+                            ${(hasQuery || hasFilter) ? `<button type="button" class="empty-state-link" id="empty-reset">Clear filters</button>` : ''}
+                            <a href="https://github.com/dustinfloer/b2b-ai-catalog/issues/new?template=tool-request.yml" target="_blank" rel="noopener" class="btn btn-secondary">Request a tool</a>
+                            <a href="https://github.com/dustinfloer/b2b-ai-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="btn btn-primary">+ Add a tool</a>
+                        </div>
                     </div>
                 `;
+                const resetBtn = document.getElementById('empty-reset');
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', () => {
+                        document.getElementById('search').value = '';
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+                        activeFilter = 'all';
+                        render();
+                    });
+                }
                 return;
             }
 
@@ -662,6 +780,27 @@
                 activeFilter = btn.dataset.filter;
                 render();
             });
+        });
+
+        const contribute = document.getElementById('contribute');
+        const contribToggle = document.getElementById('contribute-toggle');
+        contribToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = contribute.classList.toggle('open');
+            contribToggle.setAttribute('aria-expanded', isOpen);
+        });
+        document.addEventListener('click', (e) => {
+            if (!contribute.contains(e.target)) {
+                contribute.classList.remove('open');
+                contribToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && contribute.classList.contains('open')) {
+                contribute.classList.remove('open');
+                contribToggle.setAttribute('aria-expanded', 'false');
+                contribToggle.focus();
+            }
         });
 
         loadCatalog();
