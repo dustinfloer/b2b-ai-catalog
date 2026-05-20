@@ -8,6 +8,12 @@ audience: "SE-facing"
 author: "Your Name"
 author_slack: "@your-slack-handle"
 date_added: "YYYY-MM-DD"
+status: "active"
+access_level: "internal"
+source_of_truth: "repo"
+reviewed_by: "@reviewer-slack-handle"
+last_reviewed: "YYYY-MM-DD"
+review_cycle_days: "90"
 screenshot: ""
 # To add a screenshot: drop a screenshot.png into your tool folder, then set the URL above to:
 # https://raw.githubusercontent.com/dustinfloer/b2b-ai-catalog/main/tools/your-tool-name/screenshot.png

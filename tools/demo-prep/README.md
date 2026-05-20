@@ -8,6 +8,12 @@ audience: "SE-facing"
 author: "Dustin Floer"
 author_slack: "@dustin.floer"
 date_added: "2026-03-24"
+status: "active"
+access_level: "internal"
+source_of_truth: "repo"
+reviewed_by: "@dustin.floer"
+last_reviewed: "2026-05-20"
+review_cycle_days: "90"
 ---
 
 ## What It Does

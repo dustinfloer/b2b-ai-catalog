@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B2B App Directory</title>
-    <link rel="icon" type="image/svg+xml" href="../logo.svg">
+    <link rel="icon" type="image/svg+xml" href="../logo-mark.svg">
     <style>
         :root {
             --green-primary: #36d986;
@@ -17,9 +17,9 @@
             --text-primary: #e8ecf1;
             --text-secondary: #8b95a5;
             --text-muted: #5a6577;
-            --shadow-hover: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(54,217,134,0.08);
-            --radius: 14px;
-            --radius-sm: 8px;
+            --shadow-hover: 0 10px 24px rgba(0,0,0,0.34), 0 0 0 1px rgba(54,217,134,0.08);
+            --radius: 8px;
+            --radius-sm: 6px;
 
             /* Category colors — referenced via data-category attribute */
             --c-shopify:    #36d986;
@@ -42,6 +42,17 @@
             --c-shipping-bg: rgba(6,182,212,0.12);
             --c-other:      #6b7280;
             --c-other-bg:   rgba(107,114,128,0.12);
+
+            --tier-native: #36d986;
+            --tier-native-bg: rgba(54,217,134,0.12);
+            --tier-vetted: #60a5fa;
+            --tier-vetted-bg: rgba(96,165,250,0.12);
+            --tier-caveats: #f59e0b;
+            --tier-caveats-bg: rgba(245,158,11,0.12);
+            --tier-partner: #a78bfa;
+            --tier-partner-bg: rgba(167,139,250,0.12);
+            --tier-avoid: #f472b6;
+            --tier-avoid-bg: rgba(244,114,182,0.12);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -103,7 +114,7 @@
         .hero h2 {
             font-size: 24px;
             font-weight: 800;
-            letter-spacing: -0.4px;
+            letter-spacing: 0;
             margin-bottom: 4px;
             background: linear-gradient(135deg, var(--text-primary) 0%, var(--green-primary) 100%);
             -webkit-background-clip: text;
@@ -112,6 +123,81 @@
         }
 
         .hero p { color: var(--text-secondary); font-size: 14px; }
+
+        .decision-panel {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            padding: 0 24px;
+        }
+
+        .decision-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 18px;
+            margin-bottom: 12px;
+        }
+
+        .decision-eyebrow {
+            color: var(--green-primary);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .decision-heading h3 {
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 750;
+            letter-spacing: 0;
+        }
+
+        .decision-note {
+            max-width: 460px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.45;
+            text-align: right;
+        }
+
+        .tier-guide {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .tier-guide-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: rgba(17, 24, 39, 0.88);
+            padding: 12px;
+            min-height: 104px;
+        }
+
+        .tier-guide-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+        .tier-guide-count {
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .tier-guide-copy {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.4;
+        }
 
         .controls {
             max-width: 1200px;
@@ -152,13 +238,38 @@
             pointer-events: none;
         }
 
-        .filter-group { display: flex; gap: 6px; flex-wrap: wrap; }
+        .filter-stack {
+            max-width: 1200px;
+            margin: 12px auto 0;
+            padding: 0 24px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            width: 70px;
+            padding-top: 8px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .filter-group { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; min-width: 0; }
 
         .filter-btn {
             padding: 7px 13px;
-            border-radius: 20px;
+            border-radius: var(--radius-sm);
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 600;
             border: 1px solid var(--border);
             background: transparent;
             color: var(--text-secondary);
@@ -190,7 +301,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 20px;
+            padding: 18px;
             transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
@@ -231,7 +342,7 @@
             margin-bottom: 10px;
         }
 
-        .card h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; }
+        .card h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); letter-spacing: 0; }
 
         .card-badge {
             font-size: 11px;
@@ -252,6 +363,74 @@
         [data-category="Analytics & Reporting"].card-badge { background: var(--c-analytics-bg);color: var(--c-analytics); }
         [data-category="Shipping"]            .card-badge { background: var(--c-shipping-bg);  color: var(--c-shipping); }
         [data-category="Other"]               .card-badge { background: var(--c-other-bg);     color: var(--c-other); }
+
+        .tier-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .tier-badge {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+
+        .tier-badge.native-first {
+            background: var(--tier-native-bg);
+            color: var(--tier-native);
+            border-color: rgba(54,217,134,0.26);
+        }
+
+        .tier-badge.se-vetted {
+            background: var(--tier-vetted-bg);
+            color: var(--tier-vetted);
+            border-color: rgba(96,165,250,0.26);
+        }
+
+        .tier-badge.caveats {
+            background: var(--tier-caveats-bg);
+            color: var(--tier-caveats);
+            border-color: rgba(245,158,11,0.26);
+        }
+
+        .tier-badge.partner-led {
+            background: var(--tier-partner-bg);
+            color: var(--tier-partner);
+            border-color: rgba(167,139,250,0.26);
+        }
+
+        .tier-badge.avoid-legacy {
+            background: var(--tier-avoid-bg);
+            color: var(--tier-avoid);
+            border-color: rgba(244,114,182,0.26);
+        }
+
+        .guidance-copy {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.45;
+            margin-bottom: 10px;
+        }
+
+        .caveat-copy {
+            color: var(--text-muted);
+            font-size: 12px;
+            line-height: 1.45;
+            margin-bottom: 10px;
+        }
+
+        .caveat-copy strong {
+            color: var(--text-secondary);
+            font-weight: 700;
+        }
 
         .card-use-cases {
             display: flex;
@@ -308,7 +487,7 @@
             display: inline-flex;
             align-items: center;
             padding: 5px 12px;
-            border-radius: 20px;
+            border-radius: var(--radius-sm);
             border: 1px solid rgba(54,217,134,0.3);
             background: rgba(54,217,134,0.06);
             transition: all 0.2s;
@@ -337,8 +516,12 @@
 
         @media (max-width: 600px) {
             .grid { grid-template-columns: 1fr; }
+            .tier-guide { grid-template-columns: 1fr; }
+            .decision-heading { display: block; }
+            .decision-note { text-align: left; margin-top: 6px; }
             .controls { flex-direction: column; }
             .search-box { min-width: 100%; }
+            .filter-label { width: 100%; padding-top: 0; }
         }
     </style>
 </head>
@@ -358,15 +541,58 @@
 
     <div class="hero">
         <h2>B2B App Directory</h2>
-        <p>SE-vetted apps for B2B solutioning — searchable by use case and category.</p>
+        <p>Opinionated app guidance for B2B solutioning. Start native, then pick the right app path with clear caveats.</p>
     </div>
+
+    <section class="decision-panel" aria-labelledby="decision-heading">
+        <div class="decision-heading">
+            <div>
+                <div class="decision-eyebrow">Native / vetted / caveats</div>
+                <h3 id="decision-heading">How to read the directory</h3>
+            </div>
+            <p class="decision-note">Tiers are guidance for SE conversations. They do not replace discovery, merchant requirements, app docs, or partner validation.</p>
+        </div>
+
+        <div class="tier-guide" id="tier-guide">
+            <div class="tier-guide-item" data-tier-guide="native-first">
+                <div class="tier-guide-label">Native-first <span class="tier-guide-count">0</span></div>
+                <p class="tier-guide-copy">Start with Shopify primitives before introducing another dependency.</p>
+            </div>
+            <div class="tier-guide-item" data-tier-guide="se-vetted">
+                <div class="tier-guide-label">SE-vetted <span class="tier-guide-count">0</span></div>
+                <p class="tier-guide-copy">Commonly useful in SE patterns, but still validate against the merchant's flow.</p>
+            </div>
+            <div class="tier-guide-item" data-tier-guide="caveats">
+                <div class="tier-guide-label">Caveats <span class="tier-guide-count">0</span></div>
+                <p class="tier-guide-copy">Viable, but needs extra scrutiny around fit, UX, data, or ownership.</p>
+            </div>
+            <div class="tier-guide-item" data-tier-guide="partner-led">
+                <div class="tier-guide-label">Partner-led <span class="tier-guide-count">0</span></div>
+                <p class="tier-guide-copy">Treat as implementation architecture, not a quick app recommendation.</p>
+            </div>
+            <div class="tier-guide-item" data-tier-guide="avoid-legacy">
+                <div class="tier-guide-label">Avoid / legacy <span class="tier-guide-count">0</span></div>
+                <p class="tier-guide-copy">Use only with a strong reason or when replacing an existing dependency.</p>
+            </div>
+        </div>
+    </section>
 
     <div class="controls">
         <div class="search-box">
-            <span class="search-icon">🔍</span>
+            <span class="search-icon">⌕</span>
             <input type="text" id="search" placeholder="Search by app name or use case..." />
         </div>
-        <div class="filter-group" id="filter-group"></div>
+    </div>
+
+    <div class="filter-stack">
+        <div class="filter-row">
+            <div class="filter-label">Tier</div>
+            <div class="filter-group" id="tier-filter-group"></div>
+        </div>
+        <div class="filter-row">
+            <div class="filter-label">Category</div>
+            <div class="filter-group" id="category-filter-group"></div>
+        </div>
     </div>
 
     <div class="stats" id="stats"></div>
@@ -390,14 +616,45 @@
             'Other'
         ];
 
+        const TIER_ORDER = ['native-first', 'se-vetted', 'caveats', 'partner-led', 'avoid-legacy'];
+        const TIERS = {
+            'native-first': {
+                label: 'Native-first',
+                rank: 1,
+                guidance: 'Lead with Shopify native capability first. Add an app only if the merchant has a gap native features cannot cover.'
+            },
+            'se-vetted': {
+                label: 'SE-vetted',
+                rank: 2,
+                guidance: 'Good candidate when the merchant requirement matches this use case. Validate app behavior before naming it as the answer.'
+            },
+            caveats: {
+                label: 'Caveats',
+                rank: 3,
+                guidance: 'Potential fit, but do not lead with it casually. Confirm the requirement, tradeoffs, owner, and support path.'
+            },
+            'partner-led': {
+                label: 'Partner-led',
+                rank: 4,
+                guidance: 'Treat this as an implementation or integration decision. Bring in the partner, SI, or technical owner early.'
+            },
+            'avoid-legacy': {
+                label: 'Avoid / legacy',
+                rank: 5,
+                guidance: 'Do not lead with this for B2B. Use only when there is an existing dependency or a very specific scoped reason.'
+            }
+        };
+
         let apps = [];
-        let activeFilter = 'all';
+        let activeTier = 'all';
+        let activeCategory = 'all';
 
         async function loadApps() {
             try {
                 const res = await fetch('apps.json?v=' + Date.now());
                 apps = await res.json();
                 buildFilters();
+                updateTierGuide();
                 render();
             } catch (e) {
                 document.getElementById('grid').innerHTML = `<div class="empty-state">Could not load apps. Check that apps.json is present.</div>`;
@@ -405,37 +662,58 @@
         }
 
         function buildFilters() {
-            const group = document.getElementById('filter-group');
-            const allCount = apps.length;
-            group.innerHTML = `<button class="filter-btn active" data-filter="all">All (${allCount})</button>` +
+            const tierGroup = document.getElementById('tier-filter-group');
+            tierGroup.innerHTML = `<button class="filter-btn active" data-tier="all">All guidance (${apps.length})</button>` +
+                TIER_ORDER.map(tierKey => {
+                    const count = apps.filter(app => getAppDecision(app).tierKey === tierKey).length;
+                    return `<button class="filter-btn" data-tier="${tierKey}">${TIERS[tierKey].label} (${count})</button>`;
+                }).join('');
+
+            tierGroup.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tierGroup.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeTier = btn.dataset.tier;
+                    render();
+                });
+            });
+
+            const categoryGroup = document.getElementById('category-filter-group');
+            categoryGroup.innerHTML = `<button class="filter-btn active" data-category-filter="all">All categories (${apps.length})</button>` +
                 CATEGORIES.map(cat => {
                     const count = apps.filter(a => a.category === cat).length;
                     return count > 0
-                        ? `<button class="filter-btn" data-filter="${escHtml(cat)}">${escHtml(cat)} (${count})</button>`
+                        ? `<button class="filter-btn" data-category-filter="${escHtml(cat)}">${escHtml(cat)} (${count})</button>`
                         : '';
                 }).join('');
 
-            group.querySelectorAll('.filter-btn').forEach(btn => {
+            categoryGroup.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    categoryGroup.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    activeFilter = btn.dataset.filter;
+                    activeCategory = btn.dataset.categoryFilter;
                     render();
                 });
             });
         }
 
+        function updateTierGuide() {
+            TIER_ORDER.forEach(tierKey => {
+                const count = apps.filter(app => getAppDecision(app).tierKey === tierKey).length;
+                const guide = document.querySelector(`[data-tier-guide="${tierKey}"] .tier-guide-count`);
+                if (guide) guide.textContent = count;
+            });
+        }
+
         function render() {
-            const query = document.getElementById('search').value.toLowerCase();
-            const filtered = apps.filter(app => {
-                const matchesFilter = activeFilter === 'all' || app.category === activeFilter;
-                const matchesSearch = !query ||
-                    app.name.toLowerCase().includes(query) ||
-                    app.category.toLowerCase().includes(query) ||
-                    app.use_cases.some(u => u.toLowerCase().includes(query)) ||
-                    (app.notes || '').toLowerCase().includes(query);
-                return matchesFilter && matchesSearch;
-            }).sort((a, b) => a.name.localeCompare(b.name));
+            const query = document.getElementById('search').value.toLowerCase().trim();
+            const filtered = apps.filter(app => matchesApp(app, query))
+                .sort((a, b) => {
+                    const aDecision = getAppDecision(a);
+                    const bDecision = getAppDecision(b);
+                    const tierDiff = TIERS[aDecision.tierKey].rank - TIERS[bDecision.tierKey].rank;
+                    return tierDiff || a.name.localeCompare(b.name);
+                });
 
             document.getElementById('stats').textContent = `Showing ${filtered.length} of ${apps.length} apps`;
 
@@ -446,12 +724,25 @@
             }
 
             grid.innerHTML = filtered.map(app => `
+                ${renderAppCard(app)}
+            `).join('');
+        }
+
+        function renderAppCard(app) {
+            const decision = getAppDecision(app);
+            const tier = TIERS[decision.tierKey];
+            return `
                 <div class="card" data-category="${escHtml(app.category)}">
                     <div class="card-bar"></div>
+                    <div class="tier-row">
+                        <span class="tier-badge ${decision.tierKey}">${escHtml(tier.label)}</span>
+                    </div>
                     <div class="card-header">
                         <h3>${escHtml(app.name)}</h3>
                         <span class="card-badge">${escHtml(app.category)}</span>
                     </div>
+                    <p class="guidance-copy">${escHtml(decision.guidance)}</p>
+                    <p class="caveat-copy"><strong>Watch:</strong> ${escHtml(decision.caveat)}</p>
                     <div class="card-use-cases">
                         ${app.use_cases.map(u => `<span class="use-case-tag">${escHtml(u)}</span>`).join('')}
                     </div>
@@ -463,7 +754,94 @@
                         <a href="${escHtml(app.url)}" target="_blank" rel="noopener" class="card-link">App Store</a>
                     </div>
                 </div>
-            `).join('');
+            `;
+        }
+
+        function matchesApp(app, query) {
+            const decision = getAppDecision(app);
+            const matchesTier = activeTier === 'all' || decision.tierKey === activeTier;
+            const matchesCategory = activeCategory === 'all' || app.category === activeCategory;
+            if (!matchesTier || !matchesCategory) return false;
+
+            if (!query) return true;
+            const searchable = [
+                app.name,
+                app.category,
+                app.notes,
+                decision.tierLabel,
+                decision.guidance,
+                decision.caveat,
+                ...(app.use_cases || []),
+                ...(app.audience || [])
+            ].filter(Boolean).join(' ').toLowerCase();
+            return query.split(/\s+/).every(token => searchable.includes(token));
+        }
+
+        function getAppDecision(app) {
+            const tierKey = getTierKey(app);
+            return {
+                tierKey,
+                tierLabel: TIERS[tierKey].label,
+                guidance: getGuidance(app, tierKey),
+                caveat: getCaveat(app, tierKey)
+            };
+        }
+
+        function getTierKey(app) {
+            const audience = app.audience || [];
+            if (!audience.includes('B2B')) return 'avoid-legacy';
+            if (app.category === 'Shopify Native') return 'native-first';
+            if (app.category === 'ERP & Integrations') return 'partner-led';
+            if (app.name.includes('Punchout') || app.name.includes('Logik') || app.name.includes('Syndigo') || app.name.includes('Akeneo')) {
+                return 'partner-led';
+            }
+            if (app.category === 'B2B Operations' || app.category === 'Invoicing & Quoting') return 'se-vetted';
+            return 'caveats';
+        }
+
+        function getGuidance(app, tierKey) {
+            if (tierKey === 'native-first') return TIERS[tierKey].guidance;
+            if (tierKey === 'partner-led') return TIERS[tierKey].guidance;
+            if (tierKey === 'avoid-legacy') return TIERS[tierKey].guidance;
+            if ((app.notes || '').toLowerCase().includes('b2b prim')) {
+                return 'Candidate app after checking native B2B primitives. Prioritize the app only when it extends, not replaces, the native model.';
+            }
+            if (tierKey === 'se-vetted') return TIERS[tierKey].guidance;
+            return TIERS[tierKey].guidance;
+        }
+
+        function getCaveat(app, tierKey) {
+            if (tierKey === 'avoid-legacy') {
+                return 'This entry is not tagged for B2B. Validate why it belongs in a B2B conversation before recommending it.';
+            }
+            if (app.category === 'Shopify Native') {
+                return 'Confirm plan, market, customer account, and B2B feature availability before positioning it as complete coverage.';
+            }
+            if (app.category === 'ERP & Integrations') {
+                return 'Validate system of record, sync direction, failure handling, implementation owner, and support model.';
+            }
+            if (app.category === 'B2B Operations') {
+                return 'Confirm compatibility with companies, company locations, catalogs, customer accounts, and sales rep workflows.';
+            }
+            if (app.category === 'Invoicing & Quoting') {
+                return 'Validate tax, legal invoice format, payment terms, quote approval flow, and post-order accounting needs.';
+            }
+            if (app.category === 'Checkout & Cart') {
+                return 'Cart and checkout behavior can affect conversion, buyer UX, and upgrade path. Test the full B2B buyer flow.';
+            }
+            if (app.category === 'Discounts & Pricing') {
+                return 'Check interactions with B2B catalogs, price lists, Markets, Functions, and existing discount logic.';
+            }
+            if (app.category === 'Catalog & Linesheets') {
+                return 'Validate pricing visibility, catalog freshness, export format, and whether the output creates a second source of truth.';
+            }
+            if (app.category === 'Analytics & Reporting') {
+                return 'Confirm the data model supports company, location, buyer, and blended B2B/DTC reporting needs.';
+            }
+            if (app.category === 'Shipping') {
+                return 'Validate rate logic, split shipments, third-party accounts, carrier constraints, and B2B address rules.';
+            }
+            return 'Validate use-case fit, merchant ownership, support expectations, and whether a native or partner-led path is stronger.';
         }
 
         function escHtml(str) {

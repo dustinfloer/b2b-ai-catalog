@@ -1,5 +1,27 @@
 [
   {
+    "slug": "amer-b2b-partner-lookbook",
+    "name": "AMER B2B Partner LookBook",
+    "description": "Partner reference for AMER B2B solutioning - partner tiers, managers, vertical strengths, customer examples, co-sell expertise, verified skills, and B2B accelerators.",
+    "url": "https://docs.google.com/spreadsheets/d/1RNUoD48umpRDgIhr31T-wV0w3ZzM4hvygfl5qJ9Se68/edit?gid=0#gid=0",
+    "category": "References",
+    "built_with": "Google Sheets",
+    "audience": "SE-facing",
+    "author": "Nick Del Rosso",
+    "author_slack": "@nick.delrosso",
+    "date_added": "2026-05-20",
+    "screenshot": "",
+    "slack_channel": "",
+    "repo_url": "",
+    "b2b_specific": true,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "Google Sheet",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "90"
+  },
+  {
     "slug": "github-for-dummies",
     "name": "GitHub for SE Dummies",
     "description": "GitHub primer for SEs. Repos, branches, PRs, forks, the gh CLI — explained without assuming a software engineering background. Just enough to ship and collaborate.",
@@ -13,7 +35,13 @@
     "screenshot": "",
     "slack_channel": "global-b2b-sales-team",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "180"
   },
   {
     "slug": "punchout-edi-dummies",
@@ -29,7 +57,13 @@
     "screenshot": "",
     "slack_channel": "global-b2b-sales-team",
     "repo_url": "",
-    "b2b_specific": true
+    "b2b_specific": true,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "180"
   },
   {
     "slug": "terminal-cheats",
@@ -45,7 +79,13 @@
     "screenshot": "",
     "slack_channel": "global-b2b-sales-team",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "180"
   },
   {
     "slug": "terminal-presentation",
@@ -61,7 +101,13 @@
     "screenshot": "",
     "slack_channel": "global-b2b-sales-team",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "180"
   },
   {
     "slug": "terminal-store",
@@ -77,7 +123,13 @@
     "screenshot": "",
     "slack_channel": "global-b2b-sales-team",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "180"
   },
   {
     "slug": "weekly-deal-update",
@@ -93,7 +145,13 @@
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "90"
   },
   {
     "slug": "demo-deck-builder",
@@ -109,7 +167,13 @@
     "screenshot": "",
     "slack_channel": "global-b2b-sales-team",
     "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog/tree/main/tools/demo-deck-builder",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "90"
   },
   {
     "slug": "demo-recipes",
@@ -125,7 +189,13 @@
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog",
-    "b2b_specific": true
+    "b2b_specific": true,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "90"
   },
   {
     "slug": "slide-decks",
@@ -136,12 +206,18 @@
     "built_with": "Vanilla JS + GitHub Pages",
     "audience": "SE-facing",
     "author": "B2B SE Team",
-    "author_slack": "",
+    "author_slack": "@se-team",
     "date_added": "2026-04-16",
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "180"
   },
   {
     "slug": "ai-html-decks",
@@ -157,12 +233,18 @@
     "screenshot": "",
     "slack_channel": "global-b2b-sales-team",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "90"
   },
   {
     "slug": "b2b-apps",
     "name": "B2B App Directory",
-    "description": "SE-vetted app reference for B2B solutioning — searchable by use case and category. Covers B2B Operations, ERP & Integrations, Invoicing & Quoting, Shopify Native, and Specialty apps.",
+    "description": "Opinionated app reference for B2B solutioning - searchable by use case, category, and guidance tier. Covers native-first, SE-vetted, caveats, partner-led, and avoid/legacy paths.",
     "url": "https://dustinfloer.github.io/b2b-ai-catalog/apps/",
     "category": "References",
     "built_with": "Vanilla JS + GitHub Pages",
@@ -173,7 +255,13 @@
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog",
-    "b2b_specific": true
+    "b2b_specific": true,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "90"
   },
   {
     "slug": "b2b-field-learnings",
@@ -189,7 +277,13 @@
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "https://github.com/dustinfloer/b2b-ai-catalog",
-    "b2b_specific": true
+    "b2b_specific": true,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "180"
   },
   {
     "slug": "launch-inspector",
@@ -205,7 +299,13 @@
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "90"
   },
   {
     "slug": "agency-intel",
@@ -221,7 +321,13 @@
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "180"
   },
   {
     "slug": "b2b-sales-hub",
@@ -237,7 +343,13 @@
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "",
-    "b2b_specific": true
+    "b2b_specific": true,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "180"
   },
   {
     "slug": "demo-prep",
@@ -253,7 +365,13 @@
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "90"
   },
   {
     "slug": "discovery-prep",
@@ -269,7 +387,13 @@
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "90"
   },
   {
     "slug": "simulations",
@@ -285,6 +409,12 @@
     "screenshot": "",
     "slack_channel": "",
     "repo_url": "",
-    "b2b_specific": false
+    "b2b_specific": false,
+    "status": "active",
+    "access_level": "internal",
+    "source_of_truth": "repo",
+    "reviewed_by": "@dustin.floer",
+    "last_reviewed": "2026-05-20",
+    "review_cycle_days": "90"
   }
 ]

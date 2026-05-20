@@ -33,6 +33,12 @@ audience: "SE-facing"       # SE-facing, Merchant-facing, or Both
 author: "Your Name"
 author_slack: "@your-handle"
 date_added: "2026-03-24"
+status: "active"            # draft, active, needs_review, stale, deprecated
+access_level: "internal"    # internal, external, or mixed
+source_of_truth: "repo"     # repo, quick_site, google_doc, google_sheet, etc.
+reviewed_by: "@reviewer"
+last_reviewed: "2026-03-24"
+review_cycle_days: "90"
 ---
 ```
 
@@ -90,12 +96,18 @@ gh pr create --title "Add Your Tool Name" --body "Adding my tool to the catalog"
 | `name` | Yes | Display name of your tool |
 | `description` | Yes | One-line summary (shown on catalog cards) |
 | `url` | Yes | Link to the live tool |
-| `category` | Yes | `Tools`, `Simulations`, or `References` |
+| `category` | Yes | `Tools`, `Simulations`, `References`, `Workflows`, or `Guides` |
 | `built_with` | Yes | How it's built: `Quick Site`, `MCP Server`, `Script`, `Google Sheet`, `Notebook`, etc. |
 | `audience` | Yes | Who uses it: `SE-facing`, `Merchant-facing`, or `Both` |
 | `author` | Yes | Your name |
 | `author_slack` | Yes | Your Slack handle (for questions) |
 | `date_added` | Yes | Date in YYYY-MM-DD format |
+| `status` | Yes | Lifecycle state: `draft`, `active`, `needs_review`, `stale`, or `deprecated` |
+| `access_level` | Yes | Who can open it: `internal`, `external`, or `mixed` |
+| `source_of_truth` | Yes | Canonical home for the guidance or tool metadata |
+| `reviewed_by` | Yes | Slack handle of the reviewer accountable for freshness |
+| `last_reviewed` | Yes | Date in YYYY-MM-DD format |
+| `review_cycle_days` | Yes | Number of days before the entry needs review |
 | `screenshot` | No | Filename of a screenshot in the same folder |
 | `slack_channel` | No | Slack channel for discussion |
 | `repo_url` | No | Link to source repo if separate |

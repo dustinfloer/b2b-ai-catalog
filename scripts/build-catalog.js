@@ -78,6 +78,12 @@ function buildCatalog() {
             slack_channel: frontmatter.slack_channel || '',
             repo_url: frontmatter.repo_url || '',
             b2b_specific: frontmatter.b2b_specific === 'true' || frontmatter.b2b_specific === true,
+            status: frontmatter.status || 'needs_review',
+            access_level: frontmatter.access_level || '',
+            source_of_truth: frontmatter.source_of_truth || '',
+            reviewed_by: frontmatter.reviewed_by || '',
+            last_reviewed: frontmatter.last_reviewed || '',
+            review_cycle_days: frontmatter.review_cycle_days || '',
         });
     }
 

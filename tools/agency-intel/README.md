@@ -8,6 +8,12 @@ audience: "SE-facing"
 author: "Jordan Murphy"
 author_slack: "@jordan.murphy"
 date_added: "2026-03-24"
+status: "active"
+access_level: "internal"
+source_of_truth: "repo"
+reviewed_by: "@dustin.floer"
+last_reviewed: "2026-05-20"
+review_cycle_days: "180"
 ---
 
 ## What It Does

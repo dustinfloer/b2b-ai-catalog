@@ -8,6 +8,12 @@ audience: "SE-facing"
 author: "Lizzie Ficken"
 author_slack: "@lizzie.ficken"
 date_added: "2026-03-24"
+status: "active"
+access_level: "internal"
+source_of_truth: "repo"
+reviewed_by: "@dustin.floer"
+last_reviewed: "2026-05-20"
+review_cycle_days: "180"
 b2b_specific: true
 ---
 

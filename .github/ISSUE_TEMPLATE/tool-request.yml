@@ -24,6 +24,8 @@ body:
         - Tools
         - Simulations
         - References
+        - Workflows
+        - Guides
     validations:
       required: true
 

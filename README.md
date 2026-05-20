@@ -10,9 +10,11 @@ Tools, simulations, references, and guides — built by the **B2B SE Team** for 
 
 The B2B SE team builds a lot — quick sites, MCP tools, simulations, primers, theme forks. This is the single place to discover everything that exists, find the link, and learn how to use it.
 
-The repo is a **catalog** (directory), not a hosting platform. Each entry links out to wherever the asset actually lives.
+The repo is the **trusted SE Field Guide**: the source of truth for the catalog entry, ownership, freshness, and review status. Each entry links out to wherever the asset actually lives.
 
 Items that are specifically about B2B (App Directory, Field Learnings, Demo Recipes, Punchout primer, etc.) are tagged **B2B** so cross-segment SEs can filter them out or in.
+
+See [FIELD_GUIDE_STRATEGY.md](FIELD_GUIDE_STRATEGY.md) for the product direction, governance model, and roadmap.
 
 ## Categories
 
@@ -40,7 +42,9 @@ Built something you're proud of? Add it to the catalog in under 5 minutes — no
 ## How It Works
 
 - Each tool lives in its own folder under `tools/` with a `README.md` containing metadata
+- Each entry includes trust metadata: owner, status, access level, reviewer, and freshness window
 - A GitHub Action automatically builds the browsable catalog site on every merge to `main`
+- CI validates required metadata before publishing
 - The catalog site at [shopify-playground.github.io/b2b-ai-catalog](https://dustinfloer.github.io/b2b-ai-catalog/) provides search and filtering
 
 ## Questions?

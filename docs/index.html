@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SE Field Guide</title>
-    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="icon" type="image/svg+xml" href="logo-mark.svg">
     <style>
         :root {
             --green-primary: #36d986;
@@ -20,10 +20,10 @@
             --text-primary: #e8ecf1;
             --text-secondary: #8b95a5;
             --text-muted: #5a6577;
-            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(54, 217, 134, 0.08);
-            --radius: 14px;
-            --radius-sm: 8px;
+            --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.28);
+            --shadow-card-hover: 0 10px 24px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(54, 217, 134, 0.08);
+            --radius: 8px;
+            --radius-sm: 6px;
             --cat-simulations: #a78bfa;
             --cat-simulations-bg: rgba(167, 139, 250, 0.12);
             --cat-tools: #36d986;
@@ -48,9 +48,9 @@
 
         /* Header */
         .header {
-            background: var(--bg-surface);
+            background: rgba(17, 24, 39, 0.94);
             border-bottom: 1px solid var(--border);
-            padding: 20px 0;
+            padding: 12px 0;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -65,22 +65,52 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 14px;
         }
 
         .header h1 {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
+            line-height: 0;
+        }
+
+        .brand-link {
             display: flex;
             align-items: center;
-            gap: 10px;
-            letter-spacing: -0.3px;
+            text-decoration: none;
         }
 
         .header-logo {
-            height: 56px;
+            height: 48px;
             width: auto;
+        }
+
+        .nav {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            flex: 1 1 auto;
+            justify-content: center;
+            min-width: 280px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            border-radius: var(--radius-sm);
+            padding: 6px 10px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.2;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.045);
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            background: rgba(54, 217, 134, 0.1);
+            color: var(--green-primary);
         }
 
         .header-actions {
@@ -182,32 +212,195 @@
         .hero {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 28px 24px 0;
+            padding: 26px 24px 0;
             text-align: center;
         }
 
         .hero h2 {
-            font-size: 24px;
+            font-size: 25px;
             font-weight: 800;
-            letter-spacing: -0.4px;
-            margin-bottom: 4px;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--green-primary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            margin-bottom: 6px;
+            color: var(--text-primary);
         }
 
         .hero p {
             color: var(--text-secondary);
             font-size: 14px;
-            max-width: 500px;
+            max-width: 620px;
             margin: 0 auto;
+        }
+
+        /* Workflow shortcuts */
+        .workflow-board {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            padding: 0 24px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 18px;
+            margin-bottom: 12px;
+        }
+
+        .section-eyebrow {
+            color: var(--green-primary);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .section-heading h2 {
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 750;
+            letter-spacing: 0;
+        }
+
+        .section-note {
+            max-width: 440px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.45;
+            text-align: right;
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .workflow-card {
+            min-height: 124px;
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: rgba(17, 24, 39, 0.92);
+            color: inherit;
+            text-align: left;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .workflow-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: transparent;
+        }
+
+        .workflow-card.active::before {
+            background: var(--green-primary);
+        }
+
+        .workflow-card:hover,
+        .workflow-card.active {
+            border-color: var(--green-primary);
+            background: var(--bg-card);
+            transform: translateY(-2px);
+        }
+
+        .workflow-card.active {
+            box-shadow: 0 0 0 1px rgba(54, 217, 134, 0.18);
+        }
+
+        .workflow-card.active .workflow-count {
+            border-color: rgba(54, 217, 134, 0.34);
+            color: var(--green-primary);
+            background: rgba(54, 217, 134, 0.08);
+        }
+
+        .workflow-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .workflow-kicker {
+            display: block;
+            color: var(--green-primary);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .workflow-count {
+            min-width: 54px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .workflow-title {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .workflow-copy {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .trust-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .trust-item {
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.035);
+            padding: 10px 12px;
+        }
+
+        .trust-label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .trust-value {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.35;
         }
 
         /* Controls */
         .controls {
             max-width: 1200px;
-            margin: 32px auto 0;
+            margin: 26px auto 0;
             padding: 0 24px;
             display: flex;
             gap: 12px;
@@ -223,7 +416,7 @@
 
         .search-box input {
             width: 100%;
-            padding: 11px 16px 11px 42px;
+            padding: 10px 16px 10px 40px;
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             font-size: 14px;
@@ -244,11 +437,11 @@
 
         .search-icon {
             position: absolute;
-            left: 14px;
+            left: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
             pointer-events: none;
         }
 
@@ -259,10 +452,10 @@
         }
 
         .filter-btn {
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             border: 1px solid var(--border);
             background: transparent;
             color: var(--text-secondary);
@@ -297,14 +490,14 @@
             padding: 0 24px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 16px;
+            gap: 14px;
         }
 
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 22px;
+            padding: 18px;
             transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
@@ -316,7 +509,7 @@
             background: var(--bg-card-hover);
             border-color: var(--border-hover);
             box-shadow: var(--shadow-card-hover);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
         .card-category-bar {
@@ -343,29 +536,43 @@
 
         .card-title-row {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            align-items: flex-start;
+            gap: 9px;
+            flex: 1 1 auto;
             min-width: 0;
         }
 
-        .card-icon {
-            font-size: 18px;
-            line-height: 1;
+        .category-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 7px;
             flex-shrink: 0;
         }
+
+        .category-dot.Simulations { background: var(--cat-simulations); }
+        .category-dot.Tools { background: var(--cat-tools); }
+        .category-dot.References { background: var(--cat-references); }
+        .category-dot.Workflows { background: var(--cat-workflows); }
+        .category-dot.Guides { background: #f472b6; }
 
         .card h3 {
             font-size: 16px;
             font-weight: 650;
             color: var(--text-primary);
-            letter-spacing: -0.2px;
+            letter-spacing: 0;
+            line-height: 1.3;
+            min-width: 0;
+            overflow-wrap: break-word;
         }
 
         .card-badge {
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
             white-space: nowrap;
             flex-shrink: 0;
         }
@@ -393,20 +600,6 @@
             color: #f472b6;
         }
 
-        .b2b-tag {
-            display: inline-block;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            padding: 2px 6px;
-            border-radius: 6px;
-            background: rgba(96, 165, 250, 0.15);
-            color: #60a5fa;
-            border: 1px solid rgba(96, 165, 250, 0.3);
-            line-height: 1.3;
-            vertical-align: middle;
-        }
-
         .card-description {
             font-size: 14px;
             color: var(--text-secondary);
@@ -429,6 +622,12 @@
             padding: 3px 10px;
             border-radius: 6px;
             border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .meta-tag.b2b-meta {
+            background: rgba(96, 165, 250, 0.14);
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.32);
         }
 
         .card-footer {
@@ -472,7 +671,7 @@
             align-items: center;
             gap: 5px;
             padding: 5px 12px;
-            border-radius: 20px;
+            border-radius: var(--radius-sm);
             border: 1px solid rgba(54, 217, 134, 0.3);
             background: rgba(54, 217, 134, 0.06);
             transition: all 0.2s;
@@ -565,15 +764,57 @@
             font-size: 15px;
         }
 
+        .site-footer {
+            text-align: center;
+            padding: 32px 24px;
+            margin-top: 48px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .site-footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .site-footer a:hover {
+            color: var(--green-primary);
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .grid {
                 grid-template-columns: 1fr;
             }
 
+            .workflow-grid,
+            .trust-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading {
+                display: block;
+            }
+
+            .section-note {
+                text-align: left;
+                margin-top: 6px;
+            }
+
             .header-inner {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+
+            .header-logo {
+                height: 44px;
+            }
+
+            .nav {
+                justify-content: flex-start;
+                min-width: 100%;
+                flex-wrap: wrap;
             }
 
             .controls {
@@ -597,13 +838,17 @@
 <body>
     <header class="header">
         <div class="header-inner">
-            <h1><img src="logo.svg" alt="SE Field Guide" class="header-logo"></h1>
-            <nav style="display:flex;gap:6px;align-items:center;">
-                <a href="./" style="font-size:13px;font-weight:500;color:var(--green-primary);background:rgba(54,217,134,0.1);border-radius:8px;padding:6px 12px;text-decoration:none;">Catalog</a>
-                <a href="./learnings/" style="font-size:13px;font-weight:500;color:var(--text-secondary);border-radius:8px;padding:6px 12px;text-decoration:none;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-secondary)'">Field Learnings</a>
-                <a href="./apps/" style="font-size:13px;font-weight:500;color:var(--text-secondary);border-radius:8px;padding:6px 12px;text-decoration:none;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-secondary)'">App Directory</a>
-                <a href="./demos/" style="font-size:13px;font-weight:500;color:var(--text-secondary);border-radius:8px;padding:6px 12px;text-decoration:none;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-secondary)'">Demo Recipes</a>
-                <a href="./slide-decks/" style="font-size:13px;font-weight:500;color:var(--text-secondary);border-radius:8px;padding:6px 12px;text-decoration:none;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-secondary)'">Slide Decks</a>
+            <h1>
+                <a href="./" class="brand-link" aria-label="SE Field Guide home">
+                    <img src="logo.svg" alt="SE Field Guide" class="header-logo">
+                </a>
+            </h1>
+            <nav class="nav" aria-label="Primary">
+                <a href="./" class="nav-link active">Catalog</a>
+                <a href="./learnings/" class="nav-link">Field Learnings</a>
+                <a href="./apps/" class="nav-link">App Directory</a>
+                <a href="./demos/" class="nav-link">Demo Recipes</a>
+                <a href="./slide-decks/" class="nav-link">Slide Decks</a>
             </nav>
             <div class="header-actions">
                 <div class="contribute" id="contribute">
@@ -623,12 +868,88 @@
 
     <div class="hero">
         <h2>SE Field Guide</h2>
-        <p>Tools, simulations, references, and guides — built by the B2B SE Team for the broader SE community. Items tagged <span class="b2b-tag" style="font-size:0.65rem;vertical-align:middle">B2B</span> are B2B-specific.</p>
+        <p>Trusted tools, workflows, examples, and field notes for SEs. Start from the job in front of you, then use the catalog to find the right artifact.</p>
     </div>
+
+    <section class="workflow-board" aria-labelledby="workflow-heading">
+        <div class="section-heading">
+            <div>
+                <div class="section-eyebrow">Find / Decide / Execute</div>
+                <h2 id="workflow-heading">What do you need to do?</h2>
+            </div>
+            <p class="section-note">These shortcuts tune the catalog around common SE moments. Search and category filters still work normally after you pick a path.</p>
+        </div>
+
+        <div class="workflow-grid">
+            <button type="button" class="workflow-card" data-filter="all" data-query="demo">
+                <span class="workflow-top">
+                    <span class="workflow-kicker">Execute</span>
+                    <span class="workflow-count">0 tools</span>
+                </span>
+                <span class="workflow-title">Prepare a demo</span>
+                <span class="workflow-copy">Find demo prep tools, recipes, simulations, and deck builders for a merchant conversation.</span>
+            </button>
+            <button type="button" class="workflow-card" data-filter="all" data-query="deck">
+                <span class="workflow-top">
+                    <span class="workflow-kicker">Execute</span>
+                    <span class="workflow-count">0 tools</span>
+                </span>
+                <span class="workflow-title">Build or borrow a deck</span>
+                <span class="workflow-copy">Jump to slide examples, HTML deck workflows, and reusable presentation assets.</span>
+            </button>
+            <button type="button" class="workflow-card" data-filter="b2b" data-query="">
+                <span class="workflow-top">
+                    <span class="workflow-kicker">Find</span>
+                    <span class="workflow-count">0 tools</span>
+                </span>
+                <span class="workflow-title">Solve a B2B-specific ask</span>
+                <span class="workflow-copy">Show only entries tagged for B2B scenarios, integrations, demo recipes, and field learnings.</span>
+            </button>
+            <button type="button" class="workflow-card" data-filter="Simulations" data-query="">
+                <span class="workflow-top">
+                    <span class="workflow-kicker">Practice</span>
+                    <span class="workflow-count">0 tools</span>
+                </span>
+                <span class="workflow-title">Use a simulation</span>
+                <span class="workflow-copy">Filter down to interactive sims for demos, technical storytelling, and merchant education.</span>
+            </button>
+            <button type="button" class="workflow-card" data-filter="Guides" data-query="">
+                <span class="workflow-top">
+                    <span class="workflow-kicker">Learn</span>
+                    <span class="workflow-count">0 tools</span>
+                </span>
+                <span class="workflow-title">Level up a skill</span>
+                <span class="workflow-copy">Open primers and references for terminal work, GitHub, Punchout, EDI, and other SE craft.</span>
+            </button>
+            <button type="button" class="workflow-card" data-filter="References" data-query="">
+                <span class="workflow-top">
+                    <span class="workflow-kicker">Decide</span>
+                    <span class="workflow-count">0 tools</span>
+                </span>
+                <span class="workflow-title">Find source material</span>
+                <span class="workflow-copy">Browse reference entries when you need examples, app context, or a reviewed source to cite.</span>
+            </button>
+        </div>
+
+        <div class="trust-strip" aria-label="Catalog trust model">
+            <div class="trust-item">
+                <span class="trust-label">Reviewed</span>
+                <span class="trust-value">Every entry carries review metadata and a freshness cycle.</span>
+            </div>
+            <div class="trust-item">
+                <span class="trust-label">Internal</span>
+                <span class="trust-value">Built for Shopify SEs and private team contribution.</span>
+            </div>
+            <div class="trust-item">
+                <span class="trust-label">Source of truth</span>
+                <span class="trust-value">Catalog changes go through GitHub so the guide can stay durable.</span>
+            </div>
+        </div>
+    </section>
 
     <div class="controls">
         <div class="search-box">
-            <span class="search-icon">&#x1F50D;</span>
+            <span class="search-icon">⌕</span>
             <input type="text" id="search" placeholder="Search tools by name, description, or author..." />
         </div>
         <div class="filter-group">
@@ -638,7 +959,7 @@
             <button class="filter-btn" data-filter="References">References</button>
             <button class="filter-btn" data-filter="Workflows">Workflows</button>
             <button class="filter-btn" data-filter="Guides">Guides</button>
-            <button class="filter-btn" data-filter="b2b">🏢 B2B-only</button>
+            <button class="filter-btn" data-filter="b2b">B2B-only</button>
         </div>
     </div>
 
@@ -651,14 +972,7 @@
     <script>
         let catalog = [];
         let activeFilter = 'all';
-
-        const categoryIcons = {
-            'Tools':       '⚙️',
-            'Simulations': '🎭',
-            'References':  '📚',
-            'Workflows':   '⚡',
-            'Guides':      '📖'
-        };
+        let activeWorkflow = null;
 
         function updateFilterCounts() {
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -673,11 +987,20 @@
             });
         }
 
+        function updateWorkflowCounts() {
+            document.querySelectorAll('.workflow-card').forEach(btn => {
+                const matches = getFilteredTools(btn.dataset.filter || 'all', btn.dataset.query || '');
+                const label = matches.length === 1 ? 'tool' : 'tools';
+                btn.querySelector('.workflow-count').textContent = `${matches.length} ${label}`;
+            });
+        }
+
         async function loadCatalog() {
             try {
                 const response = await fetch('catalog.json?v=' + Date.now());
                 catalog = await response.json();
                 updateFilterCounts();
+                updateWorkflowCounts();
                 render();
             } catch (e) {
                 document.getElementById('grid').innerHTML = `
@@ -690,30 +1013,22 @@
         }
 
         function render() {
-            const query = document.getElementById('search').value.toLowerCase();
-            const filtered = catalog.filter(tool => {
-                let matchesFilter;
-                if (activeFilter === 'all') matchesFilter = true;
-                else if (activeFilter === 'b2b') matchesFilter = tool.b2b_specific === true;
-                else matchesFilter = tool.category === activeFilter;
-                const matchesSearch = !query ||
-                    tool.name.toLowerCase().includes(query) ||
-                    tool.description.toLowerCase().includes(query) ||
-                    tool.author.toLowerCase().includes(query) ||
-                    (tool.built_with || '').toLowerCase().includes(query);
-                return matchesFilter && matchesSearch;
-            }).sort((a, b) => a.name.localeCompare(b.name));
+            const rawQuery = document.getElementById('search').value.trim();
+            const filtered = getFilteredTools(activeFilter, rawQuery);
 
+            const activePath = activeWorkflow
+                ? `${activeWorkflow.querySelector('.workflow-title').textContent}: `
+                : '';
             document.getElementById('stats').textContent =
-                `Showing ${filtered.length} of ${catalog.length} tools`;
+                `${activePath}Showing ${filtered.length} of ${catalog.length} tools`;
 
             const grid = document.getElementById('grid');
 
             if (filtered.length === 0) {
-                const hasQuery = query.length > 0;
+                const hasQuery = rawQuery.length > 0;
                 const hasFilter = activeFilter !== 'all';
                 const headline = hasQuery
-                    ? `No tools match “${escapeHtml(query)}”`
+                    ? `No tools match “${escapeHtml(rawQuery)}”`
                     : (hasFilter ? `No tools in this category yet` : `No tools found`);
                 const sub = hasQuery || hasFilter
                     ? `Try a different search, or contribute one — every gap is a chance to help the team.`
@@ -734,9 +1049,8 @@
                 if (resetBtn) {
                     resetBtn.addEventListener('click', () => {
                         document.getElementById('search').value = '';
-                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                        document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
-                        activeFilter = 'all';
+                        setActiveFilter('all');
+                        clearWorkflowSelection();
                         render();
                     });
                 }
@@ -749,19 +1063,73 @@
                     ${tool.screenshot ? `<img class="card-screenshot" src="${escapeHtml(tool.screenshot)}" alt="${escapeHtml(tool.name)} screenshot" loading="lazy" onerror="this.style.display='none'">` : ''}
                     <div class="card-header">
                         <div class="card-title-row">
-                            <span class="card-icon">${categoryIcons[tool.category] || '🔧'}</span>
+                            <span class="category-dot ${tool.category}" aria-hidden="true"></span>
                             <h3>${escapeHtml(tool.name)}</h3>
-                            ${tool.b2b_specific ? '<span class="b2b-tag" title="B2B-specific">B2B</span>' : ''}
                         </div>
                         <span class="card-badge ${tool.category}">${escapeHtml(tool.category)}</span>
                     </div>
                     <p class="card-description">${escapeHtml(tool.description)}</p>
+                    ${renderMeta(tool)}
                     <div class="card-footer">
                         <span class="card-author">${escapeHtml(tool.author)}</span>
                         <a href="${escapeHtml(tool.url)}" target="_blank" rel="noopener" class="card-link">Open</a>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function getFilteredTools(filter, query) {
+            return catalog.filter(tool => matchesTool(tool, filter, query))
+                .sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        function matchesTool(tool, filter, query) {
+            let matchesFilter;
+            if (filter === 'all') matchesFilter = true;
+            else if (filter === 'b2b') matchesFilter = tool.b2b_specific === true;
+            else matchesFilter = tool.category === filter;
+            if (!matchesFilter) return false;
+
+            const queryTokens = String(query || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
+            if (!queryTokens.length) return true;
+
+            const searchable = [
+                tool.name,
+                tool.description,
+                tool.author,
+                tool.author_slack,
+                tool.category,
+                tool.built_with,
+                tool.audience,
+                tool.status,
+                tool.access_level,
+                tool.source_of_truth,
+                tool.b2b_specific ? 'b2b b2b-specific' : ''
+            ].filter(Boolean).join(' ').toLowerCase();
+            return queryTokens.every(token => searchable.includes(token));
+        }
+
+        function renderMeta(tool) {
+            const parts = [];
+            if (tool.b2b_specific) parts.push({ label: 'B2B-specific', className: 'b2b-meta' });
+            if (tool.status) parts.push({ label: formatStatus(tool.status) });
+            if (tool.last_reviewed) parts.push({ label: `Reviewed ${formatDate(tool.last_reviewed)}` });
+            if (tool.access_level) parts.push({ label: formatStatus(tool.access_level) });
+            if (!parts.length) return '';
+            return `<div class="card-meta">${parts.map(part => `<span class="meta-tag ${part.className || ''}">${escapeHtml(part.label)}</span>`).join('')}</div>`;
+        }
+
+        function formatStatus(value) {
+            return String(value || '')
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, char => char.toUpperCase());
+        }
+
+        function formatDate(value) {
+            const match = String(value || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (!match) return value;
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[Number(match[2]) - 1]} ${Number(match[3])}, ${match[1]}`;
         }
 
         function escapeHtml(str) {
@@ -771,15 +1139,41 @@
             return div.innerHTML;
         }
 
-        document.getElementById('search').addEventListener('input', render);
+        function setActiveFilter(filter) {
+            activeFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.filter === filter);
+            });
+        }
+
+        function clearWorkflowSelection() {
+            activeWorkflow = null;
+            document.querySelectorAll('.workflow-card').forEach(btn => btn.classList.remove('active'));
+        }
+
+        function applyWorkflowPreset(btn) {
+            activeWorkflow = btn;
+            document.querySelectorAll('.workflow-card').forEach(other => other.classList.toggle('active', other === btn));
+            document.getElementById('search').value = btn.dataset.query || '';
+            setActiveFilter(btn.dataset.filter || 'all');
+            render();
+        }
+
+        document.getElementById('search').addEventListener('input', () => {
+            clearWorkflowSelection();
+            render();
+        });
 
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activeFilter = btn.dataset.filter;
+                clearWorkflowSelection();
+                setActiveFilter(btn.dataset.filter);
                 render();
             });
+        });
+
+        document.querySelectorAll('.workflow-card').forEach(btn => {
+            btn.addEventListener('click', () => applyWorkflowPreset(btn));
         });
 
         const contribute = document.getElementById('contribute');
@@ -806,8 +1200,8 @@
         loadCatalog();
     </script>
 
-    <footer style="text-align: center; padding: 32px 24px; margin-top: 48px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px;">
-        Built by <a href="https://github.com/dustinfloer" target="_blank" rel="noopener" style="color: var(--text-secondary); text-decoration: none;">Dustin Floer</a>
+    <footer class="site-footer">
+        Built by <a href="https://github.com/dustinfloer" target="_blank" rel="noopener">Dustin Floer</a>
     </footer>
 </body>
 </html>

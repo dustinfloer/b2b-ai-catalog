@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SE Field Guide Logo Lab</title>
+  <link rel="icon" type="image/svg+xml" href="logo-mark.svg">
+  <style>
+    :root {
+      --green-primary: #36d986;
+      --blue-primary: #60a5fa;
+      --bg-deep: #0a0f1a;
+      --bg-surface: #111827;
+      --bg-card: #1a2332;
+      --bg-card-hover: #1f2b3d;
+      --border: #2a3548;
+      --text-primary: #e8ecf1;
+      --text-secondary: #8b95a5;
+      --text-muted: #5a6577;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-deep);
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+    }
+
+    .header-inner,
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .back-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .back-link:hover { color: var(--green-primary); }
+
+    main {
+      padding: 36px 24px 64px;
+    }
+
+    .eyebrow {
+      color: var(--green-primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 32px;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+    }
+
+    .intro {
+      max-width: 720px;
+      margin: 12px 0 28px;
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .card.recommended {
+      border-color: rgba(54, 217, 134, 0.65);
+      box-shadow: 0 0 0 1px rgba(54, 217, 134, 0.16), 0 14px 36px rgba(0,0,0,0.28);
+    }
+
+    .sample-header {
+      min-height: 92px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    .sample-header img {
+      height: 56px;
+      width: auto;
+      display: block;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 17px;
+      letter-spacing: -0.2px;
+    }
+
+    .badge {
+      flex: 0 0 auto;
+      border: 1px solid rgba(54, 217, 134, 0.35);
+      background: rgba(54, 217, 134, 0.1);
+      color: var(--green-primary);
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.55;
+      margin: 0 0 14px;
+    }
+
+    .micro {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 14px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .micro img {
+      width: 104px;
+      height: auto;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0d1421;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <img src="logo.svg" alt="SE Field Guide" style="height:56px;width:auto;">
+      <a class="back-link" href="./">Back to catalog</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="eyebrow">Logo Lab</div>
+    <h1>Fresh directions for SE Field Guide</h1>
+    <p class="intro">
+      Three SVG concepts built around the new product direction: trusted navigation, field craft,
+      and a decision layer for SEs. Wayfinder is the selected direction because it says "find the
+      right path" without feeling like a generic documentation site.
+    </p>
+
+    <section class="grid">
+      <article class="card recommended">
+        <div class="sample-header">
+          <img src="logo-wayfinder.svg" alt="Wayfinder logo">
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <h2>Wayfinder</h2>
+            <span class="badge">Selected</span>
+          </div>
+          <p>
+            A compass/path mark for orientation and decision-making. This fits the Field Guide
+            direction best: not a folder of assets, but a trusted path through SE work.
+          </p>
+          <div class="micro">
+            <img src="logo-wayfinder.svg" alt="">
+            <span>Best for the homepage and favicon direction.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="sample-header">
+          <img src="logo-field-notes.svg" alt="Field Notes logo">
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <h2>Field Notes</h2>
+          </div>
+          <p>
+            A manual/notebook mark. This feels more personal and artifact-like, which supports
+            the imprint goal, but it reads slightly more "documentation" than "operating layer."
+          </p>
+          <div class="micro">
+            <img src="logo-field-notes.svg" alt="">
+            <span>Best if the guide should feel like a durable handbook.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="sample-header">
+          <img src="logo-signal-stack.svg" alt="Signal Stack logo">
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <h2>Signal Stack</h2>
+          </div>
+          <p>
+            Stacked cards with a highlighted route. This is the most operational option and maps
+            well to "find, decide, execute," but it is less distinctive than Wayfinder.
+          </p>
+          <div class="micro">
+            <img src="logo-signal-stack.svg" alt="">
+            <span>Best if the product becomes more dashboard-like.</span>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 336 80" role="img" aria-label="SE Field Guide Signal Stack logo">
+  <defs>
+    <linearGradient id="ss-card" x1="12" y1="13" x2="67" y2="65" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1f2b3d"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="ss-accent" x1="22" y1="48" x2="56" y2="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#60a5fa"/>
+      <stop offset="1" stop-color="#36d986"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(5 8)">
+    <rect x="9" y="8" width="54" height="14" rx="7" fill="url(#ss-card)" stroke="#2a3548"/>
+    <rect x="9" y="27" width="54" height="14" rx="7" fill="url(#ss-card)" stroke="#2a3548"/>
+    <rect x="9" y="46" width="54" height="14" rx="7" fill="url(#ss-card)" stroke="#2a3548"/>
+    <path d="M21 53 C29 38 44 41 55 17" fill="none" stroke="url(#ss-accent)" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="21" cy="53" r="4" fill="#60a5fa"/>
+    <circle cx="38" cy="36" r="4" fill="#f8fafc"/>
+    <circle cx="55" cy="17" r="4" fill="#36d986"/>
+    <text x="22" y="38"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+          font-size="15" font-weight="800" fill="#f8fafc">SE</text>
+  </g>
+
+  <g transform="translate(94 18)">
+    <text x="0" y="18"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+          font-size="15" font-weight="800" fill="#36d986" letter-spacing="2.2">SE FIELD</text>
+    <text x="0" y="47"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+          font-size="31" font-weight="800" fill="#f8fafc">Guide</text>
+    <g transform="translate(92 36)">
+      <rect x="0" y="0" width="28" height="3" rx="1.5" fill="#36d986"/>
+      <rect x="34" y="0" width="28" height="3" rx="1.5" fill="#60a5fa"/>
+      <rect x="68" y="0" width="18" height="3" rx="1.5" fill="#2a3548"/>
+    </g>
+  </g>
+</svg>
